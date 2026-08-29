@@ -1,0 +1,28 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "Scaffolding copied from [Merxius2/swimming_app](https://github.com/Merxius2/swimming_app) (Aap Vitality). Adapt this codebase for the Vitality app while reusing the existing iOS architecture, services, and UI patterns.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "generate:icons": "node scripts/generate-default-app-icon.mjs",
+    "generate:store-icons": "node scripts/generate-app-icons.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Merxius2/Aap_Vitality.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Merxius2/Aap_Vitality/issues"
+  },
+  "homepage": "https://github.com/Merxius2/Aap_Vitality#readme",
+  "devDependencies": {
+    "sharp": "^0.35.4"
+  }
+}

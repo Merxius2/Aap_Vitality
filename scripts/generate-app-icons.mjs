@@ -8,7 +8,7 @@ import sharp from 'sharp';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const PUBLIC = path.join(ROOT, 'public');
-const IOS_ASSETS = path.join(ROOT, 'ios/AapSC/Resources/Assets.xcassets');
+const IOS_ASSETS = path.join(ROOT, 'ios/AapVitality/Resources/Assets.xcassets');
 
 const ICON_SETS = [
   { svg: 'icons/store/gold-medal.svg', outputs: ['icons/store/gold-medal-192.png', 'icons/store/gold-medal-512.png'], iosAppIcon: 'GoldMedal' },

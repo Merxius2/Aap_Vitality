@@ -1,6 +1,6 @@
 # TestFlight CI pipeline
 
-Every push to `main` runs unit tests, then builds and uploads **Aap-SC** to TestFlight via GitHub Actions.
+Every push to `main` runs unit tests, then builds and uploads **Aap Vitality** to TestFlight via GitHub Actions.
 
 Workflow file: [`.github/workflows/testflight.yml`](../.github/workflows/testflight.yml)
 
@@ -9,7 +9,7 @@ Workflow file: [`.github/workflows/testflight.yml`](../.github/workflows/testfli
 ### 1. App Store Connect app
 
 1. Sign in to [App Store Connect](https://appstoreconnect.apple.com/).
-2. Create an app with bundle ID **`com.aapft.aapsc`** (must match the Xcode project).
+2. Create an app with bundle ID **`com.aapft.vitality`** (must match the Xcode project).
 3. Complete the minimum metadata App Store Connect requires for TestFlight builds.
 
 ### 2. App Store Connect API key
@@ -76,6 +76,6 @@ bundle exec fastlane beta
 | Missing secrets | All four secrets set in GitHub |
 | Provisioning profile | API key user has Developer access; bundle ID registered |
 | Duplicate build number | Re-run is OK — each run uses a new `run_number` |
-| HealthKit entitlement | Enabled in Apple Developer portal for `com.aapft.aapsc` |
+| HealthKit entitlement | Enabled in Apple Developer portal for `com.aapft.vitality` |
 
 Build numbers increment automatically (`1`, `2`, `3`, … per workflow run). Bump **marketing version** (`MARKETING_VERSION` / `CFBundleShortVersionString`) in Xcode when you release a new user-facing version.

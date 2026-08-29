@@ -8,7 +8,7 @@ import sharp from 'sharp';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const PUBLIC = path.join(ROOT, 'public');
-const ASSETS = path.join(ROOT, 'ios/AapSC/Resources/Assets.xcassets');
+const ASSETS = path.join(ROOT, 'ios/AapVitality/Resources/Assets.xcassets');
 
 const ICON_SETS = ['gold-medal', 'neon-lane', 'trophy-splash', 'platinum-star'];
 const PAGES = ['progress', 'upload', 'history', 'benchmark', 'medals', 'coins', 'settings'];

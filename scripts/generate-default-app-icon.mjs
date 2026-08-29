@@ -1,6 +1,5 @@
 /**
- * Default Aap-SC app icon: three swim-coach mascots in a pool scene.
- * Brand gradient: #0066CC → #38BDF8 (matches trophy-splash / BrandBlue).
+ * Default Aap Vitality app icon: heart + activity pulse on brand gradient.
  *
  * Run: node scripts/generate-default-app-icon.mjs
  */
@@ -12,82 +11,44 @@ const ROOT = path.resolve(import.meta.dirname, '..');
 const PUBLIC = path.join(ROOT, 'public');
 const IOS_APP_ICON = path.join(
   ROOT,
-  'ios/AapSC/Resources/Assets.xcassets/AppIcon.appiconset'
+  'ios/AapVitality/Resources/Assets.xcassets/AppIcon.appiconset'
 );
 
-const POOL_BG_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+const VITALITY_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
   <defs>
-    <linearGradient id="poolSky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#7DD3FC"/>
-      <stop offset="38%" stop-color="#38BDF8"/>
-      <stop offset="100%" stop-color="#0066CC"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#34D399"/>
+      <stop offset="45%" stop-color="#0066CC"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
     </linearGradient>
-    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0EA5E9" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="#0369A1" stop-opacity="0.92"/>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#E0F2FE" stop-opacity="0.85"/>
     </linearGradient>
-    <linearGradient id="deck" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#BAE6FD"/>
-      <stop offset="100%" stop-color="#7DD3FC"/>
-    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#003366" flood-opacity="0.28"/>
+    </filter>
   </defs>
-  <rect width="1024" height="1024" rx="224" fill="url(#poolSky)"/>
-  <rect x="0" y="700" width="1024" height="80" fill="url(#deck)"/>
-  <path d="M0 780 Q170 748 342 768 T684 756 T1024 780 L1024 1024 L0 1024 Z" fill="url(#water)"/>
-  <path d="M0 748 Q256 718 512 738 T1024 748" stroke="#FFFFFF" stroke-width="10" fill="none" opacity="0.45"/>
-  <line x1="256" y1="790" x2="256" y2="990" stroke="#FFFFFF" stroke-width="7" opacity="0.22"/>
-  <line x1="512" y1="790" x2="512" y2="990" stroke="#FFFFFF" stroke-width="7" opacity="0.22"/>
-  <line x1="768" y1="790" x2="768" y2="990" stroke="#FFFFFF" stroke-width="7" opacity="0.22"/>
-  <ellipse cx="512" cy="860" rx="420" ry="48" fill="#FFFFFF" opacity="0.08"/>
-  <circle cx="512" cy="118" r="104" fill="#FFFFFF" opacity="0.96"/>
-  <g transform="translate(512 118) scale(3.15)" fill="#57C4B7">
-    <g transform="translate(-32 -34)">
-      <circle cx="22" cy="17" r="9"/>
-      <path d="M29 21C36 14 44 16 48 26" stroke="#57C4B7" stroke-width="7" stroke-linecap="round" fill="none"/>
-      <path d="M10 46C16 42 22 42 28 46C34 50 40 50 46 46C52 42 58 42 64 46" stroke="#57C4B7" stroke-width="5" stroke-linecap="round" fill="none"/>
-      <path d="M6 54C14 50 22 50 30 54C38 58 46 58 54 54" stroke="#57C4B7" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.85"/>
-      <path d="M10 62C18 58 26 58 34 62C42 66 50 66 58 62" stroke="#57C4B7" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.7"/>
-    </g>
+  <rect width="1024" height="1024" rx="224" fill="url(#bg)"/>
+  <circle cx="512" cy="512" r="360" fill="#FFFFFF" opacity="0.08"/>
+  <circle cx="512" cy="512" r="290" fill="none" stroke="#FFFFFF" stroke-width="16" opacity="0.18"/>
+  <g filter="url(#shadow)">
+    <circle cx="512" cy="512" r="250" fill="url(#ring)"/>
   </g>
+  <path d="M512 690 C360 560 300 500 300 430 C300 360 352 310 420 310 C468 310 500 338 512 368 C524 338 556 310 604 310 C672 310 724 360 724 430 C724 500 664 560 512 690 Z"
+        fill="#EF4444"/>
+  <path d="M180 620 C260 560 340 540 420 560 C500 580 560 630 620 690"
+        stroke="#FFFFFF" stroke-width="22" stroke-linecap="round" fill="none" opacity="0.55"/>
+  <path d="M220 700 C320 640 410 630 512 660 C614 690 700 720 804 680"
+        stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.4"/>
+  <circle cx="760" cy="300" r="56" fill="#FFFFFF" opacity="0.92"/>
+  <path d="M736 300 H784 M760 276 V324" stroke="#0066CC" stroke-width="14" stroke-linecap="round"/>
+  <text x="512" y="860" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="92" font-weight="700" fill="#FFFFFF" opacity="0.92">VITALITY</text>
 </svg>`;
 
-const MASCOTS = [
-  { file: 'flip-open.png', left: 36, top: 250, height: 750 },
-  { file: 'flo-open.png', left: 318, top: 220, height: 780 },
-  { file: 'fins-open.png', left: 598, top: 250, height: 750 },
-];
-
-async function loadMascot(name, height) {
-  const filePath = path.join(PUBLIC, 'mascot', name);
-  const meta = await sharp(filePath).metadata();
-  const width = Math.round((meta.width / meta.height) * height);
-  return sharp(filePath).resize(width, height, { fit: 'contain' }).png().toBuffer();
-}
-
 async function buildIcon(size) {
-  const scale = size / 1024;
-  const background = await sharp(Buffer.from(POOL_BG_SVG))
+  return sharp(Buffer.from(VITALITY_ICON_SVG))
     .resize(size, size)
-    .png()
-    .toBuffer();
-
-  const layers = await Promise.all(
-    MASCOTS.map(async (mascot) => {
-      const height = Math.round(mascot.height * scale);
-      const input = await loadMascot(mascot.file, height);
-      const meta = await sharp(input).metadata();
-      return {
-        input,
-        left: Math.round(mascot.left * scale),
-        top: Math.round(mascot.top * scale),
-        width: meta.width,
-        height: meta.height,
-      };
-    })
-  );
-
-  return sharp(await sharp(background).composite(layers).png().toBuffer())
-    .flatten({ background: '#38BDF8' })
     .png()
     .toBuffer();
 }
@@ -95,17 +56,18 @@ async function buildIcon(size) {
 async function writeIcon(size, relativePath) {
   const png = await buildIcon(size);
   const outPath = path.join(PUBLIC, relativePath);
+  await fs.mkdir(path.dirname(outPath), { recursive: true });
   await fs.writeFile(outPath, png);
   console.log(`Wrote ${relativePath} (${size}×${size})`);
   return png;
 }
 
 async function main() {
-  await writeIcon(192, 'icon-sc-192.png');
-  await writeIcon(512, 'icon-sc-512.png');
+  await writeIcon(192, 'icon-vitality-192.png');
+  await writeIcon(512, 'icon-vitality-512.png');
   const icon1024 = await buildIcon(1024);
-  await fs.writeFile(path.join(PUBLIC, 'icon-sc-1024.png'), icon1024);
-  console.log('Wrote icon-sc-1024.png (1024×1024)');
+  await fs.writeFile(path.join(PUBLIC, 'icon-vitality-1024.png'), icon1024);
+  console.log('Wrote icon-vitality-1024.png (1024×1024)');
 
   await fs.mkdir(IOS_APP_ICON, { recursive: true });
   await fs.writeFile(path.join(IOS_APP_ICON, 'AppIcon-1024.png'), icon1024);
