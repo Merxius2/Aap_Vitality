@@ -6,6 +6,8 @@ struct MedalsScreen: View {
     @Environment(\.openUpload) private var openUpload
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
+    @State private var selectedPath: AchievementPathProgress?
+
     private var medalGridColumns: [GridItem] {
         horizontalSizeClass == .regular
             ? [GridItem(.flexible()), GridItem(.flexible())]
@@ -47,6 +49,14 @@ struct MedalsScreen: View {
             .navigationBarTitleDisplayMode(.inline)
             .themedNavigationBar()
             .themedPageBackground()
+            .sheet(item: $selectedPath) { path in
+                AchievementPathDetailSheet(
+                    path: path,
+                    medals: VitalityPaths.medals(for: path, from: viewModel.evaluatedMedals)
+                )
+                .environmentObject(preferences)
+                .preferredColorScheme(preferences.colorScheme)
+            }
         }
     }
 
@@ -99,31 +109,40 @@ struct MedalsScreen: View {
                 .textCase(.uppercase)
 
             ForEach(viewModel.achievementPathProgress) { path in
-                Card {
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Text(preferences.t(path.titleKey))
-                                .themeFont(.subheadline, weight: .semibold)
-                            Spacer()
-                            Text("\(path.completedCount)/\(path.totalCount)")
-                                .themeFont(.caption, weight: .bold)
-                                .foregroundStyle(.secondary)
-                        }
-                        ProgressView(value: Double(path.progressPercent), total: 100)
-                            .tint(Color("BrandBlue"))
-                        if let nextId = path.nextMedalId {
-                            Text(preferences.t("vitality.paths.next", params: [
-                                "medal": SwimMedalCopy.title(for: nextId, t: preferences.translations)
-                            ]))
-                            .themeFont(.caption2)
-                            .foregroundStyle(.secondary)
-                        } else {
-                            Text(preferences.t("vitality.paths.complete"))
+                Button {
+                    selectedPath = path
+                } label: {
+                    Card {
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Text(preferences.t(path.titleKey))
+                                    .themeFont(.subheadline, weight: .semibold)
+                                    .foregroundStyle(.primary)
+                                Spacer()
+                                Text("\(path.completedCount)/\(path.totalCount)")
+                                    .themeFont(.caption, weight: .bold)
+                                    .foregroundStyle(.secondary)
+                                Image(systemName: "chevron.right")
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundStyle(.tertiary)
+                            }
+                            ProgressView(value: Double(path.progressPercent), total: 100)
+                                .tint(Color("BrandBlue"))
+                            if let nextId = path.nextMedalId {
+                                Text(preferences.t("vitality.paths.next", params: [
+                                    "medal": SwimMedalCopy.title(for: nextId, t: preferences.translations)
+                                ]))
                                 .themeFont(.caption2)
-                                .foregroundStyle(.green)
+                                .foregroundStyle(.secondary)
+                            } else {
+                                Text(preferences.t("vitality.paths.complete"))
+                                    .themeFont(.caption2)
+                                    .foregroundStyle(.green)
+                            }
                         }
                     }
                 }
+                .buttonStyle(.plain)
             }
         }
     }

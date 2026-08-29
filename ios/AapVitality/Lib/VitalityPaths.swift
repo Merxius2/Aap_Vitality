@@ -54,4 +54,9 @@ enum VitalityPaths {
             )
         }
     }
+
+    static func medals(for path: AchievementPathProgress, from allMedals: [EvaluatedMedal]) -> [EvaluatedMedal] {
+        let byId = Dictionary(uniqueKeysWithValues: allMedals.map { ($0.id, $0) })
+        return path.medalIds.compactMap { byId[$0] }
+    }
 }

@@ -474,3 +474,68 @@ struct MonthlyChallengeHistoryView: View {
         Array(Set(history.compactMap { Int($0.monthKey.prefix(4)) })).sorted(by: >)
     }
 }
+
+struct AchievementPathDetailSheet: View {
+    @EnvironmentObject private var preferences: UserPreferencesService
+    @Environment(\.dismiss) private var dismiss
+    let path: AchievementPathProgress
+    let medals: [EvaluatedMedal]
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    Card {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text(preferences.t("vitality.paths.detailProgress", params: [
+                                "completed": "\(path.completedCount)",
+                                "total": "\(path.totalCount)",
+                            ]))
+                            .themeFont(.subheadline)
+                            .foregroundStyle(.secondary)
+
+                            ProgressView(value: Double(path.progressPercent), total: 100)
+                                .tint(Color("BrandBlue"))
+
+                            if let nextId = path.nextMedalId {
+                                Text(preferences.t("vitality.paths.next", params: [
+                                    "medal": SwimMedalCopy.title(for: nextId, t: preferences.translations)
+                                ]))
+                                .themeFont(.caption)
+                                .foregroundStyle(.secondary)
+                            } else {
+                                Text(preferences.t("vitality.paths.complete"))
+                                    .themeFont(.caption, weight: .semibold)
+                                    .foregroundStyle(.green)
+                            }
+                        }
+                    }
+
+                    ForEach(Array(medals.enumerated()), id: \.element.id) { index, medal in
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(preferences.t("vitality.paths.step", params: [
+                                "step": "\(index + 1)",
+                                "total": "\(path.totalCount)",
+                            ]))
+                            .themeFont(.caption2, weight: .semibold)
+                            .foregroundStyle(.secondary)
+                            .textCase(.uppercase)
+
+                            MedalCardView(medal: medal, shimmerPlus: false)
+                        }
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle(preferences.t(path.titleKey))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(preferences.t("common.close")) { dismiss() }
+                }
+            }
+            .themedNavigationBar()
+            .themedPageBackground()
+        }
+    }
+}
