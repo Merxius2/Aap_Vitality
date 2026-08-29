@@ -92,6 +92,7 @@
 		B20000000000000000000086 /* VitalityPointsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000086 /* VitalityPointsTests.swift */; };
 		B20000000000000000000087 /* VitalityGoalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000087 /* VitalityGoalsTests.swift */; };
 		B20000000000000000000088 /* VitalityFeaturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000088 /* VitalityFeaturesTests.swift */; };
+		B20000000000000000000092 /* VitalityHRZonesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000092 /* VitalityHRZonesTests.swift */; };
 		C5B5E60A300CCB2B0092F38E /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F20000000000000000000019 /* XCTest.framework */; };
 /* End PBXBuildFile section */
 
@@ -194,6 +195,7 @@
 		F20000000000000000000086 /* VitalityPointsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityPointsTests.swift; sourceTree = "<group>"; };
 		F20000000000000000000087 /* VitalityGoalsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityGoalsTests.swift; sourceTree = "<group>"; };
 		F20000000000000000000088 /* VitalityFeaturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityFeaturesTests.swift; sourceTree = "<group>"; };
+		F20000000000000000000092 /* VitalityHRZonesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityHRZonesTests.swift; sourceTree = "<group>"; };
 		P10000000000000000000001 /* AapVitality.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AapVitality.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		P10000000000000000000002 /* AapVitalityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AapVitalityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -396,6 +398,7 @@
 				F20000000000000000000086 /* VitalityPointsTests.swift */,
 				F20000000000000000000087 /* VitalityGoalsTests.swift */,
 				F20000000000000000000088 /* VitalityFeaturesTests.swift */,
+				F20000000000000000000092 /* VitalityHRZonesTests.swift */,
 				F20000000000000000000019 /* XCTest.framework */,
 			);
 			path = AapVitalityTests;
