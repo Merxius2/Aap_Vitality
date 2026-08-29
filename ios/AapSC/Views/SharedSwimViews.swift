@@ -882,3 +882,175 @@ struct SessionCalendarView: View {
         let isToday: Bool
     }
 }
+
+struct VitalityCalendarView: View {
+    @EnvironmentObject private var preferences: UserPreferencesService
+    let records: [DailyVitalityRecord]
+    @Binding var selectedDate: String?
+
+    @State private var viewYear: Int
+    @State private var viewMonth: Int
+
+    init(records: [DailyVitalityRecord], selectedDate: Binding<String?>) {
+        self.records = records
+        self._selectedDate = selectedDate
+        let today = Date()
+        let calendar = Calendar.current
+        _viewYear = State(initialValue: calendar.component(.year, from: today))
+        _viewMonth = State(initialValue: calendar.component(.month, from: today))
+    }
+
+    var body: some View {
+        Card {
+            VStack(spacing: 12) {
+                HStack {
+                    Text(preferences.t("history.calendarTitle"))
+                        .themeFont(.headline, weight: .semibold)
+                    Spacer()
+                    Button { shiftMonth(-1) } label: { Image(systemName: "chevron.left") }
+                    Text(monthTitle)
+                        .themeFont(.subheadline, weight: .semibold)
+                        .frame(minWidth: 120)
+                    Button { shiftMonth(1) } label: { Image(systemName: "chevron.right") }
+                }
+
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 6) {
+                    ForEach(weekdaySymbols, id: \.self) { day in
+                        Text(day)
+                            .themeFont(.caption2, weight: .semibold)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    ForEach(cells.indices, id: \.self) { index in
+                        if let cell = cells[index] {
+                            Button {
+                                selectedDate = selectedDate == cell.dateKey ? nil : cell.dateKey
+                            } label: {
+                                Text("\(cell.day)")
+                                    .themeFont(.caption, weight: cell.isToday ? .bold : .semibold)
+                                    .foregroundStyle(cell.count > 0 ? Color.white : Color.secondary)
+                                    .frame(maxWidth: .infinity, minHeight: 32)
+                                    .background(heatBackground(cell.count), in: RoundedRectangle(cornerRadius: 6))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 6)
+                                            .stroke(selectedDate == cell.dateKey ? Color("BrandBlue") : .clear, lineWidth: 2)
+                                    )
+                            }
+                            .buttonStyle(.plain)
+                        } else {
+                            Color.clear.frame(minHeight: 32)
+                        }
+                    }
+                }
+
+                Divider().padding(.top, 4)
+
+                HStack {
+                    Text(preferences.t("history.calendarLegend"))
+                        .themeFont(.caption2)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    HStack(spacing: 6) {
+                        legendSwatch(count: 0)
+                        legendSwatch(count: 1)
+                        legendSwatch(count: 2)
+                        legendSwatch(count: 3)
+                    }
+                }
+            }
+        }
+    }
+
+    private var monthTitle: String {
+        let components = DateComponents(year: viewYear, month: viewMonth, day: 1)
+        let date = Calendar.current.date(from: components) ?? Date()
+        let formatter = DateFormatter()
+        formatter.locale = preferences.locale
+        formatter.dateFormat = "MMMM yyyy"
+        return formatter.string(from: date)
+    }
+
+    private var activityByDate: [String: Int] {
+        records.reduce(into: [:]) { result, record in
+            let level: Int
+            switch record.totalPoints {
+            case 80...: level = 3
+            case 40..<80: level = 2
+            case 1..<40: level = 1
+            default: level = 0
+            }
+            result[record.date] = max(result[record.date] ?? 0, level)
+        }
+    }
+
+    private var cells: [CalendarCell?] {
+        let components = DateComponents(year: viewYear, month: viewMonth, day: 1)
+        guard let firstDay = Calendar.current.date(from: components),
+              let range = Calendar.current.range(of: .day, in: .month, for: firstDay) else { return [] }
+
+        let weekday = (Calendar.current.component(.weekday, from: firstDay) + 5) % 7
+        var result = Array(repeating: CalendarCell?.none, count: weekday)
+
+        for day in range {
+            let dateKey = String(format: "%04d-%02d-%02d", viewYear, viewMonth, day)
+            result.append(CalendarCell(day: day, dateKey: dateKey, count: activityByDate[dateKey] ?? 0, isToday: dateKey == todayKey))
+        }
+        while result.count % 7 != 0 { result.append(nil) }
+        return result
+    }
+
+    private func shiftMonth(_ delta: Int) {
+        let components = DateComponents(year: viewYear, month: viewMonth + delta, day: 1)
+        guard let date = Calendar.current.date(from: components) else { return }
+        viewYear = Calendar.current.component(.year, from: date)
+        viewMonth = Calendar.current.component(.month, from: date)
+    }
+
+    private var weekdaySymbols: [String] {
+        var calendar = Calendar.current
+        calendar.locale = preferences.locale
+        let symbols = calendar.veryShortWeekdaySymbols
+        let mondayIndex = 1
+        return Array(symbols[mondayIndex...] + symbols[..<mondayIndex])
+    }
+
+    private func heatBackground(_ count: Int) -> AnyShapeStyle {
+        switch count {
+        case 0:
+            return AnyShapeStyle(Color(.systemGray5))
+        case 1:
+            return AnyShapeStyle(Color("BrandBlue").opacity(0.72))
+        case 2:
+            return AnyShapeStyle(Color("BrandBlue"))
+        default:
+            return AnyShapeStyle(
+                LinearGradient(
+                    colors: [Color("BrandBlue"), Color(red: 0.48, green: 0.36, blue: 1.0)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+        }
+    }
+
+    private func legendSwatch(count: Int) -> some View {
+        RoundedRectangle(cornerRadius: 4)
+            .fill(heatBackground(count))
+            .frame(width: 16, height: 16)
+    }
+
+    private var todayKey: String {
+        let today = Date()
+        let year = Calendar.current.component(.year, from: today)
+        let month = Calendar.current.component(.month, from: today)
+        let day = Calendar.current.component(.day, from: today)
+        return String(format: "%04d-%02d-%02d", year, month, day)
+    }
+
+    private struct CalendarCell {
+        let day: Int
+        let dateKey: String
+        let count: Int
+        let isToday: Bool
+    }
+}

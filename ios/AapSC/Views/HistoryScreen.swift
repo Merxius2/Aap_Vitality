@@ -7,11 +7,11 @@ struct HistoryScreen: View {
     @State private var deleteId: String?
     @State private var selectedDate: String?
 
-    private var sorted: [SwimSession] {
-        viewModel.sessions.sorted { $0.date > $1.date }
+    private var sorted: [DailyVitalityRecord] {
+        viewModel.dailyRecords.sorted { $0.date > $1.date }
     }
 
-    private var filtered: [SwimSession] {
+    private var filtered: [DailyVitalityRecord] {
         guard let selectedDate else { return sorted }
         return sorted.filter { $0.date == selectedDate }
     }
@@ -21,7 +21,7 @@ struct HistoryScreen: View {
             ScrollView {
                 VStack(spacing: 12) {
                     if !sorted.isEmpty {
-                        SessionCalendarView(sessions: viewModel.sessions, selectedDate: $selectedDate)
+                        VitalityCalendarView(records: viewModel.dailyRecords, selectedDate: $selectedDate)
 
                         if let selectedDate {
                             HStack {
@@ -50,17 +50,14 @@ struct HistoryScreen: View {
                             .foregroundStyle(.secondary)
                             .padding()
                     } else {
-                        ForEach(filtered) { session in
-                            HistorySessionCard(
-                                session: session,
-                                isExpanded: expandedId == session.id,
+                        ForEach(filtered) { record in
+                            HistoryVitalityCard(
+                                record: record,
+                                isExpanded: expandedId == record.id,
                                 onToggle: {
-                                    expandedId = expandedId == session.id ? nil : session.id
+                                    expandedId = expandedId == record.id ? nil : record.id
                                 },
-                                onToggleStats: { include in
-                                    viewModel.updateSession(id: session.id) { $0.excludeFromStats = !include }
-                                },
-                                onDelete: { deleteId = session.id }
+                                onDelete: { deleteId = record.id }
                             )
                         }
                     }
@@ -81,10 +78,10 @@ struct HistoryScreen: View {
             ) {
                 Button(preferences.t("history.delete"), role: .destructive) {
                     if let deleteId {
-                        viewModel.removeSession(id: deleteId)
+                        viewModel.removeDailyRecord(date: deleteId)
                         if expandedId == deleteId { expandedId = nil }
                     }
-                    deleteId = nil
+                    self.deleteId = nil
                 }
                 Button(preferences.t("common.cancel"), role: .cancel) { deleteId = nil }
             }
@@ -93,12 +90,11 @@ struct HistoryScreen: View {
     }
 }
 
-private struct HistorySessionCard: View {
+private struct HistoryVitalityCard: View {
     @EnvironmentObject private var preferences: UserPreferencesService
-    let session: SwimSession
+    let record: DailyVitalityRecord
     let isExpanded: Bool
     let onToggle: () -> Void
-    let onToggleStats: (Bool) -> Void
     let onDelete: () -> Void
 
     var body: some View {
@@ -107,17 +103,8 @@ private struct HistorySessionCard: View {
                 Button(action: onToggle) {
                     HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 4) {
-                            HStack {
-                                Text(SwimFormatters.formatDateLong(session.date))
-                                    .themeFont(.headline, weight: .semibold)
-                                if session.excludeFromStats {
-                                    Text(preferences.t("history.excludedBadge"))
-                                        .themeFont(.caption2, weight: .bold)
-                                        .padding(.horizontal, 6)
-                                        .padding(.vertical, 2)
-                                        .background(Color(.systemGray5), in: Capsule())
-                                }
-                            }
+                            Text(SwimFormatters.formatDateLong(record.date))
+                                .themeFont(.headline, weight: .semibold)
                             Text(summaryLine)
                                 .themeFont(.caption)
                                 .foregroundStyle(.secondary)
@@ -132,10 +119,11 @@ private struct HistorySessionCard: View {
                 if isExpanded {
                     Divider()
                     detailGrid
-                    Toggle(preferences.t("history.includeInStats"), isOn: Binding(
-                        get: { !session.excludeFromStats },
-                        set: onToggleStats
-                    ))
+                    if !record.workouts.isEmpty {
+                        ForEach(record.workouts) { workout in
+                            workoutRow(workout)
+                        }
+                    }
                     Button(role: .destructive, action: onDelete) {
                         Label(preferences.t("history.delete"), systemImage: "trash")
                     }
@@ -143,25 +131,40 @@ private struct HistorySessionCard: View {
                 }
             }
         }
-        .opacity(session.excludeFromStats ? 0.85 : 1)
     }
 
     private var summaryLine: String {
-        let m = session.metrics
-        return "\(SwimFormatters.formatDistance(m.distanceM)) · \(SwimFormatters.formatPace(m.paceSecPer100m)) · \(SwimFormatters.formatDuration(m.durationSec))"
+        let steps = preferences.t("vitality.highlight.steps") + ": \(record.steps)"
+        let points = preferences.t("vitality.highlight.points") + ": \(record.totalPoints)"
+        let workouts = preferences.t("history.workoutCount", params: ["count": String(record.workouts.count)])
+        return "\(steps) · \(points) · \(workouts)"
     }
 
     private var detailGrid: some View {
-        let m = session.metrics
-        return LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
-            detailItem(preferences.t("progress.activeKcal"), value: m.activeKcal.map { "\($0) " + preferences.t("common.kcal") } ?? "—")
-            detailItem(preferences.t("progress.totalKcal"), value: m.totalKcal.map { "\($0) " + preferences.t("common.kcal") } ?? "—")
-            detailItem(preferences.t("upload.fields.heartRate"), value: m.avgHeartRate.map { "\($0) " + preferences.t("common.bpm") } ?? "—")
-            detailItem(preferences.t("upload.fields.laps"), value: m.laps.map(String.init) ?? "—")
-            detailItem(preferences.t("upload.fields.location"), value: m.location.isEmpty ? "—" : m.location)
-            detailItem(preferences.t("upload.fields.timeRange"), value: m.timeRange.isEmpty ? "—" : m.timeRange)
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+            detailItem(preferences.t("vitality.stepPoints"), value: "\(record.stepPoints)")
+            detailItem(preferences.t("vitality.workoutPoints"), value: "\(record.workoutPoints)")
+            detailItem(preferences.t("vitality.highlight.steps"), value: "\(record.steps)")
+            detailItem(preferences.t("vitality.highlight.points"), value: "\(record.totalPoints)")
         }
         .themeFont(.caption)
+    }
+
+    private func workoutRow(_ workout: VitalityWorkout) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(workoutLabel(for: workout.workoutType))
+                    .themeFont(.caption, weight: .semibold)
+                Text(SwimFormatters.formatDuration(workout.durationSec))
+                    .themeFont(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+            Text("\(workout.pointsEarned) " + preferences.t("vitality.points"))
+                .themeFont(.caption, weight: .bold)
+                .foregroundStyle(Color("BrandBlue"))
+        }
+        .padding(.vertical, 4)
     }
 
     private func detailItem(_ title: String, value: String) -> some View {
@@ -172,5 +175,14 @@ private struct HistorySessionCard: View {
                 .fontWeight(.semibold)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func workoutLabel(for type: String) -> String {
+        let key = "history.workoutType.\(type)"
+        let localized = preferences.t(key)
+        if localized == key {
+            return type.replacingOccurrences(of: "_", with: " ").capitalized
+        }
+        return localized
     }
 }

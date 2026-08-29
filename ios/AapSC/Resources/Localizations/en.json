@@ -11,7 +11,7 @@
     "benchmarkLabel": "Benchmarks",
     "benchmarkDesc": "Compare pace with your age group",
     "historyLabel": "History",
-    "historyDesc": "All saved swim sessions",
+    "historyDesc": "All saved daily activity",
     "darkMode": "Dark mode",
     "lightMode": "Light mode"
   },
@@ -610,7 +610,7 @@
     }
   },
   "upload": {
-    "title": "Upload",
+    "title": "Sync",
     "subtitle": "Sync steps and workouts from Apple Health",
     "healthImport": "Sync from Apple Health",
     "healthSyncing": "Syncing steps and workouts…",
@@ -668,18 +668,21 @@
       "backstroke": "Backstroke",
       "butterfly": "Butterfly"
     },
-    "healthNoData": "No new steps or workouts found in Apple Health yet."
+    "healthNoData": "No new steps or workouts found in Apple Health yet.",
+    "scoringSteps": "Walking: bonus at 5k, 10k, and 20k steps",
+    "scoringWorkouts": "Workouts: points from 30+ minutes",
+    "scoringZones": "Higher heart-rate zones earn more points"
   },
   "history": {
     "title": "History",
-    "subtitle": "All saved swim sessions",
-    "empty": "No sessions saved yet.",
+    "subtitle": "Daily vitality activity",
+    "empty": "No activity saved yet.",
     "delete": "Delete",
     "deleteConfirm": "Delete this session?",
     "confirm": "Delete",
     "cancel": "Cancel",
     "viewDetails": "Details",
-    "calendarTitle": "Swim calendar",
+    "calendarTitle": "Activity calendar",
     "calendarEmpty": "No swims this month",
     "calendarMonthCount": "{count} sessions this month",
     "calendarPrev": "Previous month",
@@ -692,7 +695,21 @@
     "coinsEarned": "Coins earned",
     "includeInStats": "Include in statistics",
     "includeInStatsDesc": "Turn off for casual swims that should not affect averages on the Progress page.",
-    "excludedBadge": "Excluded"
+    "excludedBadge": "Excluded",
+    "workoutCount": "{count} workout(s)",
+    "workoutType": {
+      "running": "Run",
+      "walking": "Walk",
+      "cycling": "Cycle",
+      "swimming": "Swim",
+      "yoga": "Yoga",
+      "strength": "Strength",
+      "hiit": "HIIT",
+      "hiking": "Hike",
+      "elliptical": "Elliptical",
+      "rowing": "Row",
+      "other": "Workout"
+    }
   },
   "benchmark": {
     "title": "Benchmark",
@@ -945,9 +962,9 @@
     "languageDesc": "Choose your preferred language for the app interface.",
     "theme": "Theme",
     "themeDesc": "Pick a visual style for the app.",
-    "uploadTitle": "Upload swim session",
-    "uploadDesc": "Import an Apple Fitness swim screenshot to log a new workout.",
-    "uploadCta": "Open upload",
+    "uploadTitle": "Sync Apple Health",
+    "uploadDesc": "Import steps and workouts to earn vitality points.",
+    "uploadCta": "Open sync",
     "darkMode": "Dark mode",
     "darkModeDesc": "Use a dark color scheme for the interface.",
     "autoDarkMode": "Match system theme",
@@ -1024,7 +1041,8 @@
       "tileDeck": "Tile Deck",
       "openWater": "Open Water",
       "chlorineGlow": "Chlorine Glow"
-    }
+    },
+    "defaultProfileName": "Vitality user"
   },
   "mascot": {
     "thinking": "Let me think about your swim…",
@@ -1052,7 +1070,8 @@
     "bpm": "bpm",
     "kcal": "kcal",
     "meters": "m",
-    "laps": "laps"
+    "laps": "laps",
+    "close": "Close"
   },
   "notifications": {
     "dismiss": "Dismiss",

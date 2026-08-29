@@ -258,6 +258,12 @@ final class SwimViewModel: ObservableObject {
         return entry
     }
 
+    func removeDailyRecord(date: String) {
+        data.dailyRecords.removeAll { $0.date == date }
+        invalidateDerivedCaches()
+        persist()
+    }
+
     func removeSession(id: String) {
         data.sessions.removeAll { $0.id == id }
         invalidateDerivedCaches()

@@ -1,1 +1,1048 @@
-{"landing":{"title":"Aap-SC","subtitle":"Swim Coach","description":"Analyseer Apple Fitness zwem-screenshots, volg je voortgang en vergelijk met leeftijdsgroep-benchmarks.","cta":"Aan de slag","uploadLabel":"Workout uploaden","uploadDesc":"Importeer een screenshot uit Apple Fitness","progressLabel":"Voortgang","progressDesc":"Grafieken en trends over tijd","benchmarkLabel":"Benchmarks","benchmarkDesc":"Vergelijk tempo met je leeftijdsgroep","historyLabel":"Geschiedenis","historyDesc":"Alle opgeslagen zwemsessies","darkMode":"Donkere modus","lightMode":"Lichte modus"},"navigation":{"swimCoach":"Swim Coach","progress":"Voortgang","upload":"Uploaden","miniGames":"Mini games","history":"Geschiedenis","benchmark":"Benchmark","medals":"Medailles","settings":"Instellingen","home":"Start"},"coins":{"label":"Zwem munten","earnedTitle":"Munten verdiend","earnedBreakdown":"{session} van sessie · {medals} van medailles","popupTitle":"Munten verdiend!","popupSubtitle":"Zo heeft je zwem sessie zich uitbetaald","close":"Sluiten","continue":"Doorgaan","sessionSection":"Sessie beloningen","bonusSection":"Medaille & challenge bonussen","penaltySection":"Coach straffen","lineBase":"Sessie opgeslagen","lineDistance":"{distance} gezwommen (+1 per 500 m)","lineDuration":"{duration} in het bad (+1 per 15 min)","lineKcal":"{kcal} kcal verbrand (+1 per 100 kcal)","lineLongDistance3k":"Lange zwem bonus (3 km+)","lineLongDistance5k":"Epische zwem bonus (5 km+)","lineLongDuration":"Uithoudingsbonus (1 uur+)","linePaceImprovement":"Sneller dan je gem. ({pace} vs {avgPace})","lineFinsBonus":"Fins' aanmoediging — grote bonus voor verbetering","lineFinsPenalty":"Fins verwachtte meer ({pace} vs {avgPace} gem.)","lineCoachShare":"Flips makkelijke modus — halve munten, maar je verliest er nooit","lineMonthlyShortfall":"{tier} gemist in {month} — de standaard van je coach","lineMedal":"{tier} medaille: {title}","lineMonthly":"Maandelijkse challenge upgrade ({from} → {to})","tipTitle":"Verdien meer volgende keer","tipDistance":"+1 munt voor elke 500 m","tipDuration":"+1 munt voor elke 15 minuten","tipKcal":"+1 munt voor elke 100 actieve kcal","tipLongSwim":"+10 bij 3 km, +15 bij 5 km, +8 voor 1 uur+","tipPace":"Verbeter je gemiddelde tempo voor tot +20 bonus munten","alreadyClaimedTitle":"Geen munten deze keer","alreadyClaimedSubtitle":"Je hebt al munten verdiend voor deze workout. Zwem iets nieuws om meer te verdienen.","monthlyRewards":"Maandelijkse medaille munten","monthlyNextUpgrade":"Bereik {tier} voor +{amount} bonus munten bij upgrade","wheel":{"title":"Rad van Fortuin","subtitle":"Geef munten uit voor een draai — win zwem munten, gratis draaien of niets.","pickBet":"Kies je inzet","spin":"Draai voor {bet} munten","spinFree":"Gratis draai ({count} over)","spinning":"Draait…","notEnough":"Niet genoeg munten voor deze inzet.","paidSpinsRemaining":"{remaining}/{limit} betaalde draaien over vandaag","dailyLimitReached":"Geen betaalde draaien meer vandaag — gratis draaien werken nog wel. Kom morgen terug!","freeSpinReady":"{count} gratis draai(en) klaar","resultTitle":"Je landde op","wonCoins":"+{amount} munten!","wonFreeSpin":"Gratis draai — draai opnieuw zonder te betalen!","wonFreeSpinMulti":"{count} gratis draaien — draai opnieuw zonder te betalen!","wonNothing":"{amount} munten verloren — volgende keer beter!","segmentCoinMult":"{mult}×","segmentFreeSpin":"Gratis","segmentFreeSpinMulti":"{count}×","segmentNothing":"Niets"},"store":{"title":"Zwem Munten Winkel","subtitle":"Geef munten uit aan thema's, icon sets, achtergrond vibes, flair en boosts.","buy":"Ontgrendelen","buyConsumable":"Kopen","owned":"In bezit","ownedCount":"Je hebt er {count} klaar om te gebruiken","bonusSpinOwned":"+{count} extra betaalde draai(en) per dag","notEnough":"Nog {amount} nodig","vibesIosNote":"Op iPhone en iPad spelen vibe-animaties mogelijk niet af wanneer Verminder beweging aan staat in Instellingen → Toegankelijkheid → Beweging. Kleuren en gloed blijven zichtbaar, maar beweging kan statisch zijn.","categories":{"themes":"Thema's","icons":"Icon sets","vibes":"Achtergrond vibes","flair":"Flair","boosts":"Boosts"},"items":{"genZ":{"name":"Gen-Z","desc":"Gedurfde vlakke kleuren en scherp contrast."},"classic":{"name":"Classic Playstation","desc":"Retro vlakke panelen geïnspireerd op console UI's."},"olympicPool":{"name":"Olympisch Bad","desc":"Wedstrijdtiles, baanblauw en touchpad-goud."},"midnightLane":{"name":"Midnight Lane","desc":"Late laps onder bioluminescente poollichten."},"retroWave":{"name":"Retro Wave","desc":"Synthwave neon op een middernacht pooldeck."},"tropicalOpen":{"name":"Tropisch Open Water","desc":"Turquoise lagoon met koraal-zonsondergang."},"goldLuxe":{"name":"Gold Luxe","desc":"Champagne canvas met trofee-goud — podiumniveau."},"platinumElite":{"name":"Platinum Elite","desc":"Koel zilver met ijzige prestige — het ultieme niveau."},"goldMedalIcon":{"name":"Gouden Medaille","desc":"Volledige icon set — startscherm, navigatie en paginakoppen."},"neonLaneIcon":{"name":"Neon Baan","desc":"Synth baanlijnen op elk icoon in de app."},"trophySplashIcon":{"name":"Trofee Splash","desc":"Overwinningssplash icon set voor de hele app."},"platinumStarIcon":{"name":"Platinum Ster","desc":"Zilveren ster icon set voor startscherm, tabs en koppen."},"neonLagoon":{"name":"Neon Lagoon","desc":"Elektrisch cyaan en magenta met een langzaam verschuivend verloop."},"sunsetLap":{"name":"Sunset Lap","desc":"Gouden-uur warmte die drijft als een avondtraining."},"bubbleTrail":{"name":"Bubble Trail","desc":"Stijgende lane-bubbels drijven over je zwemschermen."},"auroraLap":{"name":"Aurora Lap","desc":"Noorderlicht-groen en violet vegen over het bad."},"deepCurrent":{"name":"Deep Current","desc":"Donker oceaanblauw stroomt als een onderwaterbaan."},"goldenCoins":{"name":"Gouden Munten","desc":"Je muntensaldo glanst als een trofeeënkast."},"confettiCannon":{"name":"Confetti Kanon","desc":"Epische confetti bij nieuwe medailles."},"medalShimmer":{"name":"Medaille Shimmer+","desc":"Verdiende medailles pulseren extra op het schap."},"bonusSpin":{"name":"Bonus Wheel Spin","desc":"Voeg permanent één extra betaalde draai per dag toe. Koop opnieuw om te stapelen.","preview":"betaalde draaien"},"challengeReroll":{"name":"Uitdaging Opnieuw","desc":"Wissel één maanduitdaging voor een ander type. Gebruik op de Voortgang-pagina.","preview":"maanduitdaging"}}}},"miniGames":{"title":"Mini games","subtitle":"Spendeer of verdien zwem munten met snelle poolside games.","coinFlip":{"title":"Munt opgooien","desc":"Zet zwem munten in op kop of munt — verdubbel je inzet bij winst.","heads":"Snelle baan","tails":"Lange swim","play":"Gooi munt","flipping":"Opgooien…","won":"+{amount} munten!","lost":"Geen geluk deze keer."},"pacePick":{"title":"Tempo kiezen","desc":"Welke sessie had het snellere tempo? Gratis — bouw een streak voor grotere beloningen.","needSessions":"Log minstens twee zwemmen met tempodata om te spelen.","streak":"Streak: {count}","next":"Volgende ronde","free":"Gratis spelen"},"laneTimer":{"title":"Baantimer","desc":"Tik wanneer de baan groen wordt. Snellere reacties leveren meer munten op.","wait":"Wacht op groen…","go":"Tik nu!","tap":"Tik om te starten","start":"Start ({cost} munten)","again":"Opnieuw spelen","listening":"Blijf klaar…","early":"Te vroeg — wacht op groen.","result":"Reactie: {ms} ms","won":"+{amount} munten!","noReward":"Te traag deze keer."}},"progress":{"title":"Voortgang","subtitle":"Je zwemtrends over tijd","emptyTitle":"Nog geen sessies","emptyDesc":"Upload je eerste Apple Fitness zwem-screenshot om te beginnen met bijhouden.","emptyCta":"Screenshot uploaden","latestSession":"Laatste sessie","paceChart":"Tempo over tijd","distanceChart":"Afstand per sessie","caloriesChart":"Calorieën","heartRateChart":"Hartslag","weeklyVolume":"Weekvolume","strokeMix":"Slagverdeling","activeKcal":"Actief","totalKcal":"Totaal","chartsSection":"Trendgrafieken","chartsInteractiveOff":"Grafiekinteractie inschakelen","chartsInteractiveOn":"Grafiekinteractie aan","movingAverage":"Gem. 3 sessies","actual":"Sessie","allTimeStats":"Totale statistieken","statsBasedOn":"Gebaseerd op {count} van {total} sessies","totalSessions":"Sessies","totalDistance":"Totale afstand","totalTime":"Totale tijd","avgPace":"Gemiddeld tempo","bestPace":"Beste tempo","totalCalories":"Totale actieve calorieën","totalLaps":"Totale banen","avgHeartRate":"Gem. hartslag","mascotDefault":"{name}, zo gaat het met je zwemmen — ga zo door!","mascotEmpty":"{name}, upload je eerste zwemtraining en ik help je je voortgang bij te houden!","overviewTitle":"Jouw voortgang","sessionFeedbackTitle":"Feedback laatste sessie","overviewSingleSession":"Eén sessie gelogd — mooi begin met de gewoonte.","overviewSessions":"Je hebt {count} sessies gelogd, samen {distance}, gemiddeld {pace}.","overviewMonthVolume":"Deze maand heb je {distance} gezwommen.","overviewMonthVolumeUp":"Deze maand sta je op {distance} — {percent}% meer dan vorige maand.","overviewMonthVolumeDown":"Deze maand sta je op {distance} — minder dan vorige maand.","overviewMonthlyGold":"Alle drie de maandchallenges zijn af — gouden medaille binnen!","overviewMonthlySilver":"Twee van drie maandchallenges af — nog één voor goud.","overviewMonthlyBronze":"Eén maandchallenge af — nog {remaining} om je medaille te upgraden.","overviewMonthlyNone":"Nog geen maandchallenges af. Dichtstbij: {challenge} ({current} / {target}).","overviewMonthlyNoneFlip":"Nog geen maandchallenges af, maar je bent dichtbij op {challenge} ({current} / {target}).","overviewCoachRequirement":"Onthoud: ik verwacht minstens {tier} deze maand — anders kost het {amount} munten.","chartScope":{"week":"Week","month":"Maand","quarter":"Kwartaal","ytd":"YTD","allTime":"Alles"}},"records":{"title":"Persoonlijke records","subtitle":"Je beste prestaties per sessie over alle zwembeurten.","longestDistance":"Langste afstand","fastestPace":"Snelste tempo","mostCalories":"Meeste actieve calorieën","mostTotalCalories":"Meeste totale calorieën","mostLaps":"Meeste banen","longestDuration":"Langste duur","highestHeartRate":"Hoogste hartslag"},"medals":{"title":"Medailles","subtitle":"Verdien medailles met mijlpalen, weekdoelen en seizoensuitdagingen.","empty":"Log zwemsessies om medailles te verdienen.","earned":"Behaald","earnedOn":"Behaald op {date}","celebration":{"title":"Nieuwe medaille verdiend!","titleMultiple":"Nieuwe medailles verdiend!","titleAndMonthly":"Nieuwe prestaties vrijgespeeld!","subtitleOne":"Je hebt een nieuwe prestatie vrijgespeeld — ga zo door!","subtitleMultiple":"Je hebt {count} nieuwe prestaties vrijgespeeld — ga zo door!","close":"Sluiten","continue":"Doorgaan","viewMedals":"Bekijk medailles","motivation":{"bronze":"Een stevige stap vooruit. Elke baan maakt je een betere zwemmer.","silver":"Echte vooruitgang in het bad. Je verdient dit door consistentie.","gold":"Uitstekend werk! Zo bouwen kampioenen hun prestaties op."}},"progress":{"summary":"{current} / {target}","percentComplete":"{percent}% voltooid","alsoBest":"Beste tot nu toe: {detail}","noPaceYet":"Nog geen tempo geregistreerd — upload een sessie met tempogegevens.","scope":{"lifetime":"Voortgang all-time","best_session":"Beste enkele sessie","best_week":"Beste kalenderweek tot nu toe","current_month":"Voortgang deze maand","best_month":"Beste maand tot nu toe","current_season":"Voortgang dit seizoen","best_season":"Beste seizoen tot nu toe"}},"categories":{"milestone":"Mijlpalen","distance":"Sessierecords","weekly":"Weekdoelen","monthly":"Maanddoelen","seasonal":"Seizoensuitdagingen","streak":"Reeksen","special":"Bijzondere prestaties"},"seasons":{"summer":"Zomer","winter":"Winter","spring":"Lente","autumn":"Herfst"},"items":{"first_splash":{"title":"Eerste duik","desc":"Log je eerste zwemsessie."},"ten_sessions":{"title":"Regelmatige zwemmer","desc":"Voltooi 10 zwemsessies."},"twenty_five_sessions":{"title":"Badmeester","desc":"Voltooi 25 zwemsessies."},"ten_k_lifetime":{"title":"10 km club","desc":"Zwem in totaal 10 km over alle sessies."},"fifty_k_lifetime":{"title":"50 km club","desc":"Zwem in totaal 50 km over alle sessies."},"hundred_k_lifetime":{"title":"Eeuwzwemmer","desc":"Zwem in totaal 100 km over alle sessies."},"two_k_session":{"title":"2 km sessie","desc":"Zwem 2 km in één sessie."},"two_five_k_session":{"title":"2,5 km sessie","desc":"Zwem 2,5 km in één sessie."},"three_k_session":{"title":"3 km sessie","desc":"Zwem 3 km in één sessie."},"sub_200_pace":{"title":"Onder 2:00 tempo","desc":"Zwem sneller dan 2:00 per 100m in een sessie."},"four_sessions_week":{"title":"Vier per week","desc":"Log 4 sessies in één kalenderweek."},"five_k_week":{"title":"5 km week","desc":"Zwem 5 km in één kalenderweek."},"eight_sessions_month":{"title":"Maandelijks regelmatig","desc":"Log 8 sessies in één kalendermaand."},"ten_k_month":{"title":"10 km maand","desc":"Zwem 10 km in één kalendermaand."},"twenty_k_month":{"title":"20 km maand","desc":"Zwem 20 km in één kalendermaand."},"ten_k_cal_month":{"title":"Calorieënverbrander","desc":"Verbrand 10.000 actieve calorieën in één maand."},"season_summer":{"title":"Zomerzwemmer","desc":"Zwem 15 km in een zomerseizoen (jun–aug)."},"season_winter":{"title":"Winterkrijger","desc":"Zwem 10 km in een winterseizoen (dec–feb)."},"season_spring":{"title":"Lentesplash","desc":"Zwem 10 km in een lentesizoen (mrt–mei)."},"season_autumn":{"title":"Herfstbanen","desc":"Zwem 10 km in een herfstseizoen (sep–nov)."},"fifty_sessions":{"title":"Half eeuw club","desc":"Voltooi 50 zwemsessies."},"two_hundred_k":{"title":"200 km legende","desc":"Zwem in totaal 200 km over alle sessies."},"lap_legend":{"title":"Banenlegende","desc":"Log 1.000 banen over alle sessies."},"calorie_collector":{"title":"Calorieënverzamelaar","desc":"Verbrand in totaal 25.000 actieve calorieën."},"sub_210_pace":{"title":"Onder 2:10 tempo","desc":"Zwem sneller dan 2:10 per 100m in een sessie."},"marathon_session":{"title":"Badmarathon","desc":"Zwem 90 minuten of langer in één sessie."},"century_laps":{"title":"Eeuw banen","desc":"Voltooi 100 banen in één sessie."},"furnace":{"title":"Vuuroven","desc":"Verbrand 800+ actieve calorieën in één sessie."},"pulse_racer":{"title":"Polsslag racer","desc":"Gemiddeld 155+ spm gedurende een hele sessie."},"goal_crusher":{"title":"Doelvergruizer","desc":"Behaal of overtreff je afstandsdoel in een sessie."},"frog_master":{"title":"Kikvorsmeester","desc":"Zwem 1 km schoolslag in één sessie."},"hat_trick":{"title":"Hattrick","desc":"Zwem 3 dagen achter elkaar."},"week_warrior":{"title":"Weekstrijder","desc":"Zwem 7 opeenvolgende dagen."},"fortnight_flow":{"title":"Twee weken flow","desc":"Zwem 14 opeenvolgende dagen — pure toewijding."},"early_bird":{"title":"Vroege vogel","desc":"Start een zwemtraining vóór 7:00 uur."},"night_owl":{"title":"Nachtuil","desc":"Start een zwemtraining om 20:00 uur of later."},"comeback":{"title":"Comeback kid","desc":"Keer terug naar het bad na 30+ dagen pauze."},"double_dip":{"title":"Dubbel dip","desc":"Log twee zwemmen op dezelfde dag."},"holiday_splash":{"title":"Feestduik","desc":"Zwem tussen 20 dec en 5 jan."},"january_jolt":{"title":"Januari start","desc":"Begin het jaar met een zwem in januari."}}},"upload":{"title":"Uploaden","subtitle":"Importeer zwemtrainingen uit Apple Gezondheid of een screenshot","healthImport":"Importeren uit Apple Gezondheid","healthSyncing":"Zwemtrainingen synchroniseren…","healthHint":"Importeert automatisch zwemtrainingen uit Apple Fitness.","healthImported":"{count} zwemtraining(en) geïmporteerd uit Apple Gezondheid.","healthImportedPartial":"{count} trainingen geïmporteerd. Tik opnieuw om meer te laden.","healthNoWorkouts":"Nog geen zwemtrainingen gevonden in Apple Gezondheid.","healthAlreadySynced":"Alle zwemtrainingen uit Apple Gezondheid staan al in de app.","healthUnavailable":"Apple Gezondheid is niet beschikbaar op dit apparaat.","dropzone":"Sleep screenshot hierheen of tik om te kiezen","dropzoneHint":"PNG of JPG uit Apple Fitness","analyzing":"Screenshot analyseren…","reviewTitle":"Geëxtraheerde gegevens controleren","reviewDesc":"Controleer en pas waarden aan voordat je opslaat.","saveSession":"Sessie opslaan","cancel":"Annuleren","dateRequired":"Datum vereist","dateRequiredDesc":"We konden de datum niet detecteren. Wanneer vond deze sessie plaats?","confirmDate":"Datum bevestigen","ocrFailed":"Kon screenshot niet lezen. Probeer een duidelijkere afbeelding of voer gegevens handmatig in.","confidence":"Betrouwbaarheid","duplicateTitle":"Sessie al geüpload","duplicateMessage":"Deze workout komt overeen met een sessie die je al hebt opgeslagen op {date}. Deze is niet opnieuw toegevoegd.","notSwim":{"run":"Deze screenshot lijkt op hardlopen, geen zwemmen. Upload een Apple Fitness zwemsessie.","walk":"Deze screenshot lijkt op wandelen, geen zwemmen. Upload een Apple Fitness zwemsessie.","cycle":"Deze screenshot lijkt op fietsen, geen zwemmen. Upload een Apple Fitness zwemsessie.","row":"Deze screenshot lijkt op roeien, geen zwemmen. Upload een Apple Fitness zwemsessie.","hike":"Deze screenshot lijkt op wandelen in de bergen, geen zwemmen. Upload een Apple Fitness zwemsessie.","yoga":"Deze screenshot lijkt op yoga of pilates, geen zwemmen. Upload een Apple Fitness zwemsessie.","strength":"Deze screenshot lijkt op krachttraining, geen zwemmen. Upload een Apple Fitness zwemsessie.","elliptical":"Deze screenshot lijkt op crosstraining, geen zwemmen. Upload een Apple Fitness zwemsessie.","stair":"Deze screenshot lijkt op traplopen, geen zwemmen. Upload een Apple Fitness zwemsessie.","dance":"Deze screenshot lijkt op dansen, geen zwemmen. Upload een Apple Fitness zwemsessie.","other":"Dit workouttype wordt niet ondersteund. Aap-SC accepteert alleen zwemsessies.","unknown":"Dit lijkt geen zwemtraining. Upload een Apple Fitness zwemsessie."},"uploadAnother":"Nog een screenshot uploaden","fields":{"date":"Datum","duration":"Duur","distance":"Afstand","pace":"Tempo /100m","activeKcal":"Actieve calorieën","totalKcal":"Totale calorieën","heartRate":"Gem. hartslag","laps":"Banen","poolLength":"Baanlengte","goal":"Doel","location":"Locatie","timeRange":"Tijd","mixed":"Gemengd","breaststroke":"Schoolslag","freestyle":"Vrije slag","backstroke":"Rugslag","butterfly":"Vlinderslag"}},"history":{"title":"Geschiedenis","subtitle":"Alle opgeslagen zwemsessies","empty":"Nog geen sessies opgeslagen.","delete":"Verwijderen","deleteConfirm":"Deze sessie verwijderen?","confirm":"Verwijderen","cancel":"Annuleren","viewDetails":"Details","calendarTitle":"Zwemkalender","calendarEmpty":"Geen zwemmen deze maand","calendarMonthCount":"{count} sessies deze maand","calendarPrev":"Vorige maand","calendarNext":"Volgende maand","calendarLegend":"Minder → meer","calendarDaySessions":"{count} sessies","filterDate":"Sessies op {date}","clearFilter":"Alles tonen","noSessionsOnDate":"Geen sessies op deze datum.","coinsEarned":"Munten verdiend","includeInStats":"Meetellen in statistieken","includeInStatsDesc":"Zet uit voor rustige zwemmen die de gemiddelden op de Voortgang-pagina niet moeten beïnvloeden.","excludedBadge":"Uitgesloten"},"benchmark":{"title":"Benchmark","subtitle":"Vergelijk je tempo met recreatieve zwemmers in je leeftijdsgroep","yourPace":"Jouw tempo","median":"Mediaan leeftijdsgroep","level":"Niveau","levels":{"beginner":"Beginner","intermediate":"Gevorderd","advanced":"Expert","developing":"Opbouwen","unknown":"Onbekend"},"methodology":"Benchmarks zijn voor recreatieve 25m-bad fitnesszwemmers (Apple Fitness), niet voor wedstrijdtijden. Tempo wordt langzamer met leeftijd; vrouwen zijn typisch ~12–18s langzamer per 100m dan mannen in dezelfde groep.","profileRequired":"Stel geslacht en leeftijd in via Instellingen om benchmarks te zien.","goSettings":"Naar instellingen","badges":{"aboveMedian":"Sneller dan mediaan","belowMedian":"Langzamer dan mediaan"},"chartTitle":"Tempovergelijking (sec/100m — lager is beter)"},"monthlyChallenges":{"title":"Maanduitdagingen","subtitle":"Eén medaille per maand — voltooi uitdagingen om van brons naar zilver naar goud te upgraden.","tierHint":"Je maandmedaille upgradet naarmate je uitdagingen voltooit: 1 → brons · 2 → zilver · 3 → goud.","done":"Behaald","progress":"{current} / {target}","historyTitle":"Maandmedailles","historySubtitle":"Maanden waarin je een maandmedaille verdiende.","historyEmpty":"Voltooi maanduitdagingen om je eerste medaille te verdienen.","previewActive":"Preview cheat actief — voorbeeldmedailles getoond.","previewLabel":"Preview","yearLabel":"Jaar","inProgress":"Bezig","completedCount":"{count}/3 uitdagingen voltooid","tiers":{"bronze":"Brons","silver":"Zilver","gold":"Goud"},"types":{"sessions":"Aantal sessies","distance":"Totale afstand","kcal":"Actieve calorieën","streak":"Zwemreeks","active_weeks":"Actieve weken"},"targets":{"sessions":"Zwem {count} sessies deze maand","distance":"Zwem {distance} deze maand","kcal":"Verbrand {kcal} actieve kcal deze maand","streak":"Zwem {days} dagen op rij","activeWeeks":"Zwem in {weeks} verschillende weken"},"celebrationTitle":"Maandmedaille verdiend!","celebrationUpgradeTitle":"Maandmedaille geüpgraded!","celebrationSubtitle":"Je verdient {tier} voor {month}.","celebrationUpgradeSubtitle":"Je {month}-medaille is geüpgraded van {fromTier} naar {tier}.","celebrationDesc":"{count} van 3 maanduitdagingen voltooid.","reroll":"Opnieuw","rerollUsed":"Je hebt je gratis maandelijkse reroll gebruikt.","coachRequirement":"{name} verwacht deze maand minstens {tier} — anders verlies je {amount} munten.","coachCheerFlip":"{name} is door het dolle heen — elke medaille telt, en deze is van jou!","rerollCredits":"{count} reroll-tegoed klaar om te gebruiken","rerollBuyHint":"Koop meer rerolls in de Zwem Munten Winkel voor 500 munten.","tooltip":{"tierEarned":"{tier} — {month}","challengesCompleted":"{count}/3 uitdagingen voltooid","earnedOn":"Laatste voortgang: {date}","inProgress":"Bezig — {count}/3 uitdagingen voltooid","noActivity":"Geen zwemmen deze maand","challengeLine":"{type}: {current} / {target}"}},"strokes":{"mixed":"Gemengd","breaststroke":"Schoolslag","freestyle":"Vrije slag","backstroke":"Rugslag","butterfly":"Vlinderslag"},"feedback":{"title":"Sessie-feedback","paceFaster":"{seconds} sec sneller per 100m dan vorige sessie","paceSlower":"{seconds} sec langzamer per 100m dan vorige sessie","paceSame":"Zelfde tempo als vorige sessie","overGoal":"{meters} m boven je doel","underGoal":"{meters} m onder je doel","hitGoal":"Precies je afstandsdoel gehaald","hrHigher":"Hartslag {bpm} spm hoger dan last time","hrLower":"Hartslag {bpm} spm lager dan last time","pbPace":"Persoonlijk record tempo","pbDistance":"Persoonlijk record afstand","pbLaps":"Persoonlijk record banen","weeklyVolume":"Weekvolume: {distance}","moreBreaststroke":"Meer schoolslag dan vorige sessie","firstSession":"Goed begin! Je eerste zwemtraining staat erin — elke kampioen begon met één baantje.","welcomeBack":"Mooi werk vandaag! Je zwom {distance} met {pace}. Dat vraagt discipline.","welcomeBack2":"Stevige sessie — {distance} met {pace}. Opdagen is al de helft van het werk.","welcomeBack3":"Goed gezwommen vandaag: {distance} gelogd met {pace}. Blijf deze sessies stapelen.","motivationFirst":"Welkom bij je zwemreis. Regelmaat wint van perfectie — tot de volgende sessie!","motivationPaceUp":"Je ging sneller — {seconds} seconden per 100m sneller. Die vooruitgang verdien je in het bad.","motivationPaceDown":"Vandaag was het iets langzamer, en dat mag. Herstelzwemmen en zware dagen maken je op lange termijn sterker.","motivationPaceDownCritical":"Dat was onder je gemiddelde, en dat weet je zelf ook. Volgende sessie verwacht ik beter — laat zien wat je echt kunt.","motivationGoal":"Je haalde je afstandsdoel. Daar mag je trots op zijn — vertrouw het proces.","motivationConsistent":"Stabiel en solide gezwommen. Regelmatig komen is hoe echte verbetering ontstaat.","motivationConsistent2":"Je bouwt een echt ritme op in het bad — consistentie is je superkracht.","motivationKeepGoing":"Weer een sessie in de pocket. Blijf stapelen en de cijfers volgen vanzelf.","motivationKeepGoing2":"Gelogd en klaar — elke baan die je zwemt bouwt aan iets groters.","motivationKeepGoing3":"Nog een sessie op de teller. Blijf geduldig en het tempo komt vanzelf.","motivationPersonalBest":"Een persoonlijk record! Vier dit moment — baan voor baan verdiend.","streak":"{count} sessies in de laatste 7 dagen — je bouwt een echte gewoonte op.","allTimeDistance":"Totaal: {distance} over {count} sessies. Het bad kent je inmiddels.","ageNote":"Op {age}-jarige leeftijd telt elke sessie voor je conditie op lange termijn.","aiLoading":"Je AI-coach bekijkt je zwemtraining…","aiFailed":"AI-coach niet beschikbaar — on-device feedback wordt getoond.","tipTitle":"Coach tip","highlightPace":"Tempo","highlightDistance":"Afstand","highlightLevel":"Niveau","highlightWeek":"Deze week","highlightPercentile":"Leeftijdsgroep","highlightVsRecent":"Vs recent","percentileValue":"Top {percentile}%","vsRecentFasterShort":"{seconds}s sneller","vsRecentSlowerShort":"{seconds}s langzamer","vsRecentAvgFaster":"{seconds} sec sneller dan je recente gemiddelde tempo","vsRecentAvgSlower":"{seconds} sec langzamer dan je recente gemiddelde tempo","vsAllTimeAvgFaster":"{seconds} sec sneller dan je all-time gemiddelde tempo","vsAllTimeAvgSlower":"{seconds} sec langzamer dan je all-time gemiddelde tempo","longerThanRecent":"{distance} langer dan je recente sessies","shorterThanRecent":"{distance} korter dan je recente sessies","daysSinceLast":"{days} dagen sinds je vorige zwemtraining","benchmarkLevel":"Tempo-niveau voor je leeftijdsgroep: {level}","vsMedianFaster":"{seconds} sec sneller dan de typische zwemmer in je leeftijdsgroep","vsMedianSlower":"{seconds} sec langzamer dan de typische zwemmer in je leeftijdsgroep","monthlyDistance":"{distance} gezwommen deze maand","monthlyCompare":"{distance} deze maand ({change}% vs vorige maand)","caloriesBurned":"{kcal} actieve calorieën verbrand","sustainedEffort":"Volgehouden tempo van ongeveer {rate} m/min","dominantStroke":"{stroke} was {percent}% van de afstand vandaag","trendImproving":"Tempo trend sneller over je laatste {sessions} sessies","trendSlowing":"Tempo iets gedaald over je laatste {sessions} sessies","coachPersonalBest":"Je zette vandaag een persoonlijk record — een sessie om te onthouden.","coachComeback":"Welkom terug na {days} dagen. Opnieuw komen is het moeilijkste deel.","coachStrongSession":"Sterke sessie — {seconds} seconden per 100m sneller dan je recente gemiddelde.","coachCriticalSession":"Dat tempo lag onder je standaard. Volgende keer verwacht ik scherper werk — geen excuses.","coachRecovery":"Dit leek een rustigere of herstelgerichte sessie. Makkelijke dagen bouwen ook conditie op.","coachRecovery2":"Een gecontroleerde, herstelgerichte zwem vandaag — slimme zwemmers weten wanneer ze gas terugnemen.","coachBenchmark":"Voor zwemmers van jouw leeftijd zit dat tempo in het {level}-bereik.","coachTrendUp":"Je recente sessies laten tempo in de goede richting zien.","coachMonthUp":"Maandvolume is {percent}% hoger — consistentie groeit.","coachMonthDown":"Deze maand is tot nu toe lichter. Eén steady week kan dat keren.","motivationTrendUp":"Je recente tempotrend gaat de goede kant op — blijf het werk vertrouwen.","tipFirst":"Log nog een paar sessies en de app kan trends, benchmarks en gewoontes vergelijken.","tipConsistency":"Het is {days} dagen geleden sinds je laatste zwemtraining. Een korte sessie houdt de gewoonte levend.","tipRecovery":"Tempo en hartslag wijzen op een zwaardere dag. Een rustigere volgende sessie helpt het werk te verwerken.","tipDeveloping":"Focus op rustige ademhaling en steady banen — consistentie trekt het tempo omlaag.","tipStrokeVariety":"{stroke} was {percent}% van vandaag. Slagvariatie balanceert spieren en houdt training fris.","tipBuildDistance":"Je zwom vandaag snel op kortere afstand. Probeer een vergelijkbaar tempo voor extra lengtes.","tipSlowingTrend":"Recent tempo is iets gezakt. Een ontspannen techniek-sessie kan helpen resetten.","tipImprovingTrend":"Je tempotrend verbetert — goed moment om het ritme steady te houden in plaats van harder te duwen.","tipNearGoal":"Je miste je afstandsdoel met {meters} m — dichtbij genoeg om het volgende keer te halen.","tipDefault":"Blijf sessies stapelen. Regelmatige banen verslaan één perfecte training.","tipDefault2":"Vertrouw de routine — stabiele sessies als deze tellen sneller op dan je denkt.","tipDefault3":"Kleine, consistente zwemmen winnen op lange termijn. Deze sessie is weer een steen in de muur."},"settings":{"title":"Instellingen","profileTitle":"Zwemmerprofiel","profileDesc":"Je gegevens voor benchmarks en gepersonaliseerde coachfeedback","swimmerName":"Je naam","swimmerNamePlaceholder":"Hoe moet je coach je aanspreken?","defaultSwimmerName":"Zwemmer","mascotTitle":"Zwemcoach-mascot","mascotDesc":"Kies wie je aanmoedigt na elke zwemtraining.","mascotFlipName":"Flip","mascotFlipDesc":"Vernoemd naar de keer — behendig, acrobatisch en helemaal pool.","mascotFlipRules":"Makkelijke challenges · halve munten · je verliest nooit munten","mascotFloName":"Flo","mascotFloDesc":"Kort voor flow — soepele techniek en moeiteloze hydrodynamica.","mascotFloRules":"Gebalanceerde challenges · volle munten · haal maandelijks zilver of verlies 40 munten","mascotFinsName":"Fins","mascotFinsDesc":"Doet je de zwemvliezen aan — maximale intensiteit, verfijning en kracht.","mascotFinsRules":"Zware challenges · grote verbeteringsbonussen · trage sessies en maanden onder goud kosten munten · 2 gratis rerolls","mascotActiveCoach":"Jouw coach: {name}","mascotUnlockHint":"Bereik {pace}-tempo of verdien {medals} maandmedailles","mascotSwitchHint":"Je kunt één keer per maand van coach wisselen, aan het begin van de maand vóór je eerste zwembeurt, wanneer de nieuwe maanddoelen worden ingesteld.","mascotSwitchBlocked":{"alreadySwitched":"Je hebt deze maand al een coach gekozen. Je kunt weer wisselen wanneer de volgende maanddoelen worden ingesteld.","afterFirstSession":"Coachwissels zijn alleen mogelijk aan het begin van de maand, vóór je eerste zwembeurt van die maand."},"mascotPreviewFlip":"Hoi {name}, ik ben Flip! Elke baan telt — ik moedig je de hele weg aan.","mascotPreviewFlo":"Hoi {name}, ik ben Flo! We maken van elke zwemtraining iets geweldigs. Kom op!","mascotPreviewFins":"{name}, ik ben Fins. Ik verwacht elke sessie je beste inzet — versla je gemiddelde tempo en ik maak het de moeite waard.","storeCosmeticsTitle":"Ontgrendelde cosmetics","storeCosmeticsDesc":"Kies je icon set en achtergrond vibe.","activeAppIcon":"Icon set","iconDefault":"Standaard","activeAmbient":"Achtergrond vibe","ambientDefault":"Standaard","ambientIosNote":"Op iPhone en iPad spelen vibe-animaties mogelijk niet af wanneer Verminder beweging aan staat in Instellingen → Toegankelijkheid → Beweging. Kleuren en gloed blijven zichtbaar, maar beweging kan statisch zijn.","sex":"Geslacht","sexMale":"Man","sexFemale":"Vrouw","age":"Leeftijd","exportTitle":"Gegevens exporteren","exportDesc":"Kopieer deze string om alle sessies en grafieken te backuppen of te delen.","exportButton":"Exportstring genereren","importTitle":"Gegevens importeren","importDesc":"Plak een exportstring om sessies en profiel te herstellen.","importPlaceholder":"Plak exportstring hier…","importButton":"Gegevens importeren","importSuccess":"Import gelukt! Herladen…","importConfirm":"Gegevens importeren?","importConfirmDesc":"Dit vervangt je huidige zwemsessies en profiel.","resetData":"Gegevens wissen","resetDesc":"Verwijder permanent alle zwemsessies en profielgegevens.","warning":"Dit kan niet ongedaan worden gemaakt. Exporteer eerst je gegevens indien nodig.","clearButton":"Alle gegevens wissen","confirm":"Weet je het zeker?","confirmDesc":"Alle zwemsessies en profielgegevens worden verwijderd.","resetProgress":"Stap {step} van {total}","resetStep1Title":"Alle zwemgegevens verwijderen?","resetStep1Desc":"Dit verwijdert elke opgeslagen sessie en reset je profiel.","resetStep1Continue":"Ja, doorgaan","resetStep2Title":"Weet je het echt zeker?","resetStep2Desc":"Er is geen back-up en geen undo. Medailles, geschiedenis en voortgang zijn voorgoed weg.","resetStep2Continue":"Ik begrijp het, doorgaan","resetStep3Title":"Typ om te bevestigen","resetStep3Desc":"Typ de onderstaande tekst exact om je gegevens permanent te wissen.","resetConfirmPhrase":"ALLES WISSEN","resetTypePrompt":"Typ {phrase} om te bevestigen","resetTypePlaceholder":"Typ bevestiging…","resetSessionCount":"Je hebt momenteel {count} opgeslagen sessies.","cancel":"Annuleren","success":"Gegevens succesvol gewist.","error":"Er ging iets mis.","copy":"Kopiëren","copied":"Gekopieerd!","language":"Taal","languageDesc":"Kies je voorkeurstaal voor de app.","theme":"Thema","themeDesc":"Kies een visuele stijl voor de app.","uploadTitle":"Zwemsessie uploaden","uploadDesc":"Importeer een Apple Fitness zwem-screenshot om een nieuwe workout te loggen.","uploadCta":"Upload openen","darkMode":"Donkere modus","darkModeDesc":"Gebruik een donker kleurenschema voor de interface.","autoDarkMode":"Volg systeemthema","autoDarkModeDesc":"Volg automatisch de licht/donker-instelling van je apparaat.","themes":{"liquidOs":{"name":"Liquid OS","desc":"Glazen panelen met zachte gradient-blobs."},"genZ":{"name":"Gen-Z","desc":"Felle vlakke kleuren en scherp contrast."},"classic":{"name":"Classic Playstation","desc":"Retro vlakke panelen geïnspireerd op console-UI's."},"olympicPool":{"name":"Olympisch Bad","desc":"Wedstrijdtiles, baanblauw en touchpad-goud."},"midnightLane":{"name":"Midnight Lane","desc":"Late laps onder bioluminescente poollichten."},"retroWave":{"name":"Retro Wave","desc":"Synthwave neon op een middernacht pooldeck."},"tropicalOpen":{"name":"Tropisch Open Water","desc":"Turquoise lagoon met koraal-zonsondergang."},"goldLuxe":{"name":"Gold Luxe","desc":"Champagne canvas met trofee-goud — podiumniveau."},"platinumElite":{"name":"Platinum Elite","desc":"Koel zilver met ijzige prestige — het ultieme niveau."}},"aiTitle":"AI-coach (optioneel)","aiDesc":"De app geeft al uitgebreide on-device feedback na elke zwemtraining. Voeg een OpenAI API-sleutel toe als je daar AI-coachberichten bovenop wilt.","aiHint":"Je sleutel blijft op dit apparaat en wordt nooit meegenomen in exports. Zonder sleutel dekt slimme lokale analyse benchmarks, trends en coach-tips.","aiPlaceholder":"sk-…","aiSave":"API-sleutel opslaan","aiClear":"Sleutel verwijderen","aiActive":"AI-coach ingeschakeld — je krijgt uitgebreide feedback na uploads.","aiInactive":"Alleen on-device feedback — voeg hierboven een sleutel toe voor AI-coaching.","secretTitle":"Geheime instellingen","secretUnlockHint":"Tik 3× op het app-pictogram in Instellingen om dit menu te ontgrendelen.","secretCheatsSection":"Cheats","secretUnlockAllMedals":"Alle medailles ontgrendelen","secretPreviewMonthlyMedals":"Maandelijkse medailles preview","secretUnlockAllThemes":"Alle thema's ontgrendelen","secretAdd500Coins":"500 zwem munten toevoegen","ambientTitle":"Achtergrond vibe","ambientDesc":"Voegt animatie en kleur toe bovenop je wallpaper (onder de UI).","ambients":{"neonLagoon":"Neon Lagoon","sunsetLap":"Sunset Lap","bubbleTrail":"Bubble Trail","auroraLap":"Aurora Lap","deepCurrent":"Deep Current"},"wallpaperTitle":"Achtergrond wallpaper","wallpaperDesc":"Stelt de basisafbeelding achter de app in. Vibes animeren bovenop deze wallpaper.","wallpaperDefault":"Thema standaard","wallpapers":{"lanePool":"Baanbad","dawnWater":"Ochtendwater","deepLane":"Diepe baan","tileDeck":"Tegeldek","openWater":"Open water","chlorineGlow":"Chloor glow"}},"mascot":{"thinking":"Even nadenken over je zwemtraining…","cheerFlip":"Goed bezig met het loggen van een sessie, {name} — elke training telt!","cheerFlo":"Weer een zwemtraining erbij, {name} — heerlijk om te zien!","cheerFins":"{name}, sessie gelogd. Nu kijken hoe je die de volgende keer verslaat.","coachWrap":{"flip":"{name}, {message}","flo":"{name}, {message}","fins":"{name}. {message}"},"traits":{"encouraging":"Bemoedigend","approachable":"Toegankelijk","friendly":"Vriendelijk","motivating":"Motiverend","focused":"Gefocust","challenging":"Uitdagend"}},"common":{"loading":"Laden…","save":"Opslaan","cancel":"Annuleren","bpm":"spm","kcal":"kcal","meters":"m","laps":"banen"},"notifications":{"dismiss":"Sluiten","monthlyGoalsTitle":"Maanddoelen nog open","monthlyGoalsBody":"Nog {count} uitdaging(en) met {days} dag(en) te gaan — bijv. {goals}. Log een zwem om sterk te eindigen!","uploadSyncTitle":"Tijd om te zwemmen?","uploadSyncBody":"Je laatste sessie was {days} dagen geleden. Upload een nieuwe Apple Fitness-screenshot om op koers te blijven."},"launch":{"searchingNewSessions":"Zoeken naar nieuwe sessies…"}}
+{
+  "landing": {
+    "title": "Aap Vitality",
+    "subtitle": "Vitality Coach",
+    "description": "Verdien vitality-punten met stappen en workouts. Haal je wekelijkse, maandelijkse en jaarlijkse doelen.",
+    "cta": "Aan de slag",
+    "uploadLabel": "Workout uploaden",
+    "uploadDesc": "Importeer een screenshot uit Apple Fitness",
+    "progressLabel": "Voortgang",
+    "progressDesc": "Grafieken en trends over tijd",
+    "benchmarkLabel": "Benchmarks",
+    "benchmarkDesc": "Vergelijk tempo met je leeftijdsgroep",
+    "historyLabel": "Geschiedenis",
+    "historyDesc": "Alle opgeslagen activiteitsdagen",
+    "darkMode": "Donkere modus",
+    "lightMode": "Lichte modus"
+  },
+  "navigation": {
+    "swimCoach": "Vitality Coach",
+    "progress": "Voortgang",
+    "upload": "Uploaden",
+    "miniGames": "Mini games",
+    "history": "Geschiedenis",
+    "benchmark": "Doelen",
+    "medals": "Medailles",
+    "settings": "Instellingen",
+    "home": "Start",
+    "goals": "Doelen"
+  },
+  "coins": {
+    "label": "Zwem munten",
+    "earnedTitle": "Munten verdiend",
+    "earnedBreakdown": "{session} van sessie · {medals} van medailles",
+    "popupTitle": "Munten verdiend!",
+    "popupSubtitle": "Zo heeft je zwem sessie zich uitbetaald",
+    "close": "Sluiten",
+    "continue": "Doorgaan",
+    "sessionSection": "Sessie beloningen",
+    "bonusSection": "Medaille & challenge bonussen",
+    "penaltySection": "Coach straffen",
+    "lineBase": "Sessie opgeslagen",
+    "lineDistance": "{distance} gezwommen (+1 per 500 m)",
+    "lineDuration": "{duration} in het bad (+1 per 15 min)",
+    "lineKcal": "{kcal} kcal verbrand (+1 per 100 kcal)",
+    "lineLongDistance3k": "Lange zwem bonus (3 km+)",
+    "lineLongDistance5k": "Epische zwem bonus (5 km+)",
+    "lineLongDuration": "Uithoudingsbonus (1 uur+)",
+    "linePaceImprovement": "Sneller dan je gem. ({pace} vs {avgPace})",
+    "lineFinsBonus": "Fins' aanmoediging — grote bonus voor verbetering",
+    "lineFinsPenalty": "Fins verwachtte meer ({pace} vs {avgPace} gem.)",
+    "lineCoachShare": "Flips makkelijke modus — halve munten, maar je verliest er nooit",
+    "lineMonthlyShortfall": "{tier} gemist in {month} — de standaard van je coach",
+    "lineMedal": "{tier} medaille: {title}",
+    "lineMonthly": "Maandelijkse challenge upgrade ({from} → {to})",
+    "tipTitle": "Verdien meer volgende keer",
+    "tipDistance": "+1 munt voor elke 500 m",
+    "tipDuration": "+1 munt voor elke 15 minuten",
+    "tipKcal": "+1 munt voor elke 100 actieve kcal",
+    "tipLongSwim": "+10 bij 3 km, +15 bij 5 km, +8 voor 1 uur+",
+    "tipPace": "Verbeter je gemiddelde tempo voor tot +20 bonus munten",
+    "alreadyClaimedTitle": "Geen munten deze keer",
+    "alreadyClaimedSubtitle": "Je hebt al munten verdiend voor deze workout. Zwem iets nieuws om meer te verdienen.",
+    "monthlyRewards": "Maandelijkse medaille munten",
+    "monthlyNextUpgrade": "Bereik {tier} voor +{amount} bonus munten bij upgrade",
+    "wheel": {
+      "title": "Rad van Fortuin",
+      "subtitle": "Geef munten uit voor een draai — win zwem munten, gratis draaien of niets.",
+      "pickBet": "Kies je inzet",
+      "spin": "Draai voor {bet} munten",
+      "spinFree": "Gratis draai ({count} over)",
+      "spinning": "Draait…",
+      "notEnough": "Niet genoeg munten voor deze inzet.",
+      "paidSpinsRemaining": "{remaining}/{limit} betaalde draaien over vandaag",
+      "dailyLimitReached": "Geen betaalde draaien meer vandaag — gratis draaien werken nog wel. Kom morgen terug!",
+      "freeSpinReady": "{count} gratis draai(en) klaar",
+      "resultTitle": "Je landde op",
+      "wonCoins": "+{amount} munten!",
+      "wonFreeSpin": "Gratis draai — draai opnieuw zonder te betalen!",
+      "wonFreeSpinMulti": "{count} gratis draaien — draai opnieuw zonder te betalen!",
+      "wonNothing": "{amount} munten verloren — volgende keer beter!",
+      "segmentCoinMult": "{mult}×",
+      "segmentFreeSpin": "Gratis",
+      "segmentFreeSpinMulti": "{count}×",
+      "segmentNothing": "Niets"
+    },
+    "store": {
+      "title": "Zwem Munten Winkel",
+      "subtitle": "Geef munten uit aan thema's, icon sets, achtergrond vibes, flair en boosts.",
+      "buy": "Ontgrendelen",
+      "buyConsumable": "Kopen",
+      "owned": "In bezit",
+      "ownedCount": "Je hebt er {count} klaar om te gebruiken",
+      "bonusSpinOwned": "+{count} extra betaalde draai(en) per dag",
+      "notEnough": "Nog {amount} nodig",
+      "vibesIosNote": "Op iPhone en iPad spelen vibe-animaties mogelijk niet af wanneer Verminder beweging aan staat in Instellingen → Toegankelijkheid → Beweging. Kleuren en gloed blijven zichtbaar, maar beweging kan statisch zijn.",
+      "categories": {
+        "themes": "Thema's",
+        "icons": "Icon sets",
+        "vibes": "Achtergrond vibes",
+        "flair": "Flair",
+        "boosts": "Boosts"
+      },
+      "items": {
+        "genZ": {
+          "name": "Gen-Z",
+          "desc": "Gedurfde vlakke kleuren en scherp contrast."
+        },
+        "classic": {
+          "name": "Classic Playstation",
+          "desc": "Retro vlakke panelen geïnspireerd op console UI's."
+        },
+        "olympicPool": {
+          "name": "Olympisch Bad",
+          "desc": "Wedstrijdtiles, baanblauw en touchpad-goud."
+        },
+        "midnightLane": {
+          "name": "Midnight Lane",
+          "desc": "Late laps onder bioluminescente poollichten."
+        },
+        "retroWave": {
+          "name": "Retro Wave",
+          "desc": "Synthwave neon op een middernacht pooldeck."
+        },
+        "tropicalOpen": {
+          "name": "Tropisch Open Water",
+          "desc": "Turquoise lagoon met koraal-zonsondergang."
+        },
+        "goldLuxe": {
+          "name": "Gold Luxe",
+          "desc": "Champagne canvas met trofee-goud — podiumniveau."
+        },
+        "platinumElite": {
+          "name": "Platinum Elite",
+          "desc": "Koel zilver met ijzige prestige — het ultieme niveau."
+        },
+        "goldMedalIcon": {
+          "name": "Gouden Medaille",
+          "desc": "Volledige icon set — startscherm, navigatie en paginakoppen."
+        },
+        "neonLaneIcon": {
+          "name": "Neon Baan",
+          "desc": "Synth baanlijnen op elk icoon in de app."
+        },
+        "trophySplashIcon": {
+          "name": "Trofee Splash",
+          "desc": "Overwinningssplash icon set voor de hele app."
+        },
+        "platinumStarIcon": {
+          "name": "Platinum Ster",
+          "desc": "Zilveren ster icon set voor startscherm, tabs en koppen."
+        },
+        "neonLagoon": {
+          "name": "Neon Lagoon",
+          "desc": "Elektrisch cyaan en magenta met een langzaam verschuivend verloop."
+        },
+        "sunsetLap": {
+          "name": "Sunset Lap",
+          "desc": "Gouden-uur warmte die drijft als een avondtraining."
+        },
+        "bubbleTrail": {
+          "name": "Bubble Trail",
+          "desc": "Stijgende lane-bubbels drijven over je zwemschermen."
+        },
+        "auroraLap": {
+          "name": "Aurora Lap",
+          "desc": "Noorderlicht-groen en violet vegen over het bad."
+        },
+        "deepCurrent": {
+          "name": "Deep Current",
+          "desc": "Donker oceaanblauw stroomt als een onderwaterbaan."
+        },
+        "goldenCoins": {
+          "name": "Gouden Munten",
+          "desc": "Je muntensaldo glanst als een trofeeënkast."
+        },
+        "confettiCannon": {
+          "name": "Confetti Kanon",
+          "desc": "Epische confetti bij nieuwe medailles."
+        },
+        "medalShimmer": {
+          "name": "Medaille Shimmer+",
+          "desc": "Verdiende medailles pulseren extra op het schap."
+        },
+        "bonusSpin": {
+          "name": "Bonus Wheel Spin",
+          "desc": "Voeg permanent één extra betaalde draai per dag toe. Koop opnieuw om te stapelen.",
+          "preview": "betaalde draaien"
+        },
+        "challengeReroll": {
+          "name": "Uitdaging Opnieuw",
+          "desc": "Wissel één maanduitdaging voor een ander type. Gebruik op de Voortgang-pagina.",
+          "preview": "maanduitdaging"
+        }
+      }
+    }
+  },
+  "miniGames": {
+    "title": "Mini games",
+    "subtitle": "Spendeer of verdien zwem munten met snelle poolside games.",
+    "coinFlip": {
+      "title": "Munt opgooien",
+      "desc": "Zet zwem munten in op kop of munt — verdubbel je inzet bij winst.",
+      "heads": "Snelle baan",
+      "tails": "Lange swim",
+      "play": "Gooi munt",
+      "flipping": "Opgooien…",
+      "won": "+{amount} munten!",
+      "lost": "Geen geluk deze keer."
+    },
+    "pacePick": {
+      "title": "Tempo kiezen",
+      "desc": "Welke sessie had het snellere tempo? Gratis — bouw een streak voor grotere beloningen.",
+      "needSessions": "Log minstens twee zwemmen met tempodata om te spelen.",
+      "streak": "Streak: {count}",
+      "next": "Volgende ronde",
+      "free": "Gratis spelen"
+    },
+    "laneTimer": {
+      "title": "Baantimer",
+      "desc": "Tik wanneer de baan groen wordt. Snellere reacties leveren meer munten op.",
+      "wait": "Wacht op groen…",
+      "go": "Tik nu!",
+      "tap": "Tik om te starten",
+      "start": "Start ({cost} munten)",
+      "again": "Opnieuw spelen",
+      "listening": "Blijf klaar…",
+      "early": "Te vroeg — wacht op groen.",
+      "result": "Reactie: {ms} ms",
+      "won": "+{amount} munten!",
+      "noReward": "Te traag deze keer."
+    }
+  },
+  "progress": {
+    "title": "Vitality",
+    "subtitle": "Dagelijkse punten, stappen en doelvoortgang",
+    "emptyTitle": "Nog geen activiteit",
+    "emptyDesc": "Synchroniseer Apple Gezondheid via Instellingen om stappen en workouts te importeren.",
+    "emptyCta": "Open instellingen om te synchroniseren",
+    "latestSession": "Laatste sessie",
+    "paceChart": "Tempo over tijd",
+    "distanceChart": "Afstand per sessie",
+    "caloriesChart": "Calorieën",
+    "heartRateChart": "Hartslag",
+    "weeklyVolume": "Weekvolume",
+    "strokeMix": "Slagverdeling",
+    "activeKcal": "Actief",
+    "totalKcal": "Totaal",
+    "chartsSection": "Trendgrafieken",
+    "chartsInteractiveOff": "Grafiekinteractie inschakelen",
+    "chartsInteractiveOn": "Grafiekinteractie aan",
+    "movingAverage": "Gem. 3 sessies",
+    "actual": "Sessie",
+    "allTimeStats": "Totale statistieken",
+    "statsBasedOn": "Gebaseerd op {count} van {total} sessies",
+    "totalSessions": "Sessies",
+    "totalDistance": "Totale afstand",
+    "totalTime": "Totale tijd",
+    "avgPace": "Gemiddeld tempo",
+    "bestPace": "Beste tempo",
+    "totalCalories": "Totale actieve calorieën",
+    "totalLaps": "Totale banen",
+    "avgHeartRate": "Gem. hartslag",
+    "mascotDefault": "{name}, zo gaat het met je zwemmen — ga zo door!",
+    "mascotEmpty": "{name}, synchroniseer Apple Gezondheid en ik coach je naar je vitality-doelen!",
+    "overviewTitle": "Coachoverzicht",
+    "sessionFeedbackTitle": "Feedback laatste sessie",
+    "overviewSingleSession": "Eén sessie gelogd — mooi begin met de gewoonte.",
+    "overviewSessions": "Je hebt {count} sessies gelogd, samen {distance}, gemiddeld {pace}.",
+    "overviewMonthVolume": "Deze maand heb je {distance} gezwommen.",
+    "overviewMonthVolumeUp": "Deze maand sta je op {distance} — {percent}% meer dan vorige maand.",
+    "overviewMonthVolumeDown": "Deze maand sta je op {distance} — minder dan vorige maand.",
+    "overviewMonthlyGold": "Alle drie de maandchallenges zijn af — gouden medaille binnen!",
+    "overviewMonthlySilver": "Twee van drie maandchallenges af — nog één voor goud.",
+    "overviewMonthlyBronze": "Eén maandchallenge af — nog {remaining} om je medaille te upgraden.",
+    "overviewMonthlyNone": "Nog geen maandchallenges af. Dichtstbij: {challenge} ({current} / {target}).",
+    "overviewMonthlyNoneFlip": "Nog geen maandchallenges af, maar je bent dichtbij op {challenge} ({current} / {target}).",
+    "overviewCoachRequirement": "Onthoud: ik verwacht minstens {tier} deze maand — anders kost het {amount} munten.",
+    "chartScope": {
+      "week": "Week",
+      "month": "Maand",
+      "quarter": "Kwartaal",
+      "ytd": "YTD",
+      "allTime": "Alles"
+    },
+    "overviewTodayPoints": "Vandaag verdiende je {points} punten met {steps} stappen.",
+    "overviewStep5k": "5k stappen gehaald — lekker gelopen!",
+    "overviewStep10k": "10k stappen vandaag — sterke bewegingsdag!",
+    "overviewWorkoutPoints": "Workouts leverden {points} punten op via inspanning en hartslagzones.",
+    "overviewMonthlyGoal": "Maandelijks doel: {current} / {target} punten ({percent}%).",
+    "overviewMonthlyComplete": "Maandelijks doel behaald — je coach is trots!",
+    "overviewMonthlyNear": "Je bent dicht bij je maanddoel — nog één sterke week!",
+    "overviewMonthlyBehind": "{name}, deze maand loopt achter — tijd voor stappen en een workout.",
+    "overviewWeeklyComplete": "Weekdoel behaald!"
+  },
+  "records": {
+    "title": "Persoonlijke records",
+    "subtitle": "Je beste prestaties per sessie over alle zwembeurten.",
+    "longestDistance": "Langste afstand",
+    "fastestPace": "Snelste tempo",
+    "mostCalories": "Meeste actieve calorieën",
+    "mostTotalCalories": "Meeste totale calorieën",
+    "mostLaps": "Meeste banen",
+    "longestDuration": "Langste duur",
+    "highestHeartRate": "Hoogste hartslag"
+  },
+  "medals": {
+    "title": "Medailles",
+    "subtitle": "Verdien medailles voor stappen, workouts, doelen en consistentie.",
+    "empty": "Synchroniseer activiteit om vitality-medailles te verdienen.",
+    "earned": "Behaald",
+    "earnedOn": "Behaald op {date}",
+    "celebration": {
+      "title": "Nieuwe medaille verdiend!",
+      "titleMultiple": "Nieuwe medailles verdiend!",
+      "titleAndMonthly": "Nieuwe prestaties vrijgespeeld!",
+      "subtitleOne": "Je hebt een nieuwe prestatie vrijgespeeld — ga zo door!",
+      "subtitleMultiple": "Je hebt {count} nieuwe prestaties vrijgespeeld — ga zo door!",
+      "close": "Sluiten",
+      "continue": "Doorgaan",
+      "viewMedals": "Bekijk medailles",
+      "motivation": {
+        "bronze": "Een stevige stap vooruit. Elke baan maakt je een betere zwemmer.",
+        "silver": "Echte vooruitgang in het bad. Je verdient dit door consistentie.",
+        "gold": "Uitstekend werk! Zo bouwen kampioenen hun prestaties op."
+      }
+    },
+    "progress": {
+      "summary": "{current} / {target}",
+      "percentComplete": "{percent}% voltooid",
+      "alsoBest": "Beste tot nu toe: {detail}",
+      "noPaceYet": "Nog geen tempo geregistreerd — upload een sessie met tempogegevens.",
+      "scope": {
+        "lifetime": "Voortgang all-time",
+        "best_session": "Beste enkele sessie",
+        "best_week": "Beste kalenderweek tot nu toe",
+        "current_month": "Voortgang deze maand",
+        "best_month": "Beste maand tot nu toe",
+        "current_season": "Voortgang dit seizoen",
+        "best_season": "Beste seizoen tot nu toe"
+      }
+    },
+    "categories": {
+      "milestone": "Mijlpalen",
+      "distance": "Sessierecords",
+      "weekly": "Weekdoelen",
+      "monthly": "Maandtotalen",
+      "seasonal": "Seizoensuitdagingen",
+      "streak": "Reeksen",
+      "special": "Speciaal",
+      "steps": "Stappen",
+      "workout": "Workouts",
+      "goals": "Doelen"
+    },
+    "seasons": {
+      "summer": "Zomer",
+      "winter": "Winter",
+      "spring": "Lente",
+      "autumn": "Herfst"
+    },
+    "items": {
+      "first_splash": {
+        "title": "Eerste duik",
+        "desc": "Log je eerste zwemsessie."
+      },
+      "ten_sessions": {
+        "title": "Regelmatige zwemmer",
+        "desc": "Voltooi 10 zwemsessies."
+      },
+      "twenty_five_sessions": {
+        "title": "Badmeester",
+        "desc": "Voltooi 25 zwemsessies."
+      },
+      "ten_k_lifetime": {
+        "title": "10 km club",
+        "desc": "Zwem in totaal 10 km over alle sessies."
+      },
+      "fifty_k_lifetime": {
+        "title": "50 km club",
+        "desc": "Zwem in totaal 50 km over alle sessies."
+      },
+      "hundred_k_lifetime": {
+        "title": "Eeuwzwemmer",
+        "desc": "Zwem in totaal 100 km over alle sessies."
+      },
+      "two_k_session": {
+        "title": "2 km sessie",
+        "desc": "Zwem 2 km in één sessie."
+      },
+      "two_five_k_session": {
+        "title": "2,5 km sessie",
+        "desc": "Zwem 2,5 km in één sessie."
+      },
+      "three_k_session": {
+        "title": "3 km sessie",
+        "desc": "Zwem 3 km in één sessie."
+      },
+      "sub_200_pace": {
+        "title": "Onder 2:00 tempo",
+        "desc": "Zwem sneller dan 2:00 per 100m in een sessie."
+      },
+      "four_sessions_week": {
+        "title": "Vier per week",
+        "desc": "Log 4 sessies in één kalenderweek."
+      },
+      "five_k_week": {
+        "title": "5 km week",
+        "desc": "Zwem 5 km in één kalenderweek."
+      },
+      "eight_sessions_month": {
+        "title": "Maandelijks regelmatig",
+        "desc": "Log 8 sessies in één kalendermaand."
+      },
+      "ten_k_month": {
+        "title": "10 km maand",
+        "desc": "Zwem 10 km in één kalendermaand."
+      },
+      "twenty_k_month": {
+        "title": "20 km maand",
+        "desc": "Zwem 20 km in één kalendermaand."
+      },
+      "ten_k_cal_month": {
+        "title": "Calorieënverbrander",
+        "desc": "Verbrand 10.000 actieve calorieën in één maand."
+      },
+      "season_summer": {
+        "title": "Zomerzwemmer",
+        "desc": "Zwem 15 km in een zomerseizoen (jun–aug)."
+      },
+      "season_winter": {
+        "title": "Winterkrijger",
+        "desc": "Zwem 10 km in een winterseizoen (dec–feb)."
+      },
+      "season_spring": {
+        "title": "Lentesplash",
+        "desc": "Zwem 10 km in een lentesizoen (mrt–mei)."
+      },
+      "season_autumn": {
+        "title": "Herfstbanen",
+        "desc": "Zwem 10 km in een herfstseizoen (sep–nov)."
+      },
+      "fifty_sessions": {
+        "title": "Half eeuw club",
+        "desc": "Voltooi 50 zwemsessies."
+      },
+      "two_hundred_k": {
+        "title": "200 km legende",
+        "desc": "Zwem in totaal 200 km over alle sessies."
+      },
+      "lap_legend": {
+        "title": "Banenlegende",
+        "desc": "Log 1.000 banen over alle sessies."
+      },
+      "calorie_collector": {
+        "title": "Calorieënverzamelaar",
+        "desc": "Verbrand in totaal 25.000 actieve calorieën."
+      },
+      "sub_210_pace": {
+        "title": "Onder 2:10 tempo",
+        "desc": "Zwem sneller dan 2:10 per 100m in een sessie."
+      },
+      "marathon_session": {
+        "title": "Badmarathon",
+        "desc": "Zwem 90 minuten of langer in één sessie."
+      },
+      "century_laps": {
+        "title": "Eeuw banen",
+        "desc": "Voltooi 100 banen in één sessie."
+      },
+      "furnace": {
+        "title": "Vuuroven",
+        "desc": "Verbrand 800+ actieve calorieën in één sessie."
+      },
+      "pulse_racer": {
+        "title": "Polsslag racer",
+        "desc": "Gemiddeld 155+ spm gedurende een hele sessie."
+      },
+      "goal_crusher": {
+        "title": "Doelvergruizer",
+        "desc": "Behaal of overtreff je afstandsdoel in een sessie."
+      },
+      "frog_master": {
+        "title": "Kikvorsmeester",
+        "desc": "Zwem 1 km schoolslag in één sessie."
+      },
+      "hat_trick": {
+        "title": "Hattrick",
+        "desc": "Zwem 3 dagen achter elkaar."
+      },
+      "week_warrior": {
+        "title": "Weekstrijder",
+        "desc": "Zwem 7 opeenvolgende dagen."
+      },
+      "fortnight_flow": {
+        "title": "Twee weken flow",
+        "desc": "Zwem 14 opeenvolgende dagen — pure toewijding."
+      },
+      "early_bird": {
+        "title": "Vroege vogel",
+        "desc": "Start een zwemtraining vóór 7:00 uur."
+      },
+      "night_owl": {
+        "title": "Nachtuil",
+        "desc": "Start een zwemtraining om 20:00 uur of later."
+      },
+      "comeback": {
+        "title": "Comeback kid",
+        "desc": "Keer terug naar het bad na 30+ dagen pauze."
+      },
+      "double_dip": {
+        "title": "Dubbel dip",
+        "desc": "Log twee zwemmen op dezelfde dag."
+      },
+      "holiday_splash": {
+        "title": "Feestduik",
+        "desc": "Zwem tussen 20 dec en 5 jan."
+      },
+      "january_jolt": {
+        "title": "Januari start",
+        "desc": "Begin het jaar met een zwem in januari."
+      }
+    }
+  },
+  "upload": {
+    "title": "Synchroniseren",
+    "subtitle": "Importeer stappen en workouts uit Apple Gezondheid",
+    "healthImport": "Synchroniseer vanuit Apple Gezondheid",
+    "healthSyncing": "Stappen en workouts synchroniseren…",
+    "healthHint": "Importeert dagelijkse stappen en workouts (30+ min voor punten) met hartslagzones.",
+    "healthImported": "{count} zwemtraining(en) geïmporteerd uit Apple Gezondheid.",
+    "healthImportedPartial": "{count} trainingen geïmporteerd. Tik opnieuw om meer te laden.",
+    "healthNoWorkouts": "Nog geen zwemtrainingen gevonden in Apple Gezondheid.",
+    "healthAlreadySynced": "Alle zwemtrainingen uit Apple Gezondheid staan al in de app.",
+    "healthUnavailable": "Apple Gezondheid is niet beschikbaar op dit apparaat.",
+    "dropzone": "Sleep screenshot hierheen of tik om te kiezen",
+    "dropzoneHint": "PNG of JPG uit Apple Fitness",
+    "analyzing": "Screenshot analyseren…",
+    "reviewTitle": "Geëxtraheerde gegevens controleren",
+    "reviewDesc": "Controleer en pas waarden aan voordat je opslaat.",
+    "saveSession": "Sessie opslaan",
+    "cancel": "Annuleren",
+    "dateRequired": "Datum vereist",
+    "dateRequiredDesc": "We konden de datum niet detecteren. Wanneer vond deze sessie plaats?",
+    "confirmDate": "Datum bevestigen",
+    "ocrFailed": "Kon screenshot niet lezen. Probeer een duidelijkere afbeelding of voer gegevens handmatig in.",
+    "confidence": "Betrouwbaarheid",
+    "duplicateTitle": "Sessie al geüpload",
+    "duplicateMessage": "Deze workout komt overeen met een sessie die je al hebt opgeslagen op {date}. Deze is niet opnieuw toegevoegd.",
+    "notSwim": {
+      "run": "Deze screenshot lijkt op hardlopen, geen zwemmen. Upload een Apple Fitness zwemsessie.",
+      "walk": "Deze screenshot lijkt op wandelen, geen zwemmen. Upload een Apple Fitness zwemsessie.",
+      "cycle": "Deze screenshot lijkt op fietsen, geen zwemmen. Upload een Apple Fitness zwemsessie.",
+      "row": "Deze screenshot lijkt op roeien, geen zwemmen. Upload een Apple Fitness zwemsessie.",
+      "hike": "Deze screenshot lijkt op wandelen in de bergen, geen zwemmen. Upload een Apple Fitness zwemsessie.",
+      "yoga": "Deze screenshot lijkt op yoga of pilates, geen zwemmen. Upload een Apple Fitness zwemsessie.",
+      "strength": "Deze screenshot lijkt op krachttraining, geen zwemmen. Upload een Apple Fitness zwemsessie.",
+      "elliptical": "Deze screenshot lijkt op crosstraining, geen zwemmen. Upload een Apple Fitness zwemsessie.",
+      "stair": "Deze screenshot lijkt op traplopen, geen zwemmen. Upload een Apple Fitness zwemsessie.",
+      "dance": "Deze screenshot lijkt op dansen, geen zwemmen. Upload een Apple Fitness zwemsessie.",
+      "other": "Dit workouttype wordt niet ondersteund. Aap-SC accepteert alleen zwemsessies.",
+      "unknown": "Dit lijkt geen zwemtraining. Upload een Apple Fitness zwemsessie."
+    },
+    "uploadAnother": "Nog een screenshot uploaden",
+    "fields": {
+      "date": "Datum",
+      "duration": "Duur",
+      "distance": "Afstand",
+      "pace": "Tempo /100m",
+      "activeKcal": "Actieve calorieën",
+      "totalKcal": "Totale calorieën",
+      "heartRate": "Gem. hartslag",
+      "laps": "Banen",
+      "poolLength": "Baanlengte",
+      "goal": "Doel",
+      "location": "Locatie",
+      "timeRange": "Tijd",
+      "mixed": "Gemengd",
+      "breaststroke": "Schoolslag",
+      "freestyle": "Vrije slag",
+      "backstroke": "Rugslag",
+      "butterfly": "Vlinderslag"
+    },
+    "healthNoData": "Geen nieuwe stappen of workouts gevonden in Apple Gezondheid.",
+    "scoringSteps": "Lopen: bonus bij 5k, 10k en 20k stappen",
+    "scoringWorkouts": "Workouts: punten vanaf 30 minuten",
+    "scoringZones": "Hogere hartslagzones = meer punten"
+  },
+  "history": {
+    "title": "Geschiedenis",
+    "subtitle": "Dagelijkse vitality-activiteit",
+    "empty": "Nog geen activiteit opgeslagen.",
+    "delete": "Verwijderen",
+    "deleteConfirm": "Deze sessie verwijderen?",
+    "confirm": "Verwijderen",
+    "cancel": "Annuleren",
+    "viewDetails": "Details",
+    "calendarTitle": "Activiteitskalender",
+    "calendarEmpty": "Geen zwemmen deze maand",
+    "calendarMonthCount": "{count} sessies deze maand",
+    "calendarPrev": "Vorige maand",
+    "calendarNext": "Volgende maand",
+    "calendarLegend": "Minder → meer",
+    "calendarDaySessions": "{count} sessies",
+    "filterDate": "Sessies op {date}",
+    "clearFilter": "Alles tonen",
+    "noSessionsOnDate": "Geen activiteit op deze datum.",
+    "coinsEarned": "Munten verdiend",
+    "includeInStats": "Meetellen in statistieken",
+    "includeInStatsDesc": "Zet uit voor rustige zwemmen die de gemiddelden op de Voortgang-pagina niet moeten beïnvloeden.",
+    "excludedBadge": "Uitgesloten",
+    "workoutCount": "{count} workout(s)",
+    "workoutType": {
+      "running": "Hardlopen",
+      "walking": "Wandelen",
+      "cycling": "Fietsen",
+      "swimming": "Zwemmen",
+      "yoga": "Yoga",
+      "strength": "Kracht",
+      "hiit": "HIIT",
+      "hiking": "Wandelen (bergen)",
+      "elliptical": "Crosstrainer",
+      "rowing": "Roeien",
+      "other": "Workout"
+    }
+  },
+  "benchmark": {
+    "title": "Benchmark",
+    "subtitle": "Vergelijk je tempo met recreatieve zwemmers in je leeftijdsgroep",
+    "yourPace": "Jouw tempo",
+    "median": "Mediaan leeftijdsgroep",
+    "level": "Niveau",
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Gevorderd",
+      "advanced": "Expert",
+      "developing": "Opbouwen",
+      "unknown": "Onbekend"
+    },
+    "methodology": "Benchmarks zijn voor recreatieve 25m-bad fitnesszwemmers (Apple Fitness), niet voor wedstrijdtijden. Tempo wordt langzamer met leeftijd; vrouwen zijn typisch ~12–18s langzamer per 100m dan mannen in dezelfde groep.",
+    "profileRequired": "Stel geslacht en leeftijd in via Instellingen om benchmarks te zien.",
+    "goSettings": "Naar instellingen",
+    "badges": {
+      "aboveMedian": "Sneller dan mediaan",
+      "belowMedian": "Langzamer dan mediaan"
+    },
+    "chartTitle": "Tempovergelijking (sec/100m — lager is beter)"
+  },
+  "monthlyChallenges": {
+    "title": "Maandelijkse puntenuitdaging",
+    "subtitle": "Behaal 50%, 75% en 100% van je maanddoel om je medaille te upgraden.",
+    "tierHint": "Je maandmedaille upgradet naarmate je uitdagingen voltooit: 1 → brons · 2 → zilver · 3 → goud.",
+    "done": "Behaald",
+    "progress": "{current} / {target}",
+    "historyTitle": "Maandmedailles",
+    "historySubtitle": "Maanden waarin je een maandmedaille verdiende.",
+    "historyEmpty": "Voltooi maanduitdagingen om je eerste medaille te verdienen.",
+    "previewActive": "Preview cheat actief — voorbeeldmedailles getoond.",
+    "previewLabel": "Preview",
+    "yearLabel": "Jaar",
+    "inProgress": "Bezig",
+    "completedCount": "{count}/3 uitdagingen voltooid",
+    "tiers": {
+      "bronze": "Brons",
+      "silver": "Zilver",
+      "gold": "Goud"
+    },
+    "types": {
+      "sessions": "Aantal sessies",
+      "distance": "Totale afstand",
+      "kcal": "Actieve calorieën",
+      "streak": "Zwemreeks",
+      "active_weeks": "Actieve weken",
+      "monthly_points_bronze": "Brons tempo (50%)",
+      "monthly_points_silver": "Zilver tempo (75%)",
+      "monthly_points_gold": "Goud tempo (100%)"
+    },
+    "targets": {
+      "sessions": "Zwem {count} sessies deze maand",
+      "distance": "Zwem {distance} deze maand",
+      "kcal": "Verbrand {kcal} actieve kcal deze maand",
+      "streak": "Zwem {days} dagen op rij",
+      "activeWeeks": "Zwem in {weeks} verschillende weken",
+      "monthlyPointsBronze": "Behaal {points} punten (50% van maanddoel)",
+      "monthlyPointsSilver": "Behaal {points} punten (75% van maanddoel)",
+      "monthlyPointsGold": "Behaal {points} punten (100% van maanddoel)"
+    },
+    "celebrationTitle": "Maandmedaille verdiend!",
+    "celebrationUpgradeTitle": "Maandmedaille geüpgraded!",
+    "celebrationSubtitle": "Je verdient {tier} voor {month}.",
+    "celebrationUpgradeSubtitle": "Je {month}-medaille is geüpgraded van {fromTier} naar {tier}.",
+    "celebrationDesc": "{count} van 3 maanduitdagingen voltooid.",
+    "reroll": "Opnieuw",
+    "rerollUsed": "Je hebt je gratis maandelijkse reroll gebruikt.",
+    "coachRequirement": "{name} verwacht deze maand minstens {tier} — anders verlies je {amount} munten.",
+    "coachCheerFlip": "{name} is door het dolle heen — elke medaille telt, en deze is van jou!",
+    "rerollCredits": "{count} reroll-tegoed klaar om te gebruiken",
+    "rerollBuyHint": "Koop meer rerolls in de Zwem Munten Winkel voor 500 munten.",
+    "tooltip": {
+      "tierEarned": "{tier} — {month}",
+      "challengesCompleted": "{count}/3 uitdagingen voltooid",
+      "earnedOn": "Laatste voortgang: {date}",
+      "inProgress": "Bezig — {count}/3 uitdagingen voltooid",
+      "noActivity": "Geen zwemmen deze maand",
+      "challengeLine": "{type}: {current} / {target}"
+    }
+  },
+  "strokes": {
+    "mixed": "Gemengd",
+    "breaststroke": "Schoolslag",
+    "freestyle": "Vrije slag",
+    "backstroke": "Rugslag",
+    "butterfly": "Vlinderslag"
+  },
+  "feedback": {
+    "title": "Sessie-feedback",
+    "paceFaster": "{seconds} sec sneller per 100m dan vorige sessie",
+    "paceSlower": "{seconds} sec langzamer per 100m dan vorige sessie",
+    "paceSame": "Zelfde tempo als vorige sessie",
+    "overGoal": "{meters} m boven je doel",
+    "underGoal": "{meters} m onder je doel",
+    "hitGoal": "Precies je afstandsdoel gehaald",
+    "hrHigher": "Hartslag {bpm} spm hoger dan last time",
+    "hrLower": "Hartslag {bpm} spm lager dan last time",
+    "pbPace": "Persoonlijk record tempo",
+    "pbDistance": "Persoonlijk record afstand",
+    "pbLaps": "Persoonlijk record banen",
+    "weeklyVolume": "Weekvolume: {distance}",
+    "moreBreaststroke": "Meer schoolslag dan vorige sessie",
+    "firstSession": "Goed begin! Je eerste zwemtraining staat erin — elke kampioen begon met één baantje.",
+    "welcomeBack": "Mooi werk vandaag! Je zwom {distance} met {pace}. Dat vraagt discipline.",
+    "welcomeBack2": "Stevige sessie — {distance} met {pace}. Opdagen is al de helft van het werk.",
+    "welcomeBack3": "Goed gezwommen vandaag: {distance} gelogd met {pace}. Blijf deze sessies stapelen.",
+    "motivationFirst": "Welkom bij je zwemreis. Regelmaat wint van perfectie — tot de volgende sessie!",
+    "motivationPaceUp": "Je ging sneller — {seconds} seconden per 100m sneller. Die vooruitgang verdien je in het bad.",
+    "motivationPaceDown": "Vandaag was het iets langzamer, en dat mag. Herstelzwemmen en zware dagen maken je op lange termijn sterker.",
+    "motivationPaceDownCritical": "Dat was onder je gemiddelde, en dat weet je zelf ook. Volgende sessie verwacht ik beter — laat zien wat je echt kunt.",
+    "motivationGoal": "Je haalde je afstandsdoel. Daar mag je trots op zijn — vertrouw het proces.",
+    "motivationConsistent": "Stabiel en solide gezwommen. Regelmatig komen is hoe echte verbetering ontstaat.",
+    "motivationConsistent2": "Je bouwt een echt ritme op in het bad — consistentie is je superkracht.",
+    "motivationKeepGoing": "Weer een sessie in de pocket. Blijf stapelen en de cijfers volgen vanzelf.",
+    "motivationKeepGoing2": "Gelogd en klaar — elke baan die je zwemt bouwt aan iets groters.",
+    "motivationKeepGoing3": "Nog een sessie op de teller. Blijf geduldig en het tempo komt vanzelf.",
+    "motivationPersonalBest": "Een persoonlijk record! Vier dit moment — baan voor baan verdiend.",
+    "streak": "{count} sessies in de laatste 7 dagen — je bouwt een echte gewoonte op.",
+    "allTimeDistance": "Totaal: {distance} over {count} sessies. Het bad kent je inmiddels.",
+    "ageNote": "Op {age}-jarige leeftijd telt elke sessie voor je conditie op lange termijn.",
+    "aiLoading": "Je AI-coach bekijkt je zwemtraining…",
+    "aiFailed": "AI-coach niet beschikbaar — on-device feedback wordt getoond.",
+    "tipTitle": "Coach tip",
+    "highlightPace": "Tempo",
+    "highlightDistance": "Afstand",
+    "highlightLevel": "Niveau",
+    "highlightWeek": "Deze week",
+    "highlightPercentile": "Leeftijdsgroep",
+    "highlightVsRecent": "Vs recent",
+    "percentileValue": "Top {percentile}%",
+    "vsRecentFasterShort": "{seconds}s sneller",
+    "vsRecentSlowerShort": "{seconds}s langzamer",
+    "vsRecentAvgFaster": "{seconds} sec sneller dan je recente gemiddelde tempo",
+    "vsRecentAvgSlower": "{seconds} sec langzamer dan je recente gemiddelde tempo",
+    "vsAllTimeAvgFaster": "{seconds} sec sneller dan je all-time gemiddelde tempo",
+    "vsAllTimeAvgSlower": "{seconds} sec langzamer dan je all-time gemiddelde tempo",
+    "longerThanRecent": "{distance} langer dan je recente sessies",
+    "shorterThanRecent": "{distance} korter dan je recente sessies",
+    "daysSinceLast": "{days} dagen sinds je vorige zwemtraining",
+    "benchmarkLevel": "Tempo-niveau voor je leeftijdsgroep: {level}",
+    "vsMedianFaster": "{seconds} sec sneller dan de typische zwemmer in je leeftijdsgroep",
+    "vsMedianSlower": "{seconds} sec langzamer dan de typische zwemmer in je leeftijdsgroep",
+    "monthlyDistance": "{distance} gezwommen deze maand",
+    "monthlyCompare": "{distance} deze maand ({change}% vs vorige maand)",
+    "caloriesBurned": "{kcal} actieve calorieën verbrand",
+    "sustainedEffort": "Volgehouden tempo van ongeveer {rate} m/min",
+    "dominantStroke": "{stroke} was {percent}% van de afstand vandaag",
+    "trendImproving": "Tempo trend sneller over je laatste {sessions} sessies",
+    "trendSlowing": "Tempo iets gedaald over je laatste {sessions} sessies",
+    "coachPersonalBest": "Je zette vandaag een persoonlijk record — een sessie om te onthouden.",
+    "coachComeback": "Welkom terug na {days} dagen. Opnieuw komen is het moeilijkste deel.",
+    "coachStrongSession": "Sterke sessie — {seconds} seconden per 100m sneller dan je recente gemiddelde.",
+    "coachCriticalSession": "Dat tempo lag onder je standaard. Volgende keer verwacht ik scherper werk — geen excuses.",
+    "coachRecovery": "Dit leek een rustigere of herstelgerichte sessie. Makkelijke dagen bouwen ook conditie op.",
+    "coachRecovery2": "Een gecontroleerde, herstelgerichte zwem vandaag — slimme zwemmers weten wanneer ze gas terugnemen.",
+    "coachBenchmark": "Voor zwemmers van jouw leeftijd zit dat tempo in het {level}-bereik.",
+    "coachTrendUp": "Je recente sessies laten tempo in de goede richting zien.",
+    "coachMonthUp": "Maandvolume is {percent}% hoger — consistentie groeit.",
+    "coachMonthDown": "Deze maand is tot nu toe lichter. Eén steady week kan dat keren.",
+    "motivationTrendUp": "Je recente tempotrend gaat de goede kant op — blijf het werk vertrouwen.",
+    "tipFirst": "Log nog een paar sessies en de app kan trends, benchmarks en gewoontes vergelijken.",
+    "tipConsistency": "Het is {days} dagen geleden sinds je laatste zwemtraining. Een korte sessie houdt de gewoonte levend.",
+    "tipRecovery": "Tempo en hartslag wijzen op een zwaardere dag. Een rustigere volgende sessie helpt het werk te verwerken.",
+    "tipDeveloping": "Focus op rustige ademhaling en steady banen — consistentie trekt het tempo omlaag.",
+    "tipStrokeVariety": "{stroke} was {percent}% van vandaag. Slagvariatie balanceert spieren en houdt training fris.",
+    "tipBuildDistance": "Je zwom vandaag snel op kortere afstand. Probeer een vergelijkbaar tempo voor extra lengtes.",
+    "tipSlowingTrend": "Recent tempo is iets gezakt. Een ontspannen techniek-sessie kan helpen resetten.",
+    "tipImprovingTrend": "Je tempotrend verbetert — goed moment om het ritme steady te houden in plaats van harder te duwen.",
+    "tipNearGoal": "Je miste je afstandsdoel met {meters} m — dichtbij genoeg om het volgende keer te halen.",
+    "tipDefault": "Blijf sessies stapelen. Regelmatige banen verslaan één perfecte training.",
+    "tipDefault2": "Vertrouw de routine — stabiele sessies als deze tellen sneller op dan je denkt.",
+    "tipDefault3": "Kleine, consistente zwemmen winnen op lange termijn. Deze sessie is weer een steen in de muur."
+  },
+  "settings": {
+    "title": "Instellingen",
+    "profileTitle": "Vitality-profiel",
+    "profileDesc": "Voor hartslagzones, doelen en coachfeedback",
+    "swimmerName": "Je naam",
+    "swimmerNamePlaceholder": "Hoe moet je coach je noemen?",
+    "defaultSwimmerName": "Zwemmer",
+    "mascotTitle": "Vitality-coach",
+    "mascotDesc": "Kies wie je coacht bij stappen, workouts en doelen.",
+    "mascotFlipName": "Flip",
+    "mascotFlipDesc": "Vernoemd naar de keer — behendig, acrobatisch en helemaal pool.",
+    "mascotFlipRules": "Makkelijke challenges · halve munten · je verliest nooit munten",
+    "mascotFloName": "Flo",
+    "mascotFloDesc": "Kort voor flow — soepele techniek en moeiteloze hydrodynamica.",
+    "mascotFloRules": "Gebalanceerde challenges · volle munten · haal maandelijks zilver of verlies 40 munten",
+    "mascotFinsName": "Fins",
+    "mascotFinsDesc": "Doet je de zwemvliezen aan — maximale intensiteit, verfijning en kracht.",
+    "mascotFinsRules": "Zware challenges · grote verbeteringsbonussen · trage sessies en maanden onder goud kosten munten · 2 gratis rerolls",
+    "mascotActiveCoach": "Jouw coach: {name}",
+    "mascotUnlockHint": "Verdien {pace} totale punten of voltooi {medals} maanddoelen",
+    "mascotSwitchHint": "Je kunt één keer per maand van coach wisselen, aan het begin van de maand vóór je eerste zwembeurt, wanneer de nieuwe maanddoelen worden ingesteld.",
+    "mascotSwitchBlocked": {
+      "alreadySwitched": "Je hebt deze maand al een coach gekozen. Je kunt weer wisselen wanneer de volgende maanddoelen worden ingesteld.",
+      "afterFirstSession": "Coachwissels zijn alleen mogelijk aan het begin van de maand, vóór je eerste zwembeurt van die maand."
+    },
+    "mascotPreviewFlip": "Hoi {name}, ik ben Flip! Elke baan telt — ik moedig je de hele weg aan.",
+    "mascotPreviewFlo": "Hoi {name}, ik ben Flo! We maken van elke zwemtraining iets geweldigs. Kom op!",
+    "mascotPreviewFins": "{name}, ik ben Fins. Ik verwacht elke sessie je beste inzet — versla je gemiddelde tempo en ik maak het de moeite waard.",
+    "storeCosmeticsTitle": "Ontgrendelde cosmetics",
+    "storeCosmeticsDesc": "Kies je icon set en achtergrond vibe.",
+    "activeAppIcon": "Icon set",
+    "iconDefault": "Standaard",
+    "activeAmbient": "Achtergrond vibe",
+    "ambientDefault": "Standaard",
+    "ambientIosNote": "Op iPhone en iPad spelen vibe-animaties mogelijk niet af wanneer Verminder beweging aan staat in Instellingen → Toegankelijkheid → Beweging. Kleuren en gloed blijven zichtbaar, maar beweging kan statisch zijn.",
+    "sex": "Geslacht",
+    "sexMale": "Man",
+    "sexFemale": "Vrouw",
+    "age": "Leeftijd",
+    "exportTitle": "Gegevens exporteren",
+    "exportDesc": "Kopieer deze string om alle sessies en grafieken te backuppen of te delen.",
+    "exportButton": "Exportstring genereren",
+    "importTitle": "Gegevens importeren",
+    "importDesc": "Plak een exportstring om sessies en profiel te herstellen.",
+    "importPlaceholder": "Plak exportstring hier…",
+    "importButton": "Gegevens importeren",
+    "importSuccess": "Import gelukt! Herladen…",
+    "importConfirm": "Gegevens importeren?",
+    "importConfirmDesc": "Dit vervangt je huidige zwemsessies en profiel.",
+    "resetData": "Gegevens wissen",
+    "resetDesc": "Verwijder permanent alle zwemsessies en profielgegevens.",
+    "warning": "Dit kan niet ongedaan worden gemaakt. Exporteer eerst je gegevens indien nodig.",
+    "clearButton": "Alle gegevens wissen",
+    "confirm": "Weet je het zeker?",
+    "confirmDesc": "Alle zwemsessies en profielgegevens worden verwijderd.",
+    "resetProgress": "Stap {step} van {total}",
+    "resetStep1Title": "Alle zwemgegevens verwijderen?",
+    "resetStep1Desc": "Dit verwijdert elke opgeslagen sessie en reset je profiel.",
+    "resetStep1Continue": "Ja, doorgaan",
+    "resetStep2Title": "Weet je het echt zeker?",
+    "resetStep2Desc": "Er is geen back-up en geen undo. Medailles, geschiedenis en voortgang zijn voorgoed weg.",
+    "resetStep2Continue": "Ik begrijp het, doorgaan",
+    "resetStep3Title": "Typ om te bevestigen",
+    "resetStep3Desc": "Typ de onderstaande tekst exact om je gegevens permanent te wissen.",
+    "resetConfirmPhrase": "ALLES WISSEN",
+    "resetTypePrompt": "Typ {phrase} om te bevestigen",
+    "resetTypePlaceholder": "Typ bevestiging…",
+    "resetSessionCount": "Je hebt momenteel {count} opgeslagen sessies.",
+    "cancel": "Annuleren",
+    "success": "Gegevens succesvol gewist.",
+    "error": "Er ging iets mis.",
+    "copy": "Kopiëren",
+    "copied": "Gekopieerd!",
+    "language": "Taal",
+    "languageDesc": "Kies je voorkeurstaal voor de app.",
+    "theme": "Thema",
+    "themeDesc": "Kies een visuele stijl voor de app.",
+    "uploadTitle": "Apple Gezondheid synchroniseren",
+    "uploadDesc": "Importeer stappen en workouts om punten te verdienen.",
+    "uploadCta": "Synchroniseren openen",
+    "darkMode": "Donkere modus",
+    "darkModeDesc": "Gebruik een donker kleurenschema voor de interface.",
+    "autoDarkMode": "Volg systeemthema",
+    "autoDarkModeDesc": "Volg automatisch de licht/donker-instelling van je apparaat.",
+    "themes": {
+      "liquidOs": {
+        "name": "Liquid OS",
+        "desc": "Glazen panelen met zachte gradient-blobs."
+      },
+      "genZ": {
+        "name": "Gen-Z",
+        "desc": "Felle vlakke kleuren en scherp contrast."
+      },
+      "classic": {
+        "name": "Classic Playstation",
+        "desc": "Retro vlakke panelen geïnspireerd op console-UI's."
+      },
+      "olympicPool": {
+        "name": "Olympisch Bad",
+        "desc": "Wedstrijdtiles, baanblauw en touchpad-goud."
+      },
+      "midnightLane": {
+        "name": "Midnight Lane",
+        "desc": "Late laps onder bioluminescente poollichten."
+      },
+      "retroWave": {
+        "name": "Retro Wave",
+        "desc": "Synthwave neon op een middernacht pooldeck."
+      },
+      "tropicalOpen": {
+        "name": "Tropisch Open Water",
+        "desc": "Turquoise lagoon met koraal-zonsondergang."
+      },
+      "goldLuxe": {
+        "name": "Gold Luxe",
+        "desc": "Champagne canvas met trofee-goud — podiumniveau."
+      },
+      "platinumElite": {
+        "name": "Platinum Elite",
+        "desc": "Koel zilver met ijzige prestige — het ultieme niveau."
+      }
+    },
+    "aiTitle": "AI-coach (optioneel)",
+    "aiDesc": "De app geeft al uitgebreide on-device feedback na elke zwemtraining. Voeg een OpenAI API-sleutel toe als je daar AI-coachberichten bovenop wilt.",
+    "aiHint": "Je sleutel blijft op dit apparaat en wordt nooit meegenomen in exports. Zonder sleutel dekt slimme lokale analyse benchmarks, trends en coach-tips.",
+    "aiPlaceholder": "sk-…",
+    "aiSave": "API-sleutel opslaan",
+    "aiClear": "Sleutel verwijderen",
+    "aiActive": "AI-coach ingeschakeld — je krijgt uitgebreide feedback na uploads.",
+    "aiInactive": "Alleen on-device feedback — voeg hierboven een sleutel toe voor AI-coaching.",
+    "secretTitle": "Geheime instellingen",
+    "secretUnlockHint": "Tik 3× op het app-pictogram in Instellingen om dit menu te ontgrendelen.",
+    "secretCheatsSection": "Cheats",
+    "secretUnlockAllMedals": "Alle medailles ontgrendelen",
+    "secretPreviewMonthlyMedals": "Maandelijkse medailles preview",
+    "secretUnlockAllThemes": "Alle thema's ontgrendelen",
+    "secretAdd500Coins": "500 zwem munten toevoegen",
+    "ambientTitle": "Achtergrond vibe",
+    "ambientDesc": "Voegt animatie en kleur toe bovenop je wallpaper (onder de UI).",
+    "ambients": {
+      "neonLagoon": "Neon Lagoon",
+      "sunsetLap": "Sunset Lap",
+      "bubbleTrail": "Bubble Trail",
+      "auroraLap": "Aurora Lap",
+      "deepCurrent": "Deep Current"
+    },
+    "wallpaperTitle": "Achtergrond wallpaper",
+    "wallpaperDesc": "Stelt de basisafbeelding achter de app in. Vibes animeren bovenop deze wallpaper.",
+    "wallpaperDefault": "Thema standaard",
+    "wallpapers": {
+      "lanePool": "Baanbad",
+      "dawnWater": "Ochtendwater",
+      "deepLane": "Diepe baan",
+      "tileDeck": "Tegeldek",
+      "openWater": "Open water",
+      "chlorineGlow": "Chloor glow"
+    },
+    "defaultProfileName": "Vitality-gebruiker"
+  },
+  "mascot": {
+    "thinking": "Even nadenken over je zwemtraining…",
+    "cheerFlip": "Goed bezig met het loggen van een sessie, {name} — elke training telt!",
+    "cheerFlo": "Weer een zwemtraining erbij, {name} — heerlijk om te zien!",
+    "cheerFins": "{name}, sessie gelogd. Nu kijken hoe je die de volgende keer verslaat.",
+    "coachWrap": {
+      "flip": "{name}, {message}",
+      "flo": "{name}, {message}",
+      "fins": "{name}. {message}"
+    },
+    "traits": {
+      "encouraging": "Bemoedigend",
+      "approachable": "Toegankelijk",
+      "friendly": "Vriendelijk",
+      "motivating": "Motiverend",
+      "focused": "Gefocust",
+      "challenging": "Uitdagend"
+    }
+  },
+  "common": {
+    "loading": "Laden…",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "bpm": "spm",
+    "kcal": "kcal",
+    "meters": "m",
+    "laps": "banen",
+    "close": "Sluiten"
+  },
+  "notifications": {
+    "dismiss": "Sluiten",
+    "monthlyGoalsTitle": "Maanddoelen nog open",
+    "monthlyGoalsBody": "Nog {count} uitdaging(en) met {days} dag(en) te gaan — bijv. {goals}. Log een zwem om sterk te eindigen!",
+    "uploadSyncTitle": "Tijd om te zwemmen?",
+    "uploadSyncBody": "Je laatste sessie was {days} dagen geleden. Upload een nieuwe Apple Fitness-screenshot om op koers te blijven."
+  },
+  "launch": {
+    "searchingNewSessions": "Zoeken naar nieuwe sessies…"
+  },
+  "goals": {
+    "title": "Doelen",
+    "subtitle": "Persoonlijke wekelijkse, maandelijkse en jaarlijkse puntdoelen",
+    "monthly": "Maanddoel",
+    "weekly": "Weekdoel",
+    "yearly": "Jaardoel",
+    "progressLine": "{current} / {target} punten",
+    "howItWorksTitle": "Hoe doelen werken",
+    "howItWorksDesc": "Op de 1e van elke maand wordt je maanddoel bepaald op basis van leeftijd, geschiedenis en recente activiteit.",
+    "earlyFinishNote": "Behaal je maanddoel in 20 dagen of minder en het volgende doel stijgt om je uit te dagen.",
+    "scoringTitle": "Punten verdienen",
+    "scoringSteps": "Lopen: bonuspunten bij 5k, 10k en 20k stappen",
+    "scoringWorkouts": "Workouts: punten vanaf 30+ minuten",
+    "scoringZones": "Hogere hartslagzones (leeftijd/geslacht) leveren meer punten",
+    "profileRequired": "Stel geslacht en leeftijd in via Instellingen voor persoonlijke doelen.",
+    "snapshotTitle": "Doelvoortgang"
+  },
+  "vitality": {
+    "points": "punten",
+    "todayTitle": "Vitality vandaag",
+    "stepPoints": "Stappunten",
+    "workoutPoints": "Workoutpunten",
+    "recentPoints": "Recente dagpunten",
+    "highlight": {
+      "steps": "Stappen",
+      "points": "Punten"
+    },
+    "badges": {
+      "step5k": "5k stappen",
+      "step10k": "10k stappen",
+      "step20k": "20k stappen",
+      "workoutLogged": "Workout gelogd"
+    },
+    "insights": {
+      "highIntensity": "{minutes} minuten in hoge hartslagzones.",
+      "workoutTooShort": "Workout korter dan 30 minuten — nog geen workoutpunten.",
+      "dailyTotal": "Dagtotaal: {points} punten."
+    },
+    "coach": {
+      "strongDay": "Enorme vitality-dag — stappen én inspanning!",
+      "goodDay": "Sterke dag. Je bouwt consistente vitality op.",
+      "lightDay": "Lichte dag, maar elk punt telt.",
+      "restDay": "Rustdag — herstel hoort ook bij het plan."
+    },
+    "motivation": {
+      "keepGoing": "Blijf bewegen — je doelen passen zich aan naarmate je verbetert."
+    },
+    "tip": {
+      "daily": "Een workout van 30 minuten plus 10k stappen is een krachtige combo."
+    }
+  }
+}

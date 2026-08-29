@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Aap-SC</string>
+	<string>Aap Vitality</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -25,13 +25,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSHealthShareUsageDescription</key>
-	<string>Aap-SC reads your swim workouts from Apple Health to add sessions automatically.</string>
+	<string>Aap Vitality reads your steps and workouts from Apple Health to calculate daily vitality points and goals.</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>Aap-SC only reads your swim workouts and does not write any data to Apple Health.</string>
+	<string>Aap Vitality only reads your activity data and does not write any data to Apple Health.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Aap-SC reads Apple Fitness swim screenshots from your photo library to log workouts.</string>
+	<string>Aap Vitality can read workout screenshots from your photo library if you choose to import them manually.</string>
 	<key>NSUserNotificationsUsageDescription</key>
-	<string>Aap-SC sends reminders when monthly swim goals are still open near the end of the month.</string>
+	<string>Aap Vitality sends reminders when your monthly point goals are still open near the end of the month.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Oxanium-Regular.ttf</string>
