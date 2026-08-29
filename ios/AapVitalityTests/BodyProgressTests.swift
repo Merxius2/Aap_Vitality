@@ -12,6 +12,7 @@ final class BodyProgressTests: XCTestCase {
         )
 
         XCTAssertEqual(merged.count, 1)
+        XCTAssertEqual(merged[0].leanBodyMassKg, 60)
         XCTAssertEqual(merged[0].musclePercent, 75, accuracy: 0.01)
     }
 

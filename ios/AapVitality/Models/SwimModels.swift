@@ -160,6 +160,7 @@ struct BodyMetricsEntry: Codable, Identifiable, Equatable {
     var weightKg: Double
     var heightCm: Double?
     var bodyFatPercent: Double?
+    var leanBodyMassKg: Double?
     var musclePercent: Double?
 
     var bmi: Double? {
@@ -169,7 +170,7 @@ struct BodyMetricsEntry: Codable, Identifiable, Equatable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, date, weightKg, heightCm, bodyFatPercent, musclePercent
+        case id, date, weightKg, heightCm, bodyFatPercent, leanBodyMassKg, musclePercent
     }
 
     init(
@@ -178,6 +179,7 @@ struct BodyMetricsEntry: Codable, Identifiable, Equatable {
         weightKg: Double,
         heightCm: Double?,
         bodyFatPercent: Double?,
+        leanBodyMassKg: Double? = nil,
         musclePercent: Double? = nil
     ) {
         self.id = id
@@ -185,6 +187,7 @@ struct BodyMetricsEntry: Codable, Identifiable, Equatable {
         self.weightKg = weightKg
         self.heightCm = heightCm
         self.bodyFatPercent = bodyFatPercent
+        self.leanBodyMassKg = leanBodyMassKg
         self.musclePercent = musclePercent
     }
 
@@ -195,6 +198,7 @@ struct BodyMetricsEntry: Codable, Identifiable, Equatable {
         weightKg = try container.decode(Double.self, forKey: .weightKg)
         heightCm = try container.decodeIfPresent(Double.self, forKey: .heightCm)
         bodyFatPercent = try container.decodeIfPresent(Double.self, forKey: .bodyFatPercent)
+        leanBodyMassKg = try container.decodeIfPresent(Double.self, forKey: .leanBodyMassKg)
         musclePercent = try container.decodeIfPresent(Double.self, forKey: .musclePercent)
     }
 }

@@ -3,11 +3,13 @@ import Foundation
 struct BodyProgressSnapshot: Equatable {
     var latestWeightKg: Double?
     var latestBodyFatPercent: Double?
+    var latestLeanBodyMassKg: Double?
     var latestMusclePercent: Double?
     var latestBMI: Double?
     var weightChange8WeeksKg: Double?
     var bodyFatChange8WeeksPercent: Double?
     var muscleChange8WeeksPercent: Double?
+    var leanMassChange8WeeksKg: Double?
     var weighInsThisMonth: Int
     var weeklyTrend: [BodyProgressWeeklyPoint]
 }
@@ -27,6 +29,7 @@ enum BodyProgress {
     static let weightTrendTargetKg = 0.5
     static let bodyFatTrendTargetPercent = 0.5
     static let muscleTrendTargetPercent = 0.5
+    static let leanMassTrendTargetKg = 0.5
 
     static func bmi(weightKg: Double, heightCm: Double) -> Double {
         let meters = heightCm / 100
@@ -57,9 +60,10 @@ enum BodyProgress {
             guard let weight = weightByDate[date] ?? previous?.weightKg, weight > 0 else { continue }
             let bodyFat = bodyFatByDate[date] ?? previous?.bodyFatPercent
             let height = heightCm ?? previous?.heightCm
+            let leanMass = leanBodyMassByDate[date] ?? previous?.leanBodyMassKg
             let muscle = resolvedMusclePercent(
                 weightKg: weight,
-                leanBodyMassKg: leanBodyMassByDate[date],
+                leanBodyMassKg: leanMass,
                 previous: previous?.musclePercent
             )
             byDate[date] = BodyMetricsEntry(
@@ -68,6 +72,7 @@ enum BodyProgress {
                 weightKg: weight,
                 heightCm: height,
                 bodyFatPercent: bodyFat,
+                leanBodyMassKg: leanMass,
                 musclePercent: muscle
             )
         }
@@ -128,6 +133,19 @@ enum BodyProgress {
         )
     }
 
+    static func leanMassChangeKg(
+        entries: [BodyMetricsEntry],
+        overDays: Int = trendWindowDays,
+        referenceDate: Date = Date()
+    ) -> Double? {
+        metricChange(
+            entries: entries,
+            overDays: overDays,
+            referenceDate: referenceDate,
+            value: { $0.leanBodyMassKg }
+        )
+    }
+
     static func hasPositiveTrend(
         entries: [BodyMetricsEntry],
         referenceDate: Date = Date()
@@ -144,6 +162,10 @@ enum BodyProgress {
            muscleChange >= muscleTrendTargetPercent {
             return true
         }
+        if let leanChange = leanMassChangeKg(entries: entries, referenceDate: referenceDate),
+           leanChange >= leanMassTrendTargetKg {
+            return true
+        }
         return false
     }
 
@@ -155,7 +177,8 @@ enum BodyProgress {
     ) -> Int {
         let weightChange = weightChangeKg(entries: entries, referenceDate: referenceDate) ?? 0
         let muscleChange = muscleChangePercent(entries: entries, referenceDate: referenceDate) ?? 0
-        guard weightChange <= 0 || muscleChange >= muscleTrendTargetPercent else { return 0 }
+        let leanChange = leanMassChangeKg(entries: entries, referenceDate: referenceDate) ?? 0
+        guard weightChange <= 0 || muscleChange >= muscleTrendTargetPercent || leanChange >= leanMassTrendTargetKg else { return 0 }
 
         let calendar = Calendar.current
         var count = 0
@@ -218,11 +241,13 @@ enum BodyProgress {
         return BodyProgressSnapshot(
             latestWeightKg: latest?.weightKg,
             latestBodyFatPercent: latest?.bodyFatPercent,
+            latestLeanBodyMassKg: latest?.leanBodyMassKg,
             latestMusclePercent: latest?.musclePercent,
             latestBMI: latest?.bmi,
             weightChange8WeeksKg: weightChangeKg(entries: entries, referenceDate: referenceDate),
             bodyFatChange8WeeksPercent: bodyFatChangePercent(entries: entries, referenceDate: referenceDate),
             muscleChange8WeeksPercent: muscleChangePercent(entries: entries, referenceDate: referenceDate),
+            leanMassChange8WeeksKg: leanMassChangeKg(entries: entries, referenceDate: referenceDate),
             weighInsThisMonth: weighIns(in: monthKey, entries: entries),
             weeklyTrend: weeklyTrendPoints(entries: entries, referenceDate: referenceDate)
         )
@@ -304,6 +329,11 @@ enum BodyProgress {
         if let change = snapshot.muscleChange8WeeksPercent, change >= muscleTrendTargetPercent {
             return t.t("progress.body.memoryMuscleTrend", params: [
                 "change": String(format: "%.1f", change)
+            ])
+        }
+        if let change = snapshot.leanMassChange8WeeksKg, change >= leanMassTrendTargetKg {
+            return t.t("progress.body.memoryLeanMassTrend", params: [
+                "change": formatWeight(change, t: t)
             ])
         }
         if snapshot.weighInsThisMonth >= 4 {

@@ -64,12 +64,24 @@ struct BodyProgressTrendCard: View {
                         value: "\(String(format: "%.1f", bodyFat))%"
                     )
                 }
-                if let muscle = snapshot.latestMusclePercent {
+                if let leanMass = snapshot.latestLeanBodyMassKg {
+                    metricBlock(
+                        title: preferences.t("progress.body.leanMass"),
+                        value: BodyProgress.formatWeight(leanMass, t: preferences.translations)
+                    )
+                } else if let muscle = snapshot.latestMusclePercent {
                     metricBlock(
                         title: preferences.t("progress.body.muscle"),
                         value: "\(String(format: "%.1f", muscle))%"
                     )
                 }
+            }
+            if snapshot.latestLeanBodyMassKg != nil, let muscle = snapshot.latestMusclePercent {
+                Text(preferences.t("progress.body.muscleShare", params: [
+                    "percent": String(format: "%.1f", muscle)
+                ]))
+                .themeFont(.caption2)
+                .foregroundStyle(.secondary)
             }
         }
     }
@@ -120,7 +132,13 @@ struct BodyProgressTrendCard: View {
                 .themeFont(.caption)
                 .foregroundStyle(change <= 0 ? .green : .secondary)
             }
-            if let change = snapshot.muscleChange8WeeksPercent {
+            if let change = snapshot.leanMassChange8WeeksKg {
+                Text(preferences.t("progress.body.leanMassTrendUp", params: [
+                    "change": BodyProgress.formatWeight(change, t: preferences.translations)
+                ]))
+                .themeFont(.caption)
+                .foregroundStyle(change >= BodyProgress.leanMassTrendTargetKg ? .green : .secondary)
+            } else if let change = snapshot.muscleChange8WeeksPercent {
                 Text(preferences.t("progress.body.muscleTrendUp", params: [
                     "change": String(format: "%.1f", change)
                 ]))
