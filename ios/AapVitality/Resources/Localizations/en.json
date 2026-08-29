@@ -446,7 +446,7 @@
     "coachRequirement": "{name} expects at least {tier} this month.",
     "coachCheerFlip": "{name} is over the moon — every medal counts, and this one is yours!",
     "rerollCredits": "{count} reroll credit(s) ready to use",
-    "rerollBuyHint": "Buy more rerolls in the Swim Coin Store for 500 swim coins.",
+    "rerollBuyHint": "You have used your free reroll for this month.",
     "tooltip": {
       "tierEarned": "{tier} — {month}",
       "challengesCompleted": "{count}/3 challenges completed",
