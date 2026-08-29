@@ -1,0 +1,46 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Run unit tests on the iOS simulator"
+  lane :test do
+    run_tests(
+      project: "AapSC.xcodeproj",
+      scheme: "AapSC",
+      device: "iPhone 16",
+      clean: true
+    )
+  end
+
+  desc "Build and upload a new beta to TestFlight"
+  lane :beta do
+    setup_ci if ENV["CI"]
+
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_PRIVATE_KEY"],
+      is_key_content_base64: true
+    )
+
+    build_number = ENV.fetch("GITHUB_RUN_NUMBER", Time.now.to_i.to_s)
+    increment_build_number(
+      build_number: build_number,
+      xcodeproj: "AapSC.xcodeproj"
+    )
+
+    build_app(
+      project: "AapSC.xcodeproj",
+      scheme: "AapSC",
+      export_method: "app-store",
+      output_directory: "build",
+      clean: true,
+      xcargs: "-allowProvisioningUpdates DEVELOPMENT_TEAM=#{ENV.fetch('APPLE_TEAM_ID', 'LT8J5AAD2V')}"
+    )
+
+    upload_to_testflight(
+      api_key: api_key,
+      skip_waiting_for_build_processing: true,
+      distribute_external: false
+    )
+  end
+end

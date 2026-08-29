@@ -1,0 +1,2 @@
+app_identifier("com.aapft.aapsc")
+team_id(ENV.fetch("APPLE_TEAM_ID", "LT8J5AAD2V"))
