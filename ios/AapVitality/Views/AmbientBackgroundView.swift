@@ -7,6 +7,7 @@ enum AmbientCatalog {
         "ambient:bubble-trail",
         "ambient:aurora-lap",
         "ambient:deep-current",
+        "ambient:green-leaves",
     ]
 
     static func isValid(_ id: String?) -> Bool {
@@ -21,6 +22,7 @@ enum AmbientCatalog {
         case "ambient:bubble-trail": return "settings.ambients.bubbleTrail"
         case "ambient:aurora-lap": return "settings.ambients.auroraLap"
         case "ambient:deep-current": return "settings.ambients.deepCurrent"
+        case "ambient:green-leaves": return "settings.ambients.greenLeaves"
         default: return id
         }
     }
@@ -99,6 +101,10 @@ struct AmbientPresetRenderer: View {
             if preset.bubbles && isPreview {
                 bubbleTrail(in: size, elapsed: elapsed)
             }
+
+            if preset.leaves && isPreview {
+                leafDrift(in: size, elapsed: elapsed)
+            }
         }
     }
 
@@ -162,6 +168,85 @@ struct AmbientPresetRenderer: View {
                 duration: bubble.duration * durationScale,
                 elapsed: elapsed
             )
+        }
+    }
+
+    @ViewBuilder
+    private func leafDrift(in size: CGSize, elapsed: TimeInterval) -> some View {
+        let leaves = Array(AmbientPresets.leafPositions.prefix(5))
+        let sizeScale: CGFloat = 0.55
+        let durationScale = 0.55
+
+        ForEach(leaves.indices, id: \.self) { index in
+            let leaf = leaves[index]
+            DriftingLeaf(
+                size: leaf.size * sizeScale,
+                startYRatio: leaf.startYRatio,
+                containerSize: size,
+                delay: leaf.delay * durationScale,
+                duration: leaf.duration * durationScale,
+                elapsed: elapsed,
+                tint: leaf.tint
+            )
+        }
+    }
+}
+
+struct AmbientLeafOverlayView: View {
+    let activeAmbient: String?
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.appAnimationsPaused) private var animationsPaused
+
+    private var showsLeaves: Bool {
+        guard let activeAmbient,
+              AmbientCatalog.isValid(activeAmbient),
+              let preset = AmbientPresets.preset(for: activeAmbient) else {
+            return false
+        }
+        return preset.leaves
+    }
+
+    var body: some View {
+        if showsLeaves {
+            GeometryReader { proxy in
+                let motionEnabled = !reduceMotion && !animationsPaused
+
+                Group {
+                    if motionEnabled {
+                        TimelineView(BatteryEfficientAnimation.timelineSchedule) { timeline in
+                            leafLayer(
+                                in: proxy.size,
+                                elapsed: timeline.date.timeIntervalSinceReferenceDate
+                            )
+                        }
+                    } else {
+                        leafLayer(in: proxy.size, elapsed: 0)
+                    }
+                }
+            }
+            .ignoresSafeArea()
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+        }
+    }
+
+    @ViewBuilder
+    private func leafLayer(in size: CGSize, elapsed: TimeInterval) -> some View {
+        ZStack {
+            ForEach(AmbientPresets.leafPositions.indices, id: \.self) { index in
+                let leaf = AmbientPresets.leafPositions[index]
+                DriftingLeaf(
+                    size: leaf.size,
+                    startYRatio: leaf.startYRatio,
+                    containerSize: size,
+                    delay: leaf.delay,
+                    duration: leaf.duration,
+                    elapsed: elapsed,
+                    tint: leaf.tint
+                )
+                .allowsHitTesting(false)
+            }
         }
     }
 }
@@ -290,6 +375,68 @@ private struct RisingBubble: View {
     }
 }
 
+private struct DriftingLeaf: View {
+    let size: CGFloat
+    let startYRatio: CGFloat
+    let containerSize: CGSize
+    let delay: Double
+    let duration: Double
+    let elapsed: TimeInterval
+    let tint: Color
+
+    var body: some View {
+        let cycle = max(duration, 0.1)
+        let shifted = elapsed - delay
+        let progress = shifted < 0
+            ? 0.0
+            : (shifted.truncatingRemainder(dividingBy: cycle)) / cycle
+        let x = containerSize.width * (-0.10 + progress * 1.20)
+        let sway = sin(progress * .pi * 5) * containerSize.height * 0.025
+        let y = containerSize.height * startYRatio + sway
+        let rotation = sin(progress * .pi * 3) * 22 + 28
+        let fade = progress < 0.06
+            ? progress / 0.06
+            : max(0, 1 - (progress - 0.90) / 0.10)
+
+        LeafShape()
+            .fill(
+                LinearGradient(
+                    colors: [tint.opacity(0.95), tint.opacity(0.55)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .frame(width: size, height: size * 1.35)
+            .rotationEffect(.degrees(rotation))
+            .position(x: x, y: y)
+            .opacity(0.88 * fade)
+    }
+}
+
+private struct LeafShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
+        path.addQuadCurve(
+            to: CGPoint(x: rect.maxX, y: rect.midY),
+            control: CGPoint(x: rect.maxX * 0.95, y: rect.minY)
+        )
+        path.addQuadCurve(
+            to: CGPoint(x: rect.midX, y: rect.maxY),
+            control: CGPoint(x: rect.maxX, y: rect.maxY)
+        )
+        path.addQuadCurve(
+            to: CGPoint(x: rect.minX, y: rect.midY),
+            control: CGPoint(x: rect.minX, y: rect.maxY)
+        )
+        path.addQuadCurve(
+            to: CGPoint(x: rect.midX, y: rect.minY),
+            control: CGPoint(x: rect.minX, y: rect.minY)
+        )
+        return path
+    }
+}
+
 struct AmbientBlob {
     let color: Color
     let opacity: Double
@@ -312,6 +459,7 @@ struct AmbientPreset {
     let blobs: [AmbientBlob]
     let driftBlobs: Bool
     let bubbles: Bool
+    let leaves: Bool
 }
 
 enum AmbientPresets {
@@ -319,6 +467,17 @@ enum AmbientPresets {
         (0.06, 28, 0, 9), (0.14, 18, 2.4, 11), (0.24, 34, 0.8, 10.5), (0.33, 22, 3.6, 12),
         (0.42, 16, 1.2, 8.5), (0.51, 30, 4.2, 11.5), (0.60, 20, 0.3, 9.8), (0.69, 26, 2.8, 10.2),
         (0.78, 14, 5, 8), (0.87, 32, 1.6, 12.5), (0.93, 18, 3.2, 9.2), (0.48, 24, 6, 13),
+    ]
+
+    static let leafPositions: [(startYRatio: CGFloat, size: CGFloat, delay: Double, duration: Double, tint: Color)] = [
+        (0.18, 22, 0, 14, Color(hex: "#4ADE80")),
+        (0.32, 18, 2.5, 16, Color(hex: "#22C55E")),
+        (0.48, 26, 1.2, 15, Color(hex: "#86EFAC")),
+        (0.62, 20, 4.0, 17, Color(hex: "#16A34A")),
+        (0.26, 16, 5.5, 13, Color(hex: "#BBF7D0")),
+        (0.74, 24, 3.2, 18, Color(hex: "#15803D")),
+        (0.40, 19, 6.8, 15, Color(hex: "#65A30D")),
+        (0.56, 21, 8.0, 16, Color(hex: "#34D399")),
     ]
 
     static func preset(for id: String) -> AmbientPreset? {
@@ -341,7 +500,8 @@ enum AmbientPresets {
                     blob("#22D3EE", 0.35, 0.30, nil, nil, right: 0.15, bottom: 0.10),
                 ],
                 driftBlobs: true,
-                bubbles: false
+                bubbles: false,
+                leaves: false
             )
         case "ambient:sunset-lap":
             return AmbientPreset(
@@ -361,7 +521,8 @@ enum AmbientPresets {
                     blob("#EF4444", 0.35, 0.38, nil, nil, right: 0.08, bottom: 0.08),
                 ],
                 driftBlobs: true,
-                bubbles: false
+                bubbles: false,
+                leaves: false
             )
         case "ambient:bubble-trail":
             return AmbientPreset(
@@ -378,7 +539,8 @@ enum AmbientPresets {
                     blob("#A5F3FC", 0.40, 0.40, nil, nil, right: 0.05, bottom: 0.10),
                 ],
                 driftBlobs: false,
-                bubbles: true
+                bubbles: true,
+                leaves: false
             )
         case "ambient:aurora-lap":
             return AmbientPreset(
@@ -398,7 +560,8 @@ enum AmbientPresets {
                     blob("#A78BFA", 0.30, 0.32, nil, nil, right: 0.12, bottom: 0.12),
                 ],
                 driftBlobs: true,
-                bubbles: false
+                bubbles: false,
+                leaves: false
             )
         case "ambient:deep-current":
             return AmbientPreset(
@@ -417,7 +580,27 @@ enum AmbientPresets {
                     blob("#164E63", 0.55, 0.64, 0.06, nil, bottom: 0.20),
                 ],
                 driftBlobs: true,
-                bubbles: false
+                bubbles: false,
+                leaves: false
+            )
+        case "ambient:green-leaves":
+            return AmbientPreset(
+                gradient: AmbientGradientSpec(
+                    colors: [
+                        Color(hex: "#ECFDF5"), Color(hex: "#BBF7D0"), Color(hex: "#4ADE80"),
+                        Color(hex: "#16A34A"), Color(hex: "#14532D"),
+                    ],
+                    duration: 20,
+                    vertical: true
+                ),
+                blobs: [
+                    blob("#86EFAC", 0.40, 0.50, -0.08, -0.10),
+                    blob("#22C55E", 0.35, 0.42, nil, nil, right: 0.10, bottom: 0.12),
+                    blob("#A3E635", 0.30, 0.38, 0.08, nil, bottom: 0.18),
+                ],
+                driftBlobs: true,
+                bubbles: false,
+                leaves: true
             )
         default:
             return nil
@@ -523,6 +706,7 @@ struct AppBackdropView: View {
                 AmbientOverlayView(activeAmbient: activeAmbient)
                     .id(activeAmbient ?? "none")
                 AmbientBubbleOverlayView(activeAmbient: activeAmbient)
+                AmbientLeafOverlayView(activeAmbient: activeAmbient)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

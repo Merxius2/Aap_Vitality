@@ -688,11 +688,12 @@
     "dailyGoalNotifications": "Dagdoel-herinneringen",
     "dailyGoalNotificationsDesc": "Vier wanneer je je dagdoel haalt, of krijg 's avonds een herinnering als je dat nog niet deed.",
     "ambients": {
-      "neonLagoon": "Neon Lagoon",
-      "sunsetLap": "Sunset Lap",
+      "neonLagoon": "Neon puls",
+      "sunsetLap": "Zonsondergang gloed",
       "bubbleTrail": "Bubble Trail",
-      "auroraLap": "Aurora Lap",
-      "deepCurrent": "Deep Current"
+      "auroraLap": "Aurora gloed",
+      "deepCurrent": "Middernacht flow",
+      "greenLeaves": "Groene bladeren"
     },
     "wallpaperTitle": "Achtergrond wallpaper",
     "wallpaperDesc": "Stelt de basisafbeelding achter de app in. Vibes animeren bovenop deze wallpaper.",
