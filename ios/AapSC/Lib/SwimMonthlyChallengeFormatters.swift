@@ -14,6 +14,8 @@ enum SwimMonthlyChallengeFormatters {
             return SwimFormatters.formatDistance(value)
         case "kcal":
             return "\(value) \(t.t("common.kcal"))"
+        case "monthly_points_bronze", "monthly_points_silver", "monthly_points_gold":
+            return "\(value) \(t.t("vitality.points"))"
         default:
             return String(value)
         }
@@ -31,6 +33,12 @@ enum SwimMonthlyChallengeFormatters {
             return t.t("monthlyChallenges.targets.streak", params: ["days": String(target)])
         case "active_weeks":
             return t.t("monthlyChallenges.targets.activeWeeks", params: ["weeks": String(target)])
+        case "monthly_points_bronze":
+            return t.t("monthlyChallenges.targets.monthlyPointsBronze", params: ["points": String(target)])
+        case "monthly_points_silver":
+            return t.t("monthlyChallenges.targets.monthlyPointsSilver", params: ["points": String(target)])
+        case "monthly_points_gold":
+            return t.t("monthlyChallenges.targets.monthlyPointsGold", params: ["points": String(target)])
         default:
             return String(target)
         }

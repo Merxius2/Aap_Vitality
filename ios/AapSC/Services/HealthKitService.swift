@@ -9,6 +9,18 @@ struct HealthKitSwimWorkout: Identifiable, Equatable {
     var endDate: Date
 }
 
+struct HealthKitVitalityWorkout: Identifiable, Equatable {
+    var id: String
+    var date: String
+    var workoutType: String
+    var durationSec: Int
+    var avgHeartRate: Int?
+    var zoneMinutes: HRZoneMinutes?
+    var activeKcal: Int?
+    var startDate: Date
+    var endDate: Date
+}
+
 enum HealthKitServiceError: LocalizedError {
     case unavailable
     case authorizationDenied
@@ -32,6 +44,9 @@ enum HealthKitService {
     private static let readTypes: Set<HKObjectType> = {
         var types = Set<HKObjectType>()
         types.insert(HKObjectType.workoutType())
+        if let steps = HKQuantityType.quantityType(forIdentifier: .stepCount) {
+            types.insert(steps)
+        }
         if let distance = HKQuantityType.quantityType(forIdentifier: .distanceSwimming) {
             types.insert(distance)
         }
@@ -132,6 +147,142 @@ enum HealthKitService {
         }
 
         return (mapped, rawWorkouts.count)
+    }
+
+    /// Fetches all workouts (any type) with optional heart-rate zone enrichment.
+    static func fetchNewVitalityWorkouts(
+        excluding existingUUIDs: Set<String>,
+        since: Date,
+        maxResults: Int,
+        profile: SwimProfile,
+        queryLimit: Int = queryLimit,
+        enrichHeartRate: Bool = true
+    ) async throws -> (workouts: [HealthKitVitalityWorkout], queriedCount: Int) {
+        guard isAvailable else { throw HealthKitServiceError.unavailable }
+
+        let datePredicate = HKQuery.predicateForSamples(
+            withStart: since,
+            end: nil,
+            options: .strictStartDate
+        )
+
+        let rawWorkouts = try await queryWorkouts(predicate: datePredicate, limit: queryLimit)
+        var mapped: [HealthKitVitalityWorkout] = []
+        mapped.reserveCapacity(min(rawWorkouts.count, maxResults))
+        let maxHR = VitalityHRZones.maxHeartRate(sex: profile.sex, age: profile.age)
+
+        for workout in rawWorkouts {
+            let base = mapVitalityWorkout(workout)
+            guard !existingUUIDs.contains(base.id) else { continue }
+            var enriched = base
+            if enrichHeartRate {
+                if enriched.avgHeartRate == nil, let hr = await averageHeartRate(for: workout) {
+                    enriched.avgHeartRate = hr
+                }
+                if let samples = await heartRateSamples(for: workout), !samples.isEmpty {
+                    enriched.zoneMinutes = VitalityHRZones.zoneMinutes(from: samples, maxHR: maxHR)
+                } else {
+                    enriched.zoneMinutes = VitalityHRZones.zoneMinutes(
+                        from: enriched.avgHeartRate,
+                        durationSec: enriched.durationSec,
+                        maxHR: maxHR
+                    )
+                }
+            }
+            mapped.append(enriched)
+        }
+
+        mapped.sort { $0.startDate < $1.startDate }
+        if mapped.count > maxResults {
+            mapped = Array(mapped.prefix(maxResults))
+        }
+
+        return (mapped, rawWorkouts.count)
+    }
+
+    static func fetchDailySteps(since: Date) async throws -> [String: Int] {
+        guard isAvailable else { throw HealthKitServiceError.unavailable }
+        guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else { return [:] }
+
+        return try await withCheckedThrowingContinuation { continuation in
+            let predicate = HKQuery.predicateForSamples(withStart: since, end: Date(), options: .strictStartDate)
+            var interval = DateComponents()
+            interval.day = 1
+            let query = HKStatisticsCollectionQuery(
+                quantityType: stepType,
+                quantitySamplePredicate: predicate,
+                options: .cumulativeSum,
+                anchorDate: Calendar.current.startOfDay(for: since),
+                intervalComponents: interval
+            )
+            query.initialResultsHandler = { _, collection, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                var result: [String: Int] = [:]
+                collection?.enumerateStatistics(from: since, to: Date()) { stats, _ in
+                    let steps = stats.sumQuantity()?.doubleValue(for: .count()) ?? 0
+                    if steps > 0 {
+                        result[dateKeyFormatter.string(from: stats.startDate)] = Int(steps.rounded())
+                    }
+                }
+                continuation.resume(returning: result)
+            }
+            store.execute(query)
+        }
+    }
+
+    private static func mapVitalityWorkout(_ workout: HKWorkout) -> HealthKitVitalityWorkout {
+        let durationSec = max(0, Int(workout.duration.rounded()))
+        let activeKcal = workout.totalEnergyBurned.map { Int($0.doubleValue(for: .kilocalorie()).rounded()) }
+        let date = dateKeyFormatter.string(from: workout.startDate)
+        return HealthKitVitalityWorkout(
+            id: workout.uuid.uuidString,
+            date: date,
+            workoutType: workout.workoutActivityType.vitalityName,
+            durationSec: durationSec,
+            avgHeartRate: nil,
+            zoneMinutes: nil,
+            activeKcal: activeKcal,
+            startDate: workout.startDate,
+            endDate: workout.endDate
+        )
+    }
+
+    private static func heartRateSamples(for workout: HKWorkout) async -> [(bpm: Int, durationSec: Int)]? {
+        guard let hrType = HKQuantityType.quantityType(forIdentifier: .heartRate) else { return nil }
+        return await withCheckedContinuation { continuation in
+            let predicate = HKQuery.predicateForSamples(
+                withStart: workout.startDate,
+                end: workout.endDate,
+                options: .strictStartDate
+            )
+            let sort = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
+            let query = HKSampleQuery(
+                sampleType: hrType,
+                predicate: predicate,
+                limit: HKObjectQueryNoLimit,
+                sortDescriptors: [sort]
+            ) { _, samples, _ in
+                guard let quantitySamples = samples as? [HKQuantitySample], quantitySamples.count >= 2 else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+                var samplesOut: [(bpm: Int, durationSec: Int)] = []
+                for index in 0..<(quantitySamples.count - 1) {
+                    let current = quantitySamples[index]
+                    let next = quantitySamples[index + 1]
+                    let bpm = Int(current.quantity.doubleValue(
+                        for: HKUnit.count().unitDivided(by: HKUnit.minute())
+                    ).rounded())
+                    let duration = max(1, Int(next.startDate.timeIntervalSince(current.startDate)))
+                    samplesOut.append((bpm: bpm, durationSec: duration))
+                }
+                continuation.resume(returning: samplesOut)
+            }
+            store.execute(query)
+        }
     }
 
     private static func queryWorkouts(predicate: NSPredicate, limit: Int) async throws -> [HKWorkout] {
@@ -278,4 +429,22 @@ enum HealthKitService {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }()
+}
+
+private extension HKWorkoutActivityType {
+    var vitalityName: String {
+        switch self {
+        case .running: return "running"
+        case .walking: return "walking"
+        case .cycling: return "cycling"
+        case .swimming: return "swimming"
+        case .yoga: return "yoga"
+        case .functionalStrengthTraining, .traditionalStrengthTraining: return "strength"
+        case .highIntensityIntervalTraining: return "hiit"
+        case .hiking: return "hiking"
+        case .elliptical: return "elliptical"
+        case .rowing: return "rowing"
+        default: return "other"
+        }
+    }
 }

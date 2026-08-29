@@ -22,7 +22,7 @@ struct ContentView: View {
                     settingsTitle: preferences.t("navigation.settings"),
                     medalsTitle: preferences.t("navigation.medals"),
                     progressTitle: preferences.t("navigation.progress"),
-                    benchmarkTitle: preferences.t("navigation.benchmark"),
+                    benchmarkTitle: preferences.t("navigation.goals"),
                     historyTitle: preferences.t("navigation.history")
                 )
                 .id(appearanceKey)
@@ -47,7 +47,7 @@ struct ContentView: View {
         case 2:
             SettingsScreen(embedded: true)
         case 3:
-            BenchmarkScreen()
+            VitalityGoalsScreen()
         case 4:
             HistoryScreen()
         default:

@@ -214,13 +214,15 @@ struct MascotSettingsSection: View {
         let unlockStatus = MascotUnlock.unlockStatus(
             mascotId: mascotId,
             profile: viewModel.profile,
-            sessions: viewModel.sessions,
+            dailyRecords: viewModel.dailyRecords,
+            goalState: viewModel.goalState,
             monthlyChallengeRerolls: viewModel.monthlyChallengeRerolls
         )
         let locked = !unlockStatus.unlocked
         let switchCheck = MascotUnlock.canSwitchMascot(
             profile: viewModel.profile,
-            sessions: viewModel.sessions,
+            dailyRecords: viewModel.dailyRecords,
+            goalState: viewModel.goalState,
             nextMascotId: mascotId,
             currentMascotId: viewModel.mascotId
         )
@@ -244,7 +246,8 @@ struct MascotSettingsSection: View {
         }
         let switchWindow = MascotUnlock.canSwitchMascot(
             profile: viewModel.profile,
-            sessions: viewModel.sessions,
+            dailyRecords: viewModel.dailyRecords,
+            goalState: viewModel.goalState,
             monthKey: monthKey,
             nextMascotId: viewModel.mascotId,
             currentMascotId: viewModel.mascotId
@@ -262,18 +265,16 @@ struct MascotSettingsSection: View {
         return template.replacingOccurrences(of: "{name}", with: displayName)
     }
 
-    private func unlockHint(for mascotId: String, unlockStatus: (unlocked: Bool, paceMet: Bool, medalsMet: Bool, paceLevel: SwimLevel, monthlyMedals: Int)) -> String? {
+    private func unlockHint(for mascotId: String, unlockStatus: (unlocked: Bool, pointsMet: Bool, goalsMet: Bool, totalPoints: Int, monthlyGoals: Int)) -> String? {
         guard !unlockStatus.unlocked,
-              let requirements = MascotUnlock.unlockRequirements[mascotId],
-              let minPaceLevel = requirements.minPaceLevel else {
+              let requirements = MascotUnlock.unlockRequirements[mascotId] else {
             return nil
         }
-        let paceLabel = preferences.t("benchmark.levels.\(minPaceLevel)")
         return preferences.t(
             "settings.mascotUnlockHint",
             params: [
-                "pace": paceLabel,
-                "medals": String(requirements.minMonthlyMedals),
+                "pace": String(requirements.minTotalPoints),
+                "medals": String(requirements.minMonthlyGoals),
             ]
         )
     }

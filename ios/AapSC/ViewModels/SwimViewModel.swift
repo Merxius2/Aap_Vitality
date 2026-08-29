@@ -42,13 +42,33 @@ final class SwimViewModel: ObservableObject {
     private var strokeChartCacheKey: String?
 
     var sessions: [SwimSession] { data.sessions }
+    var dailyRecords: [DailyVitalityRecord] { data.dailyRecords }
+    var goalState: VitalityGoalState { data.goalState }
     var profile: SwimProfile { data.profile }
     var monthlyChallengeRerolls: [String: MonthRerollEntry] { data.monthlyChallengeRerolls }
+
+    var vitalityGoalSnapshot: VitalityGoalSnapshot {
+        VitalityGoals.goalSnapshot(
+            records: dailyRecords,
+            profile: profile,
+            goalState: goalState,
+            intensity: MascotConstants.gameplay(mascotId).challengeIntensity
+        )
+    }
+
+    var todayVitalityRecord: DailyVitalityRecord? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        let today = formatter.string(from: Date())
+        return dailyRecords.first { $0.date == today }
+    }
 
     var mascotId: String {
         MascotUnlock.resolveMascotId(
             profile: profile,
-            sessions: sessions,
+            dailyRecords: dailyRecords,
+            goalState: goalState,
             monthlyChallengeRerolls: monthlyChallengeRerolls
         )
     }
@@ -59,7 +79,9 @@ final class SwimViewModel: ObservableObject {
             return cached
         }
         let medals = SwimMedals.evaluateAllMedals(
-            sessions,
+            dailyRecords,
+            profile: profile,
+            goalState: goalState,
             allMedalsUnlocked: cheats.allMedalsUnlocked
         )
         cachedEvaluatedMedals = medals
@@ -72,12 +94,17 @@ final class SwimViewModel: ObservableObject {
             return cached
         }
         let intensity = MascotConstants.gameplay(mascotId).challengeIntensity
-        let history = SwimMonthlyChallenges.getMonthlyChallengeHistory(
-            sessions: sessions,
-            previewMonthlyMedals: cheats.previewMonthlyMedals,
-            monthlyChallengeRerolls: monthlyChallengeRerolls,
-            intensity: intensity
-        )
+        let months = Array(Set(dailyRecords.map { String($0.date.prefix(7)) })).sorted(by: >)
+        let history = months.compactMap { monthKey -> MonthlyChallengeState? in
+            let state = VitalityGoals.evaluatePointChallenges(
+                records: dailyRecords,
+                profile: profile,
+                goalState: goalState,
+                monthKey: monthKey,
+                intensity: intensity
+            )
+            return state.tier == nil ? nil : state
+        }
         cachedMonthlyChallengeHistory = history
         return history
     }
@@ -124,11 +151,12 @@ final class SwimViewModel: ObservableObject {
         if let cached = cachedProgressOverviewMessage, progressOverviewCacheKey == cacheKey {
             return cached
         }
-        let message = SwimAnalysis.buildProgressOverviewMessage(
+        let message = VitalityAnalysis.buildProgressOverviewMessage(
             profile: profile,
-            sessions: sessions,
+            records: dailyRecords,
+            goalSnapshot: vitalityGoalSnapshot,
             t: t,
-            monthlyChallengeRerolls: monthlyChallengeRerolls
+            mascotId: mascotId
         )
         cachedProgressOverviewMessage = message
         progressOverviewCacheKey = cacheKey
@@ -195,7 +223,8 @@ final class SwimViewModel: ObservableObject {
         let current = mascotId
         let result = MascotUnlock.canSwitchMascot(
             profile: profile,
-            sessions: sessions,
+            dailyRecords: dailyRecords,
+            goalState: goalState,
             nextMascotId: nextMascotId,
             currentMascotId: current
         )
@@ -360,10 +389,12 @@ final class SwimViewModel: ObservableObject {
         pendingMedalCelebration = nil
     }
 
-    func queueNewMedals(sessionsBefore: [SwimSession], sessionsAfter: [SwimSession]) {
+    func queueNewMedals(recordsBefore: [DailyVitalityRecord], recordsAfter: [DailyVitalityRecord]) {
         let newlyEarned = SwimMedals.getNewlyEarnedMedals(
-            sessionsBefore: sessionsBefore,
-            sessionsAfter: sessionsAfter,
+            recordsBefore: recordsBefore,
+            recordsAfter: recordsAfter,
+            profile: profile,
+            goalState: goalState,
             allMedalsUnlocked: cheats.allMedalsUnlocked
         )
         guard !newlyEarned.isEmpty else { return }
@@ -386,6 +417,22 @@ final class SwimViewModel: ObservableObject {
         lookbackMonths: Int = 24,
         enrichHeartRate: Bool = true
     ) async {
+        await syncVitalityData(
+            requestAuthorizationIfNeeded: requestAuthorizationIfNeeded,
+            maxImports: maxImports,
+            since: since,
+            lookbackMonths: lookbackMonths,
+            enrichHeartRate: enrichHeartRate
+        )
+    }
+
+    func syncVitalityData(
+        requestAuthorizationIfNeeded: Bool = false,
+        maxImports: Int = 40,
+        since: Date? = nil,
+        lookbackMonths: Int = 24,
+        enrichHeartRate: Bool = true
+    ) async {
         let t = makeTranslations()
         guard HealthKitService.isAvailable else {
             healthKitSyncMessage = t.t("upload.healthUnavailable")
@@ -401,7 +448,7 @@ final class SwimViewModel: ObservableObject {
                 try await HealthKitService.requestAuthorization()
             }
             let syncSince = since ?? healthKitLookbackDate(months: lookbackMonths)
-            let result = try await importHealthKitWorkouts(
+            let result = try await importVitalityData(
                 maxImports: maxImports,
                 since: syncSince,
                 enrichHeartRate: enrichHeartRate
@@ -420,7 +467,7 @@ final class SwimViewModel: ObservableObject {
                     )
                 }
             } else if result.totalFound == 0 {
-                healthKitSyncMessage = t.t("upload.healthNoWorkouts")
+                healthKitSyncMessage = t.t("upload.healthNoData")
             } else {
                 healthKitSyncMessage = t.t("upload.healthAlreadySynced")
             }
@@ -548,81 +595,111 @@ final class SwimViewModel: ObservableObject {
         let date = uploadDraft.resolvedDate
         let candidate = SwimSession(date: date, metrics: metrics)
 
-        queueNewMedals(sessionsBefore: sessions, sessionsAfter: sessions + [candidate])
+        queueNewMedals(recordsBefore: dailyRecords, recordsAfter: dailyRecords)
         return true
     }
 
-    private func importHealthKitWorkouts(
+    private func importVitalityData(
         maxImports: Int,
         since: Date,
         enrichHeartRate: Bool = true
     ) async throws -> HealthKitImportResult {
-        let existingUUIDs = Set(sessions.compactMap(\.healthKitWorkoutUUID))
-        let fetchResult = try await HealthKitService.fetchNewSwimWorkouts(
-            excluding: existingUUIDs,
+        let existingWorkoutUUIDs = Set(
+            dailyRecords.flatMap(\.workouts).compactMap(\.healthKitWorkoutUUID)
+        )
+        let recordsBefore = dailyRecords
+
+        async let stepsTask = HealthKitService.fetchDailySteps(since: since)
+        async let workoutsTask = HealthKitService.fetchNewVitalityWorkouts(
+            excluding: existingWorkoutUUIDs,
             since: since,
             maxResults: maxImports,
+            profile: profile,
             enrichHeartRate: enrichHeartRate
         )
 
-        let sessionsBefore = sessions
+        let stepsByDate = try await stepsTask
+        let fetchResult = try await workoutsTask
+
+        var recordsByDate = Dictionary(uniqueKeysWithValues: dailyRecords.map { ($0.date, $0) })
         var importedCount = 0
-        var skippedCount = 0
-        var runningSessions = sessions
-        var importedSessions: [SwimSession] = []
 
-        for workout in fetchResult.workouts {
-            let candidate = SwimSession(
-                date: workout.date,
-                metrics: workout.metrics,
-                healthKitWorkoutUUID: workout.id
+        for (date, steps) in stepsByDate {
+            let existing = recordsByDate[date]
+            var workouts = existing?.workouts ?? []
+            let record = VitalityPoints.buildDailyRecord(
+                date: date,
+                steps: steps,
+                workouts: workouts,
+                profile: profile,
+                mascotId: mascotId
             )
-
-            if SwimDuplicates.findDuplicateSession(runningSessions, candidate: candidate) != nil {
-                skippedCount += 1
-                continue
-            }
-
-            guard let distanceM = workout.metrics.distanceM, distanceM > 0,
-                  let durationSec = workout.metrics.durationSec, durationSec > 0 else {
-                skippedCount += 1
-                continue
-            }
-
-            let entry = SwimSession(
-                id: SwimStorageService.createSessionId(),
-                createdAt: ISO8601DateFormatter().string(from: Date()),
-                date: workout.date,
-                metrics: workout.metrics,
-                healthKitWorkoutUUID: workout.id
+            recordsByDate[date] = VitalityPoints.mergeDailyRecords(
+                existing,
+                with: record,
+                profile: profile,
+                mascotId: mascotId
             )
-            runningSessions.append(entry)
-            runningSessions.sort { $0.date < $1.date }
-            importedSessions.append(entry)
-            importedCount += 1
-
-            if importedCount.isMultiple(of: 10) {
-                await Task.yield()
+            if existing == nil || existing?.steps != steps {
+                importedCount += 1
             }
         }
 
-        if importedCount > 0 {
-            data.sessions = runningSessions
+        for workout in fetchResult.workouts {
+            guard workout.durationSec >= 60 else { continue }
+            let vitalityWorkout = VitalityWorkout(
+                id: workout.id,
+                date: workout.date,
+                workoutType: workout.workoutType,
+                durationSec: workout.durationSec,
+                avgHeartRate: workout.avgHeartRate,
+                zoneMinutes: workout.zoneMinutes,
+                activeKcal: workout.activeKcal,
+                healthKitWorkoutUUID: workout.id,
+                pointsEarned: 0
+            )
+            let existing = recordsByDate[workout.date]
+            var workouts = existing?.workouts ?? []
+            if workouts.contains(where: { $0.healthKitWorkoutUUID == workout.id }) { continue }
+            workouts.append(vitalityWorkout)
+            let steps = existing?.steps ?? stepsByDate[workout.date] ?? 0
+            let record = VitalityPoints.buildDailyRecord(
+                date: workout.date,
+                steps: steps,
+                workouts: workouts,
+                profile: profile,
+                mascotId: mascotId
+            )
+            recordsByDate[workout.date] = record
+            importedCount += 1
+        }
+
+        let nextRecords = recordsByDate.values.sorted { $0.date < $1.date }
+        if nextRecords != dailyRecords {
+            data.dailyRecords = nextRecords
+            VitalityGoals.ensureGoals(
+                data: &data,
+                intensity: MascotConstants.gameplay(mascotId).challengeIntensity
+            )
+            VitalityGoals.recordMonthlyCompletionIfNeeded(
+                data: &data,
+                monthKey: VitalityGoals.getMonthKey()
+            )
             invalidateDerivedCaches()
             persist(immediate: true)
-            queueNewMedals(sessionsBefore: sessionsBefore, sessionsAfter: runningSessions)
+            queueNewMedals(recordsBefore: recordsBefore, recordsAfter: nextRecords)
         }
 
         let hasMoreAvailable = fetchResult.workouts.count >= maxImports
             || fetchResult.queriedCount >= HealthKitService.queryLimit
-        let lastImportedSessionId = importedSessions.max(by: { $0.date < $1.date })?.id
+        let lastDate = nextRecords.max(by: { $0.date < $1.date })?.date
 
         return HealthKitImportResult(
             importedCount: importedCount,
-            skippedCount: skippedCount,
-            totalFound: fetchResult.queriedCount,
+            skippedCount: 0,
+            totalFound: fetchResult.queriedCount + stepsByDate.count,
             hasMoreAvailable: hasMoreAvailable,
-            lastImportedSessionId: lastImportedSessionId
+            lastImportedSessionId: lastDate
         )
     }
 
@@ -649,7 +726,7 @@ final class SwimViewModel: ObservableObject {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        if let lastDate = sessions.map(\.date).max(),
+        if let lastDate = dailyRecords.map(\.date).max(),
            let date = formatter.date(from: lastDate) {
             return Calendar.current.date(byAdding: .day, value: -1, to: date) ?? date
         }
@@ -672,10 +749,11 @@ final class SwimViewModel: ObservableObject {
         )
         cachedProgressPersonalRecords = SwimRecords.getPersonalRecords(sessions)
         let intensity = MascotConstants.gameplay(mascotId).challengeIntensity
-        cachedCurrentMonthlyChallenges = SwimMonthlyChallenges.evaluateMonthlyChallenges(
-            sessions: sessions,
+        cachedCurrentMonthlyChallenges = VitalityGoals.evaluatePointChallenges(
+            records: dailyRecords,
+            profile: profile,
+            goalState: goalState,
             monthKey: monthKey,
-            rerolls: monthlyChallengeRerolls,
             intensity: intensity
         )
         progressCacheMonthKey = monthKey

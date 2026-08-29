@@ -2,7 +2,7 @@
 
 Scaffolding copied from [Merxius2/swimming_app](https://github.com/Merxius2/swimming_app) (Aap-SC Swim Coach). Adapt this codebase for the Vitality app while reusing the existing iOS architecture, services, and UI patterns.
 
-Native iOS app for tracking Apple Fitness swim workouts, progress, medals, benchmarks, and the swim coin economy.
+Native iOS vitality app for earning daily points from steps and workouts, with personalized weekly, monthly, and yearly goals.
 
 The repository contains **only the iOS app**. Open `ios/AapSC.xcodeproj` in Xcode on macOS to build and run.
 

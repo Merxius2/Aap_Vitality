@@ -87,6 +87,14 @@
 		B20000000000000000000020 /* ChartMovingAverageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000020 /* ChartMovingAverageTests.swift */; };
 		B20000000000000000000019 /* XCTest.framework in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000019 /* XCTest.framework */; };
 		C5B5E60A300CCB2B0092F38E /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F20000000000000000000019 /* XCTest.framework */; };
+	B10000000000000000000080 /* VitalityHRZones.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000080 /* VitalityHRZones.swift */; };
+	B10000000000000000000081 /* VitalityPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000081 /* VitalityPoints.swift */; };
+	B10000000000000000000082 /* VitalityGoals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000082 /* VitalityGoals.swift */; };
+	B10000000000000000000083 /* VitalityMedals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000083 /* VitalityMedals.swift */; };
+	B10000000000000000000084 /* VitalityAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000084 /* VitalityAnalysis.swift */; };
+	B10000000000000000000085 /* VitalityGoalsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000085 /* VitalityGoalsScreen.swift */; };
+	B20000000000000000000086 /* VitalityPointsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000086 /* VitalityPointsTests.swift */; };
+	B20000000000000000000087 /* VitalityGoalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000087 /* VitalityGoalsTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -183,6 +191,14 @@
 		F20000000000000000000019 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		P10000000000000000000001 /* AapSC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AapSC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		P10000000000000000000002 /* AapSCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AapSCTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F10000000000000000000080 /* VitalityHRZones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityHRZones.swift; sourceTree = "<group>"; };
+		F10000000000000000000081 /* VitalityPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityPoints.swift; sourceTree = "<group>"; };
+		F10000000000000000000082 /* VitalityGoals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityGoals.swift; sourceTree = "<group>"; };
+		F10000000000000000000083 /* VitalityMedals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityMedals.swift; sourceTree = "<group>"; };
+		F10000000000000000000084 /* VitalityAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityAnalysis.swift; sourceTree = "<group>"; };
+		F10000000000000000000085 /* VitalityGoalsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityGoalsScreen.swift; sourceTree = "<group>"; };
+		F20000000000000000000086 /* VitalityPointsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityPointsTests.swift; sourceTree = "<group>"; };
+		F20000000000000000000087 /* VitalityGoalsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityGoalsTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,6 +313,7 @@
 				F10000000000000000000061 /* MedalIconGlyphs.swift */,
 				F10000000000000000000062 /* ResetDataModal.swift */,
 				F10000000000000000000063 /* ConfettiView.swift */,
+				F10000000000000000000085 /* VitalityGoalsScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -324,6 +341,11 @@
 				F10000000000000000000064 /* ThemeTypography.swift */,
 				F10000000000000000000077 /* ChartMovingAverage.swift */,
 				F10000000000000000000079 /* ProgressChartScope.swift */,
+				F10000000000000000000080 /* VitalityHRZones.swift */,
+				F10000000000000000000081 /* VitalityPoints.swift */,
+				F10000000000000000000082 /* VitalityGoals.swift */,
+				F10000000000000000000083 /* VitalityMedals.swift */,
+				F10000000000000000000084 /* VitalityAnalysis.swift */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -376,6 +398,8 @@
 				F20000000000000000000015 /* MascotUnlockTests.swift */,
 				F20000000000000000000016 /* SwimBenchmarksTests.swift */,
 				F20000000000000000000020 /* ChartMovingAverageTests.swift */,
+				F20000000000000000000086 /* VitalityPointsTests.swift */,
+				F20000000000000000000087 /* VitalityGoalsTests.swift */,
 				F20000000000000000000019 /* XCTest.framework */,
 			);
 			path = AapSCTests;
@@ -536,6 +560,12 @@
 				B10000000000000000000064 /* ThemeTypography.swift in Sources */,
 				B10000000000000000000077 /* ChartMovingAverage.swift in Sources */,
 				B10000000000000000000079 /* ProgressChartScope.swift in Sources */,
+				B10000000000000000000080 /* VitalityHRZones.swift in Sources */,
+				B10000000000000000000081 /* VitalityPoints.swift in Sources */,
+				B10000000000000000000082 /* VitalityGoals.swift in Sources */,
+				B10000000000000000000083 /* VitalityMedals.swift in Sources */,
+				B10000000000000000000084 /* VitalityAnalysis.swift in Sources */,
+				B10000000000000000000085 /* VitalityGoalsScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -556,6 +586,8 @@
 				B20000000000000000000015 /* MascotUnlockTests.swift in Sources */,
 				B20000000000000000000016 /* SwimBenchmarksTests.swift in Sources */,
 				B20000000000000000000020 /* ChartMovingAverageTests.swift in Sources */,
+				B20000000000000000000086 /* VitalityPointsTests.swift in Sources */,
+				B20000000000000000000087 /* VitalityGoalsTests.swift in Sources */,
 				B20000000000000000000019 /* XCTest.framework in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

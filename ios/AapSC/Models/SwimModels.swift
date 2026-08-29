@@ -228,15 +228,19 @@ struct SwimData: Codable, Equatable {
     var profile: SwimProfile
     var sessions: [SwimSession]
     var monthlyChallengeRerolls: [String: MonthRerollEntry]
+    var dailyRecords: [DailyVitalityRecord]
+    var goalState: VitalityGoalState
 
     static let empty = SwimData(
         profile: .default,
         sessions: [],
-        monthlyChallengeRerolls: [:]
+        monthlyChallengeRerolls: [:],
+        dailyRecords: [],
+        goalState: .empty
     )
 
     enum CodingKeys: String, CodingKey {
-        case profile, sessions, monthlyChallengeRerolls
+        case profile, sessions, monthlyChallengeRerolls, dailyRecords, goalState
         case totalCoins, coinsSpent, spentCoinClaims, wheelSpins
         case challengeRerollCredits, bonusWheelSpinCredits, storeUnlocks, monthlySettlements
     }
@@ -244,11 +248,15 @@ struct SwimData: Codable, Equatable {
     init(
         profile: SwimProfile,
         sessions: [SwimSession],
-        monthlyChallengeRerolls: [String: MonthRerollEntry]
+        monthlyChallengeRerolls: [String: MonthRerollEntry],
+        dailyRecords: [DailyVitalityRecord] = [],
+        goalState: VitalityGoalState = .empty
     ) {
         self.profile = profile
         self.sessions = sessions
         self.monthlyChallengeRerolls = monthlyChallengeRerolls
+        self.dailyRecords = dailyRecords
+        self.goalState = goalState
     }
 
     init(from decoder: Decoder) throws {
@@ -259,6 +267,8 @@ struct SwimData: Codable, Equatable {
             [String: MonthRerollEntry].self,
             forKey: .monthlyChallengeRerolls
         ) ?? [:]
+        dailyRecords = try container.decodeIfPresent([DailyVitalityRecord].self, forKey: .dailyRecords) ?? []
+        goalState = try container.decodeIfPresent(VitalityGoalState.self, forKey: .goalState) ?? .empty
     }
 
     func encode(to encoder: Encoder) throws {
@@ -266,6 +276,8 @@ struct SwimData: Codable, Equatable {
         try container.encode(profile, forKey: .profile)
         try container.encode(sessions, forKey: .sessions)
         try container.encode(monthlyChallengeRerolls, forKey: .monthlyChallengeRerolls)
+        try container.encode(dailyRecords, forKey: .dailyRecords)
+        try container.encode(goalState, forKey: .goalState)
     }
 }
 
@@ -468,6 +480,89 @@ enum SwimLevel: String {
     case beginner
     case developing
     case unknown
+}
+
+struct HRZoneMinutes: Codable, Equatable {
+    var zone1: Int = 0
+    var zone2: Int = 0
+    var zone3: Int = 0
+    var zone4: Int = 0
+    var zone5: Int = 0
+
+    var total: Int { zone1 + zone2 + zone3 + zone4 + zone5 }
+}
+
+struct VitalityWorkout: Codable, Identifiable, Equatable {
+    var id: String
+    var date: String
+    var workoutType: String
+    var durationSec: Int
+    var avgHeartRate: Int?
+    var zoneMinutes: HRZoneMinutes?
+    var activeKcal: Int?
+    var healthKitWorkoutUUID: String?
+    var pointsEarned: Int = 0
+}
+
+struct DailyVitalityRecord: Codable, Identifiable, Equatable {
+    var id: String
+    var date: String
+    var steps: Int
+    var stepPoints: Int
+    var workoutPoints: Int
+    var totalPoints: Int
+    var workouts: [VitalityWorkout]
+    var stepTiersReached: [Int]
+}
+
+struct MonthlyGoalCompletion: Codable, Equatable {
+    var completedAt: String
+    var daysToComplete: Int
+    var targetPoints: Int
+    var earnedPoints: Int
+}
+
+struct VitalityGoalState: Codable, Equatable {
+    var monthlyTargets: [String: Int]
+    var weeklyTargets: [String: Int]
+    var yearlyTargets: [String: Int]
+    var monthlyCompletions: [String: MonthlyGoalCompletion]
+    var goalBoostFactor: Double
+
+    static let empty = VitalityGoalState(
+        monthlyTargets: [:],
+        weeklyTargets: [:],
+        yearlyTargets: [:],
+        monthlyCompletions: [:],
+        goalBoostFactor: 1.0
+    )
+}
+
+struct VitalityGoalSnapshot: Equatable {
+    var monthKey: String
+    var weekKey: String
+    var yearKey: String
+    var monthlyTarget: Int
+    var monthlyEarned: Int
+    var weeklyTarget: Int
+    var weeklyEarned: Int
+    var yearlyTarget: Int
+    var yearlyEarned: Int
+
+    var monthlyPercent: Int {
+        guard monthlyTarget > 0 else { return 0 }
+        return min(100, Int((Double(monthlyEarned) / Double(monthlyTarget) * 100).rounded()))
+    }
+
+    var weeklyPercent: Int {
+        guard weeklyTarget > 0 else { return 0 }
+        return min(100, Int((Double(weeklyEarned) / Double(weeklyTarget) * 100).rounded()))
+    }
+
+    var yearlyPercent: Int {
+        guard yearlyTarget > 0 else { return 0 }
+        return min(100, Int((Double(yearlyEarned) / Double(yearlyTarget) * 100).rounded()))
+    }
 }
 
 struct MascotSwitchResult: Equatable {

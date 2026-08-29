@@ -1,113 +1,87 @@
 import Foundation
 
 enum MascotUnlock {
-    static let unlockRequirements: [String: (minPaceLevel: String?, minMonthlyMedals: Int)] = [
-        "flip": (nil, 0),
-        "flo": ("intermediate", 5),
-        "fins": ("advanced", 10)
+    static let unlockRequirements: [String: (minTotalPoints: Int, minMonthlyGoals: Int)] = [
+        "flip": (0, 0),
+        "flo": (5000, 2),
+        "fins": (15000, 5)
     ]
 
-    private static let paceLevelRank: [String: Int] = [
-        "unknown": 0,
-        "developing": 0,
-        "beginner": 1,
-        "intermediate": 2,
-        "advanced": 3
-    ]
-
-    static func userSwimPaceLevel(profile: SwimProfile, sessions: [SwimSession]) -> SwimLevel {
-        guard !profile.sex.isEmpty, profile.age > 0 else { return .unknown }
-        let stats = SwimAnalysis.statsSessions(sessions)
-        guard !stats.isEmpty else { return .unknown }
-
-        let benchmark = SwimBenchmarks.benchmark(for: profile.sex, age: profile.age)
-        let paces = stats.compactMap(\.metrics.paceSecPer100m).filter { $0 > 0 }
-        let pace: Int?
-        if paces.isEmpty {
-            pace = stats.last?.metrics.paceSecPer100m
-        } else {
-            pace = paces.reduce(0, +) / paces.count
-        }
-        guard let pace else { return .unknown }
-        return SwimBenchmarks.swimLevel(paceSecPer100m: pace, benchmark: benchmark)
+    static func totalPoints(_ records: [DailyVitalityRecord]) -> Int {
+        records.reduce(0) { $0 + $1.totalPoints }
     }
 
-    static func countMonthlyMedals(
-        sessions: [SwimSession],
-        monthlyChallengeRerolls: [String: MonthRerollEntry] = [:]
-    ) -> Int {
-        SwimMonthlyChallenges.getMonthlyChallengeHistory(
-            sessions: sessions,
-            monthlyChallengeRerolls: monthlyChallengeRerolls
-        ).filter { $0.tier != nil }.count
-    }
-
-    static func meetsPaceRequirement(paceLevel: SwimLevel, requiredLevel: String?) -> Bool {
-        guard let requiredLevel else { return true }
-        let current = paceLevelRank[paceLevel.rawValue] ?? 0
-        let required = paceLevelRank[requiredLevel] ?? 0
-        return current >= required
+    static func countMonthlyGoals(_ goalState: VitalityGoalState) -> Int {
+        goalState.monthlyCompletions.count
     }
 
     static func unlockStatus(
         mascotId: String,
         profile: SwimProfile,
-        sessions: [SwimSession],
+        dailyRecords: [DailyVitalityRecord],
+        goalState: VitalityGoalState,
         monthlyChallengeRerolls: [String: MonthRerollEntry] = [:]
-    ) -> (unlocked: Bool, paceMet: Bool, medalsMet: Bool, paceLevel: SwimLevel, monthlyMedals: Int) {
+    ) -> (unlocked: Bool, pointsMet: Bool, goalsMet: Bool, totalPoints: Int, monthlyGoals: Int) {
         guard let requirements = unlockRequirements[mascotId] else {
-            return (false, false, false, .unknown, 0)
+            return (false, false, false, 0, 0)
         }
 
-        if requirements.minPaceLevel == nil && requirements.minMonthlyMedals == 0 {
-            return (true, true, true, .beginner, 0)
+        if requirements.minTotalPoints == 0 && requirements.minMonthlyGoals == 0 {
+            return (true, true, true, 0, 0)
         }
 
-        let paceLevel = userSwimPaceLevel(profile: profile, sessions: sessions)
-        let monthlyMedals = countMonthlyMedals(
-            sessions: sessions,
-            monthlyChallengeRerolls: monthlyChallengeRerolls
-        )
-        let paceMet = meetsPaceRequirement(paceLevel: paceLevel, requiredLevel: requirements.minPaceLevel)
-        let medalsMet = monthlyMedals >= requirements.minMonthlyMedals
+        let points = totalPoints(dailyRecords)
+        let monthlyGoals = countMonthlyGoals(goalState)
+        let pointsMet = points >= requirements.minTotalPoints
+        let goalsMet = monthlyGoals >= requirements.minMonthlyGoals
 
-        return (paceMet || medalsMet, paceMet, medalsMet, paceLevel, monthlyMedals)
+        return (pointsMet || goalsMet, pointsMet, goalsMet, points, monthlyGoals)
     }
 
     static func isUnlocked(
         mascotId: String,
         profile: SwimProfile,
-        sessions: [SwimSession],
+        dailyRecords: [DailyVitalityRecord],
+        goalState: VitalityGoalState,
         monthlyChallengeRerolls: [String: MonthRerollEntry] = [:]
     ) -> Bool {
         unlockStatus(
             mascotId: mascotId,
             profile: profile,
-            sessions: sessions,
+            dailyRecords: dailyRecords,
+            goalState: goalState,
             monthlyChallengeRerolls: monthlyChallengeRerolls
         ).unlocked
     }
 
     static func resolveMascotId(
         profile: SwimProfile,
-        sessions: [SwimSession],
+        dailyRecords: [DailyVitalityRecord],
+        goalState: VitalityGoalState,
         monthlyChallengeRerolls: [String: MonthRerollEntry] = [:]
     ) -> String {
         if let requested = profile.mascotId,
            MascotConstants.ids.contains(requested),
-           isUnlocked(mascotId: requested, profile: profile, sessions: sessions, monthlyChallengeRerolls: monthlyChallengeRerolls) {
+           isUnlocked(
+               mascotId: requested,
+               profile: profile,
+               dailyRecords: dailyRecords,
+               goalState: goalState,
+               monthlyChallengeRerolls: monthlyChallengeRerolls
+           ) {
             return requested
         }
         return "flip"
     }
 
-    static func hasSessionsInMonth(_ sessions: [SwimSession], monthKey: String) -> Bool {
-        sessions.contains { $0.date.hasPrefix(monthKey) }
+    static func hasActivityInMonth(_ records: [DailyVitalityRecord], monthKey: String) -> Bool {
+        records.contains { $0.date.hasPrefix(monthKey) && $0.totalPoints > 0 }
     }
 
     static func canSwitchMascot(
         profile: SwimProfile,
-        sessions: [SwimSession],
+        dailyRecords: [DailyVitalityRecord],
+        goalState: VitalityGoalState,
         monthKey: String = SwimMonthlyChallenges.getMonthKey(),
         nextMascotId: String,
         currentMascotId: String
@@ -118,15 +92,51 @@ enum MascotUnlock {
         if nextMascotId == currentMascotId {
             return MascotSwitchResult(allowed: true, reason: "same")
         }
-        if !isUnlocked(mascotId: nextMascotId, profile: profile, sessions: sessions) {
+        if !isUnlocked(
+            mascotId: nextMascotId,
+            profile: profile,
+            dailyRecords: dailyRecords,
+            goalState: goalState
+        ) {
             return MascotSwitchResult(allowed: false, reason: "locked")
         }
         if profile.mascotSwitchMonthKey == monthKey {
             return MascotSwitchResult(allowed: false, reason: "alreadySwitched")
         }
-        if hasSessionsInMonth(sessions, monthKey: monthKey) {
+        if hasActivityInMonth(dailyRecords, monthKey: monthKey) {
             return MascotSwitchResult(allowed: false, reason: "afterFirstSession")
         }
         return MascotSwitchResult(allowed: true, reason: "ok")
+    }
+
+    // Legacy session-based helpers kept for settings previews.
+    static func resolveMascotId(
+        profile: SwimProfile,
+        sessions: [SwimSession],
+        monthlyChallengeRerolls: [String: MonthRerollEntry] = [:]
+    ) -> String {
+        resolveMascotId(
+            profile: profile,
+            dailyRecords: [],
+            goalState: .empty,
+            monthlyChallengeRerolls: monthlyChallengeRerolls
+        )
+    }
+
+    static func canSwitchMascot(
+        profile: SwimProfile,
+        sessions: [SwimSession],
+        monthKey: String = SwimMonthlyChallenges.getMonthKey(),
+        nextMascotId: String,
+        currentMascotId: String
+    ) -> MascotSwitchResult {
+        canSwitchMascot(
+            profile: profile,
+            dailyRecords: [],
+            goalState: .empty,
+            monthKey: monthKey,
+            nextMascotId: nextMascotId,
+            currentMascotId: currentMascotId
+        )
     }
 }

@@ -6,55 +6,72 @@ final class MascotUnlockTests: XCTestCase {
         XCTAssertTrue(MascotUnlock.isUnlocked(
             mascotId: "flip",
             profile: TestFixtures.profile,
-            sessions: []
+            dailyRecords: [],
+            goalState: .empty
         ))
     }
 
-    func testLocksFloWithoutIntermediatePaceOrEnoughMonthlyMedals() {
-        let sessions = [TestFixtures.makeSession(date: "2025-06-01", paceSecPer100m: 170)]
-        let status = MascotUnlock.unlockStatus(mascotId: "flo", profile: TestFixtures.profile, sessions: sessions)
+    func testLocksFloWithoutEnoughPointsOrGoals() {
+        let status = MascotUnlock.unlockStatus(
+            mascotId: "flo",
+            profile: TestFixtures.profile,
+            dailyRecords: [],
+            goalState: .empty
+        )
         XCTAssertFalse(status.unlocked)
-        XCTAssertEqual(status.paceLevel, .developing)
     }
 
-    func testUnlocksFloWithIntermediatePace() {
-        let sessions = [TestFixtures.makeSession(date: "2025-06-01", paceSecPer100m: 128)]
-        XCTAssertTrue(MascotUnlock.isUnlocked(mascotId: "flo", profile: TestFixtures.profile, sessions: sessions))
+    func testUnlocksFloWithEnoughPoints() {
+        let records = [
+            DailyVitalityRecord(
+                id: "2026-01-01",
+                date: "2026-01-01",
+                steps: 12000,
+                stepPoints: 25,
+                workoutPoints: 5000,
+                totalPoints: 5025,
+                workouts: [],
+                stepTiersReached: [5000, 10000]
+            )
+        ]
+        XCTAssertTrue(MascotUnlock.isUnlocked(
+            mascotId: "flo",
+            profile: TestFixtures.profile,
+            dailyRecords: records,
+            goalState: .empty
+        ))
     }
 
-    func testUnlocksFloWithFiveMonthlyMedals() {
-        var sessions: [SwimSession] = []
-        for month in 1...5 {
-            let monthKey = String(format: "%02d", month)
-            for day in stride(from: 1, through: 6, by: 1) {
-                sessions.append(TestFixtures.makeSession(
-                    date: "2025-\(monthKey)-\(String(format: "%02d", day))",
-                    paceSecPer100m: 170
-                ))
-            }
-        }
-        XCTAssertEqual(MascotUnlock.countMonthlyMedals(sessions: sessions), 5)
-        XCTAssertTrue(MascotUnlock.isUnlocked(mascotId: "flo", profile: TestFixtures.profile, sessions: sessions))
-    }
-
-    func testUnlocksFinsWithAdvancedPace() {
-        let sessions = [TestFixtures.makeSession(date: "2025-06-01", paceSecPer100m: 100)]
-        XCTAssertTrue(MascotUnlock.isUnlocked(mascotId: "fins", profile: TestFixtures.profile, sessions: sessions))
+    func testUnlocksFloWithMonthlyGoals() {
+        var goalState = VitalityGoalState.empty
+        goalState.monthlyCompletions = [
+            "2026-01": MonthlyGoalCompletion(completedAt: "2026-01-28", daysToComplete: 28, targetPoints: 1000, earnedPoints: 1000),
+            "2026-02": MonthlyGoalCompletion(completedAt: "2026-02-25", daysToComplete: 25, targetPoints: 1000, earnedPoints: 1100),
+        ]
+        XCTAssertTrue(MascotUnlock.isUnlocked(
+            mascotId: "flo",
+            profile: TestFixtures.profile,
+            dailyRecords: [],
+            goalState: goalState
+        ))
     }
 
     func testResolvesToFlipWhenRequestedMascotIsLocked() {
         var lockedProfile = TestFixtures.profile
-        lockedProfile.sex = "female"
         lockedProfile.mascotId = "flo"
-        XCTAssertEqual(MascotUnlock.resolveMascotId(profile: lockedProfile, sessions: []), "flip")
+        XCTAssertEqual(
+            MascotUnlock.resolveMascotId(profile: lockedProfile, dailyRecords: [], goalState: .empty),
+            "flip"
+        )
     }
 
-    func testAllowsMascotSwitchBeforeFirstSessionOfMonth() {
+    func testAllowsMascotSwitchBeforeFirstActivityOfMonth() {
         var profile = TestFixtures.profile
         profile.mascotSwitchMonthKey = nil
         let result = MascotUnlock.canSwitchMascot(
             profile: profile,
-            sessions: [TestFixtures.makeSession(date: "2025-05-20", paceSecPer100m: 128)],
+            dailyRecords: [],
+            goalState: .empty,
             monthKey: "2025-06",
             nextMascotId: "flo",
             currentMascotId: "flip"
@@ -62,12 +79,25 @@ final class MascotUnlockTests: XCTestCase {
         XCTAssertTrue(result.allowed)
     }
 
-    func testBlocksMascotSwitchAfterFirstSessionOfMonth() {
+    func testBlocksMascotSwitchAfterFirstActivityOfMonth() {
         var profile = TestFixtures.profile
         profile.mascotSwitchMonthKey = nil
+        let records = [
+            DailyVitalityRecord(
+                id: "2025-06-02",
+                date: "2025-06-02",
+                steps: 6000,
+                stepPoints: 10,
+                workoutPoints: 0,
+                totalPoints: 10,
+                workouts: [],
+                stepTiersReached: [5000]
+            )
+        ]
         let result = MascotUnlock.canSwitchMascot(
             profile: profile,
-            sessions: [TestFixtures.makeSession(date: "2025-06-02", paceSecPer100m: 128)],
+            dailyRecords: records,
+            goalState: .empty,
             monthKey: "2025-06",
             nextMascotId: "flo",
             currentMascotId: "flip"
@@ -82,20 +112,13 @@ final class MascotUnlockTests: XCTestCase {
         profile.mascotSwitchMonthKey = "2025-06"
         let result = MascotUnlock.canSwitchMascot(
             profile: profile,
-            sessions: [],
+            dailyRecords: [],
+            goalState: .empty,
             monthKey: "2025-06",
             nextMascotId: "flip",
             currentMascotId: "flo"
         )
         XCTAssertFalse(result.allowed)
         XCTAssertEqual(result.reason, "alreadySwitched")
-    }
-
-    func testDerivesUserPaceLevelFromAveragePace() {
-        let sessions = [
-            TestFixtures.makeSession(date: "2025-06-01", paceSecPer100m: 140),
-            TestFixtures.makeSession(date: "2025-06-08", paceSecPer100m: 120)
-        ]
-        XCTAssertEqual(MascotUnlock.userSwimPaceLevel(profile: TestFixtures.profile, sessions: sessions), .intermediate)
     }
 }

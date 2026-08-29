@@ -18,9 +18,6 @@ struct ProgressScreen: View {
     private let paceTeal = Color(red: 0.078, green: 0.722, blue: 0.651)
 
     var body: some View {
-        let chartPoints = scopedChartPoints
-        let weeklyVolume = scopedWeeklyVolume
-
         NavigationStack {
             ScrollView(.vertical, showsIndicators: true) {
                 VStack(alignment: .leading, spacing: 16) {
@@ -31,28 +28,14 @@ struct ProgressScreen: View {
                         systemImage: "chart.line.uptrend.xyaxis"
                     )
 
-                    if viewModel.sessions.isEmpty {
+                    if viewModel.dailyRecords.isEmpty {
                         emptyState
                     } else {
                         overviewCard
                         MonthlyChallengesCardView()
-                        latestSessionCard
-                        allTimeStatsCard
-                        RecordsSectionView(records: viewModel.progressPersonalRecords)
-                        if let feedback = viewModel.latestSessionProgressFeedback(t: preferences.translations) {
-                            SessionFeedbackCard(
-                                feedback: feedback,
-                                titleKey: "progress.sessionFeedbackTitle"
-                            )
-                        }
-                        chartsSectionHeader
-                        chartScopePicker
-                        paceChart(points: chartPoints)
-                        distanceChart(points: chartPoints)
-                        caloriesChart(points: chartPoints)
-                        heartRateChart(points: chartPoints)
-                        volumeChart(weekly: weeklyVolume)
-                        strokeMixChart
+                        todayVitalityCard
+                        goalSnapshotCard
+                        recentPointsChart
                     }
                 }
                 .padding()
@@ -160,6 +143,92 @@ struct ProgressScreen: View {
                     layout: .stacked
                 )
                 .frame(maxWidth: .infinity)
+            }
+        }
+    }
+
+    private var todayVitalityCard: some View {
+        let record = viewModel.todayVitalityRecord ?? viewModel.dailyRecords.max(by: { $0.date < $1.date })
+        guard let record else { return AnyView(EmptyView()) }
+
+        return AnyView(
+            Card {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(preferences.t("vitality.todayTitle"))
+                        .themeFont(.headline, weight: .semibold)
+                    Text(SwimFormatters.formatDateShort(record.date))
+                        .themeFont(.caption)
+                        .foregroundStyle(.secondary)
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                        metricBlock(preferences.t("vitality.highlight.steps"), value: "\(record.steps)", color: .green)
+                        metricBlock(preferences.t("vitality.highlight.points"), value: "\(record.totalPoints)", color: Color("BrandBlue"))
+                        metricBlock(preferences.t("vitality.stepPoints"), value: "\(record.stepPoints)", color: .teal)
+                        metricBlock(preferences.t("vitality.workoutPoints"), value: "\(record.workoutPoints)", color: .orange)
+                    }
+                    stepTierRow(record: record)
+                }
+            }
+        )
+    }
+
+    private func stepTierRow(record: DailyVitalityRecord) -> some View {
+        HStack(spacing: 8) {
+            ForEach(VitalityPoints.stepMilestones, id: \.self) { milestone in
+                let reached = record.steps >= milestone
+                Text("\(milestone / 1000)k")
+                    .themeFont(.caption2, weight: .semibold)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(reached ? Color.green.opacity(0.18) : Color.secondary.opacity(0.12), in: Capsule())
+                    .foregroundStyle(reached ? .green : .secondary)
+            }
+        }
+    }
+
+    private var goalSnapshotCard: some View {
+        let snapshot = viewModel.vitalityGoalSnapshot
+        return Card {
+            VStack(alignment: .leading, spacing: 12) {
+                Text(preferences.t("goals.snapshotTitle"))
+                    .themeFont(.headline, weight: .semibold)
+                HStack {
+                    goalPill(preferences.t("goals.weekly"), percent: snapshot.weeklyPercent)
+                    goalPill(preferences.t("goals.monthly"), percent: snapshot.monthlyPercent)
+                    goalPill(preferences.t("goals.yearly"), percent: snapshot.yearlyPercent)
+                }
+            }
+        }
+    }
+
+    private func goalPill(_ title: String, percent: Int) -> some View {
+        VStack(spacing: 4) {
+            Text(title)
+                .themeFont(.caption2)
+                .foregroundStyle(.secondary)
+            Text("\(percent)%")
+                .themeFont(.headline, weight: .bold)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 8)
+        .background(Color("BrandBlue").opacity(0.08), in: RoundedRectangle(cornerRadius: 10))
+    }
+
+    private var recentPointsChart: some View {
+        let records = viewModel.dailyRecords.suffix(14)
+        return Card {
+            VStack(alignment: .leading, spacing: 12) {
+                Text(preferences.t("vitality.recentPoints"))
+                    .themeFont(.headline, weight: .semibold)
+                Chart {
+                    ForEach(Array(records), id: \.id) { record in
+                        BarMark(
+                            x: .value("Date", SwimFormatters.formatDateShort(record.date)),
+                            y: .value("Points", record.totalPoints)
+                        )
+                        .foregroundStyle(Color("BrandBlue"))
+                    }
+                }
+                .frame(height: 180)
             }
         }
     }
