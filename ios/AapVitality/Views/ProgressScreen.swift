@@ -245,7 +245,16 @@ struct ProgressScreen: View {
                             metricBlock(preferences.t("vitality.sleepPoints"), value: "\(record.sleepPoints)", color: .purple)
                         }
                     }
-                    stepTierRow(record: record)
+                    StepMilestoneProgressBar(
+                        steps: record.steps,
+                        title: preferences.t("vitality.stepsGoalTitle"),
+                        milestoneLabel: { milestone in
+                            preferences.t("vitality.badges.step\(milestone / 1000)k")
+                        },
+                        pointsLabel: { points in
+                            preferences.t("vitality.stepsGoalPoints", params: ["points": String(points)])
+                        }
+                    )
                     if record.sleepMinutes > 0 {
                         sleepTierRow(record: record)
                     }
@@ -253,20 +262,6 @@ struct ProgressScreen: View {
                 }
             }
         )
-    }
-
-    private func stepTierRow(record: DailyVitalityRecord) -> some View {
-        HStack(spacing: 8) {
-            ForEach(VitalityPoints.stepMilestones, id: \.self) { milestone in
-                let reached = record.steps >= milestone
-                Text("\(milestone / 1000)k")
-                    .themeFont(.caption2, weight: .semibold)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(reached ? Color.green.opacity(0.18) : Color.secondary.opacity(0.12), in: Capsule())
-                    .foregroundStyle(reached ? .green : .secondary)
-            }
-        }
     }
 
     private func sleepTierRow(record: DailyVitalityRecord) -> some View {

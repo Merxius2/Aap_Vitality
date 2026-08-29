@@ -787,6 +787,8 @@
     "points": "punten",
     "todayTitle": "Vitality vandaag",
     "stepPoints": "Stappunten",
+    "stepsGoalTitle": "Dagelijkse stappendoelen",
+    "stepsGoalPoints": "+{points} ptn",
     "workoutPoints": "Workoutpunten",
     "sleepPoints": "Slaappunten",
     "sleepMinutes": "{minutes} min slaap",

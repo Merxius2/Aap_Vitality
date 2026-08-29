@@ -73,6 +73,7 @@
 		B10000000000000000000084 /* VitalityAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000084 /* VitalityAnalysis.swift */; };
 		B10000000000000000000085 /* VitalityGoalsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000085 /* VitalityGoalsScreen.swift */; };
 		B10000000000000000000090 /* VitalityScoringGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000090 /* VitalityScoringGuideView.swift */; };
+		B10000000000000000000091 /* StepMilestoneProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000091 /* StepMilestoneProgressBar.swift */; };
 		B10000000000000000000086 /* VitalityStreak.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000086 /* VitalityStreak.swift */; };
 		B10000000000000000000087 /* VitalityLevels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000087 /* VitalityLevels.swift */; };
 		B10000000000000000000088 /* VitalityPaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000088 /* VitalityPaths.swift */; };
@@ -173,6 +174,7 @@
 		F10000000000000000000084 /* VitalityAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityAnalysis.swift; sourceTree = "<group>"; };
 		F10000000000000000000085 /* VitalityGoalsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityGoalsScreen.swift; sourceTree = "<group>"; };
 		F10000000000000000000090 /* VitalityScoringGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityScoringGuideView.swift; sourceTree = "<group>"; };
+		F10000000000000000000091 /* StepMilestoneProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepMilestoneProgressBar.swift; sourceTree = "<group>"; };
 		F10000000000000000000086 /* VitalityStreak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityStreak.swift; sourceTree = "<group>"; };
 		F10000000000000000000087 /* VitalityLevels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityLevels.swift; sourceTree = "<group>"; };
 		F10000000000000000000088 /* VitalityPaths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityPaths.swift; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 				F10000000000000000000063 /* ConfettiView.swift */,
 				F10000000000000000000085 /* VitalityGoalsScreen.swift */,
 				F10000000000000000000090 /* VitalityScoringGuideView.swift */,
+				F10000000000000000000091 /* StepMilestoneProgressBar.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -554,6 +557,7 @@
 				B10000000000000000000084 /* VitalityAnalysis.swift in Sources */,
 				B10000000000000000000085 /* VitalityGoalsScreen.swift in Sources */,
 				B10000000000000000000090 /* VitalityScoringGuideView.swift in Sources */,
+				B10000000000000000000091 /* StepMilestoneProgressBar.swift in Sources */,
 				B10000000000000000000086 /* VitalityStreak.swift in Sources */,
 				B10000000000000000000087 /* VitalityLevels.swift in Sources */,
 				B10000000000000000000088 /* VitalityPaths.swift in Sources */,
