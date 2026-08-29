@@ -91,6 +91,16 @@ enum VitalityGoals {
         max(75, Int((Double(monthlyTarget) / 4.3).rounded()))
     }
 
+    static func computeDailyTarget(weeklyTarget: Int, profile: SwimProfile, intensity: Double = 1) -> Int {
+        let fromWeekly = max(25, Int((Double(weeklyTarget) / 7.0).rounded()))
+        let baseline = Int((Double(baselineDailyPoints(profile: profile)) * intensity).rounded())
+        return max(fromWeekly, baseline)
+    }
+
+    static func todayPoints(records: [DailyVitalityRecord], dateKey: String = todayDateKey()) -> Int {
+        records.first { $0.date == dateKey }?.totalPoints ?? 0
+    }
+
     static func computeYearlyTarget(profile: SwimProfile, records: [DailyVitalityRecord], yearKey: String, goalState: VitalityGoalState) -> Int {
         if let stored = goalState.yearlyTargets[yearKey] {
             return stored

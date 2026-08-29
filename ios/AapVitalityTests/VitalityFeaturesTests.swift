@@ -100,4 +100,66 @@ final class VitalityFeaturesTests: XCTestCase {
         XCTAssertEqual(paths.count, VitalityPaths.paths.count)
         XCTAssertEqual(paths.first?.completedCount, 0)
     }
+
+    func testComputeDailyTargetUsesWeeklyAndBaseline() {
+        let profile = SwimProfile.default
+        let weeklyTarget = 350
+        let target = VitalityGoals.computeDailyTarget(
+            weeklyTarget: weeklyTarget,
+            profile: profile,
+            intensity: 1
+        )
+        XCTAssertGreaterThanOrEqual(target, VitalityGoals.baselineDailyPoints(profile: profile))
+        XCTAssertGreaterThanOrEqual(target, 50)
+    }
+
+    func testTodayPointsReturnsRecordTotal() {
+        let record = DailyVitalityRecord(
+            id: "2026-08-29",
+            date: "2026-08-29",
+            steps: 8000,
+            stepPoints: 15,
+            workoutPoints: 20,
+            sleepMinutes: 420,
+            sleepPoints: 10,
+            totalPoints: 45,
+            workouts: [],
+            stepTiersReached: [5000, 8000]
+        )
+        XCTAssertEqual(
+            VitalityGoals.todayPoints(records: [record], dateKey: "2026-08-29"),
+            45
+        )
+        XCTAssertEqual(VitalityGoals.todayPoints(records: [record], dateKey: "2026-08-28"), 0)
+    }
+
+    func testDailyGoalStatusReflectsProgress() {
+        let profile = SwimProfile.default
+        let goalState = VitalityGoalState.empty
+        let dateKey = "2026-08-29"
+        let records = [
+            DailyVitalityRecord(
+                id: dateKey,
+                date: dateKey,
+                steps: 12000,
+                stepPoints: 25,
+                workoutPoints: 30,
+                sleepMinutes: 480,
+                sleepPoints: 15,
+                totalPoints: 70,
+                workouts: [],
+                stepTiersReached: [5000, 10000]
+            )
+        ]
+        let status = SwimNotifications.dailyGoalStatus(
+            records: records,
+            profile: profile,
+            goalState: goalState,
+            intensity: 1,
+            dateKey: dateKey
+        )
+        XCTAssertEqual(status.earned, 70)
+        XCTAssertEqual(status.met, status.earned >= status.target)
+        XCTAssertEqual(status.remaining, max(0, status.target - status.earned))
+    }
 }

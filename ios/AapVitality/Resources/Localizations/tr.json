@@ -991,6 +991,9 @@
     "uploadCta": "Senkronizasyonu aç",
     "ambientTitle": "Arka plan vibe",
     "ambientDesc": "Duvar kağıdının üstüne (arayüzün altına) animasyon ve renk ekler.",
+    "notificationsTitle": "Bildirimler",
+    "dailyGoalNotifications": "Günlük hedef hatırlatıcıları",
+    "dailyGoalNotificationsDesc": "Günlük puan hedefinize ulaştığınızda kutlayın veya henüz ulaşmadıysanız akşam hatırlatma alın.",
     "ambients": {
       "neonLagoon": "Neon Lagoon",
       "sunsetLap": "Sunset Lap",
@@ -1044,6 +1047,10 @@
     "dismiss": "Kapat",
     "monthlyGoalsTitle": "Aylık hedefler hâlâ açık",
     "monthlyGoalsBody": "Ay sonuna {days} gün kaldı, {count} hedef açık — örn. {goals}. Güçlü bitirmek için aktivite senkronize edin!",
+    "dailyGoalReachedTitle": "Günlük hedef tamamlandı!",
+    "dailyGoalReachedBody": "Bugün {points} puan kazandınız — günlük hedefiniz {target} idi.",
+    "dailyGoalReminderTitle": "Günlük hedef hâlâ açık",
+    "dailyGoalReminderBody": "Bugün {current} / {target} puan — günlük hedefe {remaining} kaldı.",
     "uploadSyncTitle": "Hareket etme zamanı?",
     "uploadSyncBody": "Son aktiviteniz {days} gün önceydi. Takipte kalmak için Apple Health'i senkronize edin."
   },

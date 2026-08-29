@@ -22,7 +22,6 @@ final class SwimViewModel: ObservableObject {
 
     private var saveTask: Task<Void, Never>?
     private var hasAttemptedHealthKitAutoSync = false
-    private var hasRefreshedLaunchNotifications = false
     private static let healthKitAutoSyncAtKey = "HEALTHKIT_AUTO_SYNC_AT"
     private var cachedEvaluatedMedals: [EvaluatedMedal]?
     private var cachedMonthlyChallengeHistory: [MonthlyChallengeState]?
@@ -496,6 +495,12 @@ final class SwimViewModel: ObservableObject {
         } catch {
             healthKitSyncMessage = error.localizedDescription
         }
+
+        await refreshNotifications(
+            dailyGoalNotificationsEnabled: UserDefaults.standard.string(
+                forKey: UserPreferencesService.dailyGoalNotificationsKey
+            ) != "false"
+        )
     }
 
     func shouldPerformLaunchSessionSearch() async -> Bool {
@@ -562,15 +567,22 @@ final class SwimViewModel: ObservableObject {
         _ = await performLaunchSessionSearch()
     }
 
-    func refreshLaunchNotifications() async {
-        guard !hasRefreshedLaunchNotifications else { return }
-        hasRefreshedLaunchNotifications = true
-        await SwimNotifications.refreshMonthlyGoalReminders(
+    func refreshNotifications(dailyGoalNotificationsEnabled: Bool) async {
+        let intensity = MascotConstants.gameplay(mascotId).challengeIntensity
+        await SwimNotifications.refreshAllReminders(
             sessions: sessions,
+            dailyRecords: dailyRecords,
             profile: profile,
+            goalState: data.goalState,
             monthlyChallengeRerolls: monthlyChallengeRerolls,
+            intensity: intensity,
+            dailyGoalNotificationsEnabled: dailyGoalNotificationsEnabled,
             t: makeTranslations()
         )
+    }
+
+    func refreshLaunchNotifications(dailyGoalNotificationsEnabled: Bool = true) async {
+        await refreshNotifications(dailyGoalNotificationsEnabled: dailyGoalNotificationsEnabled)
     }
 
     private func enhanceUploadFeedback(for session: SwimSession) async {

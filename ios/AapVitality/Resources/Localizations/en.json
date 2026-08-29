@@ -1036,6 +1036,9 @@
     "secretAdd500Coins": "Add 500 swim coins",
     "ambientTitle": "Background vibe",
     "ambientDesc": "Adds animated color and motion on top of your wallpaper (under the UI).",
+    "notificationsTitle": "Notifications",
+    "dailyGoalNotifications": "Daily goal reminders",
+    "dailyGoalNotificationsDesc": "Celebrate when you hit today's point goal, or get an evening reminder if you haven't yet.",
     "ambients": {
       "neonLagoon": "Neon Lagoon",
       "sunsetLap": "Sunset Lap",
@@ -1089,6 +1092,10 @@
     "dismiss": "Dismiss",
     "monthlyGoalsTitle": "Monthly goals still open",
     "monthlyGoalsBody": "{count} challenge(s) left with {days} day(s) to go — e.g. {goals}. Sync activity to finish strong!",
+    "dailyGoalReachedTitle": "Daily goal reached!",
+    "dailyGoalReachedBody": "You earned {points} points today — your daily target was {target}.",
+    "dailyGoalReminderTitle": "Daily goal still open",
+    "dailyGoalReminderBody": "{current} / {target} points today — {remaining} left to hit your daily goal.",
     "uploadSyncTitle": "Time to move?",
     "uploadSyncBody": "Your last activity was {days} days ago. Sync Apple Health to stay on track."
   },

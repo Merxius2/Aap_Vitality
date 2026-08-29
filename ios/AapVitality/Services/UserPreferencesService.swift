@@ -7,11 +7,13 @@ final class UserPreferencesService: ObservableObject {
     static let themeKey = "AUDIT_THEME_PREFERENCE"
     static let darkModeKey = "AUDIT_DARK_MODE_PREFERENCE"
     static let darkModeAutoKey = "AUDIT_DARK_MODE_AUTO"
+    static let dailyGoalNotificationsKey = "AUDIT_DAILY_GOAL_NOTIFICATIONS"
 
     @Published var language: String = TranslationService.defaultLanguage
     @Published var themeCode: String = AppThemes.defaultCode
     @Published var isDarkMode: Bool = false
     @Published var isAutoDarkMode: Bool = true
+    @Published var dailyGoalNotificationsEnabled: Bool = true
 
     let translations = TranslationService()
 
@@ -69,6 +71,9 @@ final class UserPreferencesService: ObservableObject {
         if UserDefaults.standard.object(forKey: Self.darkModeKey) != nil {
             isDarkMode = UserDefaults.standard.string(forKey: Self.darkModeKey) == "true"
         }
+        if UserDefaults.standard.object(forKey: Self.dailyGoalNotificationsKey) != nil {
+            dailyGoalNotificationsEnabled = UserDefaults.standard.string(forKey: Self.dailyGoalNotificationsKey) == "true"
+        }
     }
 
     func setLanguage(_ code: String) {
@@ -82,6 +87,11 @@ final class UserPreferencesService: ObservableObject {
         guard AppThemes.all.contains(where: { $0.code == code }) else { return }
         themeCode = code
         persistTheme()
+    }
+
+    func setDailyGoalNotifications(_ enabled: Bool) {
+        dailyGoalNotificationsEnabled = enabled
+        UserDefaults.standard.set(enabled ? "true" : "false", forKey: Self.dailyGoalNotificationsKey)
     }
 
     func setDarkMode(_ enabled: Bool, auto: Bool) {

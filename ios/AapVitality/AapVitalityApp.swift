@@ -104,7 +104,22 @@ private struct AppRootView: View {
         .task(priority: .utility) {
             try? await Task.sleep(for: .milliseconds(300))
             await performLaunchSessionSearchIfNeeded()
-            await viewModel.refreshLaunchNotifications()
+            await viewModel.refreshNotifications(
+                dailyGoalNotificationsEnabled: preferences.dailyGoalNotificationsEnabled
+            )
+        }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .active else { return }
+            Task {
+                await viewModel.refreshNotifications(
+                    dailyGoalNotificationsEnabled: preferences.dailyGoalNotificationsEnabled
+                )
+            }
+        }
+        .onChange(of: preferences.dailyGoalNotificationsEnabled) { _, enabled in
+            Task {
+                await viewModel.refreshNotifications(dailyGoalNotificationsEnabled: enabled)
+            }
         }
         .onAppear {
             ThemeTypography.applyUIKitAppearance(themeCode: preferences.themeCode)
