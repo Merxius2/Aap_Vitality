@@ -284,8 +284,143 @@ enum VitalityGoals {
             weeklyTarget: weeklyTarget,
             weeklyEarned: weeklyProgress(records: records, weekKey: week),
             yearlyTarget: yearlyTarget,
-            yearlyEarned: yearlyProgress(records: records, yearKey: yearKey)
+            yearlyEarned: yearlyProgress(records: records, yearKey: yearKey),
+            earlyFinish: earlyFinishSnapshot(
+                records: records,
+                profile: profile,
+                goalState: goalState,
+                monthKey: monthKey,
+                intensity: intensity
+            )
         )
+    }
+
+    static func earlyFinishSnapshot(
+        records: [DailyVitalityRecord],
+        profile: VitalityProfile,
+        goalState: VitalityGoalState,
+        monthKey: String = getMonthKey(),
+        date: Date = Date(),
+        intensity: Double = 1
+    ) -> EarlyFinishSnapshot {
+        let deadlineDay = earlyCompletionDays
+        let currentDay = Calendar.current.component(.day, from: date)
+        let monthlyTarget = computeMonthlyTarget(
+            profile: profile,
+            records: records,
+            monthKey: monthKey,
+            goalState: goalState,
+            intensity: intensity
+        )
+        let monthlyEarned = monthlyProgress(records: records, monthKey: monthKey)
+        let boostPercent = Int(((goalIncreaseFactor - 1) * 100).rounded())
+
+        let base = EarlyFinishSnapshot(
+            status: .missedWindow,
+            deadlineDay: deadlineDay,
+            currentDayOfMonth: currentDay,
+            monthlyEarned: monthlyEarned,
+            monthlyTarget: monthlyTarget,
+            boostPercent: boostPercent
+        )
+
+        if let completion = goalState.monthlyCompletions[monthKey] {
+            if completion.daysToComplete <= deadlineDay {
+                return EarlyFinishSnapshot(
+                    status: .secured(completedOnDay: completion.daysToComplete),
+                    deadlineDay: deadlineDay,
+                    currentDayOfMonth: min(currentDay, completion.daysToComplete),
+                    monthlyEarned: monthlyEarned,
+                    monthlyTarget: monthlyTarget,
+                    boostPercent: boostPercent
+                )
+            }
+            return EarlyFinishSnapshot(
+                status: .completedLate(completedOnDay: completion.daysToComplete),
+                deadlineDay: deadlineDay,
+                currentDayOfMonth: currentDay,
+                monthlyEarned: monthlyEarned,
+                monthlyTarget: monthlyTarget,
+                boostPercent: boostPercent
+            )
+        }
+
+        if monthlyEarned >= monthlyTarget {
+            let completedOnDay = completionDay(
+                records: records,
+                monthKey: monthKey,
+                target: monthlyTarget
+            ) ?? currentDay
+            if completedOnDay <= deadlineDay {
+                return EarlyFinishSnapshot(
+                    status: .secured(completedOnDay: completedOnDay),
+                    deadlineDay: deadlineDay,
+                    currentDayOfMonth: completedOnDay,
+                    monthlyEarned: monthlyEarned,
+                    monthlyTarget: monthlyTarget,
+                    boostPercent: boostPercent
+                )
+            }
+            return EarlyFinishSnapshot(
+                status: .completedLate(completedOnDay: completedOnDay),
+                deadlineDay: deadlineDay,
+                currentDayOfMonth: currentDay,
+                monthlyEarned: monthlyEarned,
+                monthlyTarget: monthlyTarget,
+                boostPercent: boostPercent
+            )
+        }
+
+        if currentDay > deadlineDay {
+            return base
+        }
+
+        let daysRemaining = max(0, deadlineDay - currentDay)
+        let onTrack = isOnTrackForEarlyFinish(
+            earned: monthlyEarned,
+            target: monthlyTarget,
+            currentDay: currentDay,
+            deadlineDay: deadlineDay
+        )
+        return EarlyFinishSnapshot(
+            status: .inWindow(daysRemaining: daysRemaining, onTrack: onTrack),
+            deadlineDay: deadlineDay,
+            currentDayOfMonth: currentDay,
+            monthlyEarned: monthlyEarned,
+            monthlyTarget: monthlyTarget,
+            boostPercent: boostPercent
+        )
+    }
+
+    static func isOnTrackForEarlyFinish(
+        earned: Int,
+        target: Int,
+        currentDay: Int,
+        deadlineDay: Int = earlyCompletionDays
+    ) -> Bool {
+        guard currentDay > 0, target > 0 else { return false }
+        if earned >= target { return true }
+        let projected = (Double(earned) / Double(currentDay)) * Double(deadlineDay)
+        return projected >= Double(target)
+    }
+
+    static func completionDay(records: [DailyVitalityRecord], monthKey: String, target: Int) -> Int? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        guard let monthStart = formatter.date(from: "\(monthKey)-01") else { return nil }
+
+        let monthRecords = records.filter { $0.date.hasPrefix(monthKey) }.sorted { $0.date < $1.date }
+        var running = 0
+        for record in monthRecords {
+            running += record.totalPoints
+            if running >= target,
+               let completionDate = formatter.date(from: record.date) {
+                let days = Calendar.current.dateComponents([.day], from: monthStart, to: completionDate).day ?? 0
+                return max(1, days + 1)
+            }
+        }
+        return nil
     }
 
     private static func shiftMonthKey(_ monthKey: String, by delta: Int) -> String {
