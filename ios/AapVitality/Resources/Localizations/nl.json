@@ -609,6 +609,18 @@
       "walk_and_work": {
         "title": "Lopen & trainen",
         "desc": "Verdien zowel stap- als workoutpunten op één dag."
+      },
+      "sleep_7h": {
+        "title": "Uitgerust",
+        "desc": "Log 7+ uur slaap in één nacht."
+      },
+      "sleep_8h": {
+        "title": "Diepe rust",
+        "desc": "Log 8+ uur slaap in één nacht."
+      },
+      "sleep_streak_3": {
+        "title": "Slaapreeks",
+        "desc": "Log 3 nachten op rij 7+ uur slaap."
       }
     }
   },
@@ -1027,6 +1039,9 @@
     "secretAdd500Coins": "500 zwem munten toevoegen",
     "ambientTitle": "Achtergrond vibe",
     "ambientDesc": "Voegt animatie en kleur toe bovenop je wallpaper (onder de UI).",
+    "notificationsTitle": "Meldingen",
+    "dailyGoalNotifications": "Dagdoel-herinneringen",
+    "dailyGoalNotificationsDesc": "Vier wanneer je je dagdoel haalt, of krijg 's avonds een herinnering als je dat nog niet deed.",
     "ambients": {
       "neonLagoon": "Neon Lagoon",
       "sunsetLap": "Sunset Lap",
@@ -1080,6 +1095,10 @@
     "dismiss": "Sluiten",
     "monthlyGoalsTitle": "Maanddoelen nog open",
     "monthlyGoalsBody": "Nog {count} uitdaging(en) met {days} dag(en) te gaan — bijv. {goals}. Synchroniseer activiteit om sterk te eindigen!",
+    "dailyGoalReachedTitle": "Dagdoel behaald!",
+    "dailyGoalReachedBody": "Je verdiende vandaag {points} punten — je dagdoel was {target}.",
+    "dailyGoalReminderTitle": "Dagdoel nog open",
+    "dailyGoalReminderBody": "{current} / {target} punten vandaag — nog {remaining} te gaan voor je dagdoel.",
     "uploadSyncTitle": "Tijd om te bewegen?",
     "uploadSyncBody": "Je laatste activiteit was {days} dagen geleden. Synchroniseer Apple Gezondheid om op koers te blijven."
   },
@@ -1108,21 +1127,30 @@
     "todayTitle": "Vitality vandaag",
     "stepPoints": "Stappunten",
     "workoutPoints": "Workoutpunten",
+    "sleepPoints": "Slaappunten",
+    "sleepMinutes": "{minutes} min slaap",
     "recentPoints": "Recente dagpunten",
     "highlight": {
       "steps": "Stappen",
       "points": "Punten"
     },
+    "overview": {
+      "sleepBonus": "Slaap leverde {points} bonuspunten op."
+    },
     "badges": {
       "step5k": "5k stappen",
       "step10k": "10k stappen",
       "step20k": "20k stappen",
-      "workoutLogged": "Workout gelogd"
+      "workoutLogged": "Workout gelogd",
+      "sleep7h": "7u slaap",
+      "sleep8h": "8u slaap",
+      "workoutType": "{type}-dag"
     },
     "insights": {
       "highIntensity": "{minutes} minuten in hoge hartslagzones.",
       "workoutTooShort": "Workout korter dan 30 minuten — nog geen workoutpunten.",
-      "dailyTotal": "Dagtotaal: {points} punten."
+      "dailyTotal": "Dagtotaal: {points} punten.",
+      "sleepBonus": "Slaap: {minutes} min → +{points} punten."
     },
     "coach": {
       "strongDay": "Enorme vitality-dag — stappen én inspanning!",
@@ -1135,6 +1163,38 @@
     },
     "tip": {
       "daily": "Een workout van 30 minuten plus 10k stappen is een krachtige combo."
+    },
+    "levels": {
+      "title": "Vitality-niveau",
+      "line": "Niveau {level} · {points} punten totaal",
+      "next": "Nog {points} punten tot het volgende niveau",
+      "starter": "Starter",
+      "mover": "Beweger",
+      "active": "Actief",
+      "dedicated": "Toegewijd",
+      "champion": "Kampioen",
+      "elite": "Elite",
+      "legend": "Legende"
+    },
+    "streak": {
+      "title": "Actieve reeks",
+      "current": "{days} dagen",
+      "shields": "Reeksschilden",
+      "hint": "Je krijgt elke maand 1 reeksschild. Een gemiste dag gebruikt automatisch je schild als je reeks anders zou breken."
+    },
+    "paths": {
+      "title": "Prestatiepaden",
+      "steps": "Stappenpad",
+      "workouts": "Workoutpad",
+      "goals": "Doelenpad",
+      "consistency": "Consistentiepad",
+      "recovery": "Herstelpad",
+      "next": "Volgende: {medal}",
+      "complete": "Pad voltooid!"
+    },
+    "workoutBadges": {
+      "title": "Workouttype-badges",
+      "count": "{count}/{target} workouts"
     }
   }
 }

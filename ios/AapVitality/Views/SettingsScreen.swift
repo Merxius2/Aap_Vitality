@@ -32,6 +32,7 @@ struct SettingsScreen: View {
                 themeSection
                 wallpaperSection
                 darkModeSection
+                notificationsSection
                 uploadSection
                 ambientSection
             }
@@ -173,6 +174,17 @@ struct SettingsScreen: View {
         }
     }
 
+    private var notificationsSection: some View {
+        Section(preferences.t("settings.notificationsTitle")) {
+            Text(preferences.t("settings.dailyGoalNotificationsDesc"))
+                .themeFont(.caption)
+                .foregroundStyle(.secondary)
+                .themedListRowBackground()
+            Toggle(preferences.t("settings.dailyGoalNotifications"), isOn: dailyGoalNotificationsBinding)
+                .themedListRowBackground()
+        }
+    }
+
     private var uploadSection: some View {
         Section(preferences.t("settings.uploadTitle")) {
             Text(preferences.t("settings.uploadDesc"))
@@ -228,6 +240,13 @@ struct SettingsScreen: View {
         Binding(
             get: { preferences.isDarkMode },
             set: { preferences.setDarkMode($0, auto: false) }
+        )
+    }
+
+    private var dailyGoalNotificationsBinding: Binding<Bool> {
+        Binding(
+            get: { preferences.dailyGoalNotificationsEnabled },
+            set: { preferences.setDailyGoalNotifications($0) }
         )
     }
 

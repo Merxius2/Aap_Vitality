@@ -991,6 +991,9 @@
     "uploadCta": "Открыть синхронизацию",
     "ambientTitle": "Фоновая атмосфера",
     "ambientDesc": "Добавляет анимацию и цвет поверх обоев (под интерфейсом).",
+    "notificationsTitle": "Уведомления",
+    "dailyGoalNotifications": "Напоминания о дневной цели",
+    "dailyGoalNotificationsDesc": "Уведомление при достижении дневной цели или напоминание вечером, если цель ещё не выполнена.",
     "ambients": {
       "neonLagoon": "Neon Lagoon",
       "sunsetLap": "Sunset Lap",
@@ -1044,6 +1047,10 @@
     "dismiss": "Закрыть",
     "monthlyGoalsTitle": "Месячные цели ещё открыты",
     "monthlyGoalsBody": "Осталось {count} целей, до конца месяца {days} дн. — например: {goals}. Синхронизируйте активность!",
+    "dailyGoalReachedTitle": "Дневная цель достигнута!",
+    "dailyGoalReachedBody": "Сегодня вы заработали {points} очков — дневная цель была {target}.",
+    "dailyGoalReminderTitle": "Дневная цель ещё открыта",
+    "dailyGoalReminderBody": "{current} / {target} очков сегодня — осталось {remaining} до дневной цели.",
     "uploadSyncTitle": "Пора двигаться?",
     "uploadSyncBody": "Последняя активность была {days} дн. назад. Синхронизируйте Apple Health."
   },

@@ -606,6 +606,18 @@
       "walk_and_work": {
         "title": "Walk & work",
         "desc": "Earn both step and workout points in one day."
+      },
+      "sleep_7h": {
+        "title": "Well rested",
+        "desc": "Log 7+ hours of sleep in one night."
+      },
+      "sleep_8h": {
+        "title": "Deep rest",
+        "desc": "Log 8+ hours of sleep in one night."
+      },
+      "sleep_streak_3": {
+        "title": "Sleep streak",
+        "desc": "Log 7+ hours of sleep 3 nights in a row."
       }
     }
   },
@@ -1024,6 +1036,9 @@
     "secretAdd500Coins": "Add 500 swim coins",
     "ambientTitle": "Background vibe",
     "ambientDesc": "Adds animated color and motion on top of your wallpaper (under the UI).",
+    "notificationsTitle": "Notifications",
+    "dailyGoalNotifications": "Daily goal reminders",
+    "dailyGoalNotificationsDesc": "Celebrate when you hit today's point goal, or get an evening reminder if you haven't yet.",
     "ambients": {
       "neonLagoon": "Neon Lagoon",
       "sunsetLap": "Sunset Lap",
@@ -1077,6 +1092,10 @@
     "dismiss": "Dismiss",
     "monthlyGoalsTitle": "Monthly goals still open",
     "monthlyGoalsBody": "{count} challenge(s) left with {days} day(s) to go — e.g. {goals}. Sync activity to finish strong!",
+    "dailyGoalReachedTitle": "Daily goal reached!",
+    "dailyGoalReachedBody": "You earned {points} points today — your daily target was {target}.",
+    "dailyGoalReminderTitle": "Daily goal still open",
+    "dailyGoalReminderBody": "{current} / {target} points today — {remaining} left to hit your daily goal.",
     "uploadSyncTitle": "Time to move?",
     "uploadSyncBody": "Your last activity was {days} days ago. Sync Apple Health to stay on track."
   },
@@ -1105,21 +1124,30 @@
     "todayTitle": "Today's vitality",
     "stepPoints": "Step points",
     "workoutPoints": "Workout points",
+    "sleepPoints": "Sleep points",
+    "sleepMinutes": "{minutes} min sleep",
     "recentPoints": "Recent daily points",
     "highlight": {
       "steps": "Steps",
       "points": "Points"
     },
+    "overview": {
+      "sleepBonus": "Sleep added {points} bonus points."
+    },
     "badges": {
       "step5k": "5k steps",
       "step10k": "10k steps",
       "step20k": "20k steps",
-      "workoutLogged": "Workout logged"
+      "workoutLogged": "Workout logged",
+      "sleep7h": "7h sleep",
+      "sleep8h": "8h sleep",
+      "workoutType": "{type} day"
     },
     "insights": {
       "highIntensity": "{minutes} minutes in high heart-rate zones.",
       "workoutTooShort": "Workout under 30 minutes — no workout points yet.",
-      "dailyTotal": "Daily total: {points} points."
+      "dailyTotal": "Daily total: {points} points.",
+      "sleepBonus": "Sleep: {minutes} min → +{points} points."
     },
     "coach": {
       "strongDay": "Huge vitality day — steps and effort are both showing up!",
@@ -1132,6 +1160,38 @@
     },
     "tip": {
       "daily": "A 30-minute workout plus a 10k step day is a powerful combo."
+    },
+    "levels": {
+      "title": "Vitality level",
+      "line": "Level {level} · {points} lifetime points",
+      "next": "{points} points to next level",
+      "starter": "Starter",
+      "mover": "Mover",
+      "active": "Active",
+      "dedicated": "Dedicated",
+      "champion": "Champion",
+      "elite": "Elite",
+      "legend": "Legend"
+    },
+    "streak": {
+      "title": "Active streak",
+      "current": "{days} days",
+      "shields": "Streak shields",
+      "hint": "Earn 1 streak shield each month. A missed day auto-uses your shield if your streak would break."
+    },
+    "paths": {
+      "title": "Achievement paths",
+      "steps": "Steps path",
+      "workouts": "Workout path",
+      "goals": "Goals path",
+      "consistency": "Consistency path",
+      "recovery": "Recovery path",
+      "next": "Next: {medal}",
+      "complete": "Path complete!"
+    },
+    "workoutBadges": {
+      "title": "Workout type badges",
+      "count": "{count}/{target} workouts"
     }
   }
 }

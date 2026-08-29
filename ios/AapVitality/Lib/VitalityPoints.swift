@@ -3,6 +3,8 @@ import Foundation
 enum VitalityPoints {
     static let stepMilestones = [5000, 10000, 20000]
     static let stepMilestonePoints = [10, 15, 25]
+    static let sleepMilestonesMinutes = [420, 480]
+    static let sleepMilestonePoints = [10, 5]
     static let minWorkoutMinutes = 30
     static let baseWorkoutPoints = 20
     static let pointsPerFiveExtraMinutes = 2
@@ -12,6 +14,16 @@ enum VitalityPoints {
         var tiers: [Int] = []
         for (index, milestone) in stepMilestones.enumerated() where steps >= milestone {
             points += stepMilestonePoints[index]
+            tiers.append(milestone)
+        }
+        return (points, tiers)
+    }
+
+    static func sleepPoints(for minutes: Int) -> (points: Int, tiersReached: [Int]) {
+        var points = 0
+        var tiers: [Int] = []
+        for (index, milestone) in sleepMilestonesMinutes.enumerated() where minutes >= milestone {
+            points += sleepMilestonePoints[index]
             tiers.append(milestone)
         }
         return (points, tiers)
@@ -38,11 +50,13 @@ enum VitalityPoints {
     static func buildDailyRecord(
         date: String,
         steps: Int,
+        sleepMinutes: Int = 0,
         workouts: [VitalityWorkout],
         profile: SwimProfile,
         mascotId: String
     ) -> DailyVitalityRecord {
         let stepResult = stepPoints(for: steps)
+        let sleepResult = sleepPoints(for: sleepMinutes)
         let maxHR = VitalityHRZones.maxHeartRate(sex: profile.sex, age: profile.age)
 
         var scoredWorkouts = workouts
@@ -65,13 +79,15 @@ enum VitalityPoints {
             workoutPointsTotal += earned
         }
 
-        let total = stepResult.points + workoutPointsTotal
+        let total = stepResult.points + sleepResult.points + workoutPointsTotal
         return DailyVitalityRecord(
             id: date,
             date: date,
             steps: steps,
             stepPoints: stepResult.points,
             workoutPoints: workoutPointsTotal,
+            sleepMinutes: sleepMinutes,
+            sleepPoints: sleepResult.points,
             totalPoints: total,
             workouts: scoredWorkouts,
             stepTiersReached: stepResult.tiersReached
@@ -91,9 +107,11 @@ enum VitalityPoints {
             workouts.append(workout)
         }
         let steps = max(existing.steps, incoming.steps)
+        let sleepMinutes = max(existing.sleepMinutes, incoming.sleepMinutes)
         return buildDailyRecord(
             date: incoming.date,
             steps: steps,
+            sleepMinutes: sleepMinutes,
             workouts: workouts,
             profile: profile,
             mascotId: mascotId

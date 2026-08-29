@@ -12,6 +12,13 @@ enum VitalityGoals {
         String(Calendar.current.component(.year, from: date))
     }
 
+    static func todayDateKey(_ date: Date = Date()) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter.string(from: date)
+    }
+
     static func weekKey(for dateString: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -82,6 +89,16 @@ enum VitalityGoals {
 
     static func computeWeeklyTarget(monthlyTarget: Int) -> Int {
         max(75, Int((Double(monthlyTarget) / 4.3).rounded()))
+    }
+
+    static func computeDailyTarget(weeklyTarget: Int, profile: SwimProfile, intensity: Double = 1) -> Int {
+        let fromWeekly = max(25, Int((Double(weeklyTarget) / 7.0).rounded()))
+        let baseline = Int((Double(baselineDailyPoints(profile: profile)) * intensity).rounded())
+        return max(fromWeekly, baseline)
+    }
+
+    static func todayPoints(records: [DailyVitalityRecord], dateKey: String = todayDateKey()) -> Int {
+        records.first { $0.date == dateKey }?.totalPoints ?? 0
     }
 
     static func computeYearlyTarget(profile: SwimProfile, records: [DailyVitalityRecord], yearKey: String, goalState: VitalityGoalState) -> Int {
