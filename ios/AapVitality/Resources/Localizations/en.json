@@ -688,22 +688,27 @@
     "dailyGoalNotifications": "Daily goal reminders",
     "dailyGoalNotificationsDesc": "Celebrate when you hit today's point goal, or get an evening reminder if you haven't yet.",
     "ambients": {
-      "neonLagoon": "Neon Lagoon",
-      "sunsetLap": "Sunset Lap",
+      "neonLagoon": "Neon Pulse",
+      "sunsetLap": "Sunset Glow",
       "bubbleTrail": "Bubble Trail",
-      "auroraLap": "Aurora Lap",
-      "deepCurrent": "Deep Current"
+      "auroraLap": "Aurora Glow",
+      "deepCurrent": "Midnight Flow",
+      "greenLeaves": "Green Leaves"
     },
     "wallpaperTitle": "Background wallpaper",
     "wallpaperDesc": "Sets the base image behind the app. Vibes animate on top of this wallpaper.",
     "wallpaperDefault": "Theme default",
     "wallpapers": {
-      "lanePool": "Lane Pool",
-      "dawnWater": "Dawn Water",
-      "deepLane": "Deep Lane",
-      "tileDeck": "Tile Deck",
-      "openWater": "Open Water",
-      "chlorineGlow": "Chlorine Glow"
+      "lanePool": "Active Flow",
+      "dawnWater": "Sunrise Energy",
+      "deepLane": "Deep Focus",
+      "tileDeck": "Fresh Grid",
+      "openWater": "Horizon Air",
+      "chlorineGlow": "Vitality Glow",
+      "vitalityPulse": "Pulse Rings",
+      "morningSteps": "Step Path",
+      "achievementGold": "Golden Hour",
+      "twilightRun": "Twilight Run"
     },
     "defaultProfileName": "Vitality user"
   },

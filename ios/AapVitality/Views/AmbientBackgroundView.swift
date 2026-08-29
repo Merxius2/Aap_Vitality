@@ -7,6 +7,7 @@ enum AmbientCatalog {
         "ambient:bubble-trail",
         "ambient:aurora-lap",
         "ambient:deep-current",
+        "ambient:green-leaves",
     ]
 
     static func isValid(_ id: String?) -> Bool {
@@ -21,6 +22,7 @@ enum AmbientCatalog {
         case "ambient:bubble-trail": return "settings.ambients.bubbleTrail"
         case "ambient:aurora-lap": return "settings.ambients.auroraLap"
         case "ambient:deep-current": return "settings.ambients.deepCurrent"
+        case "ambient:green-leaves": return "settings.ambients.greenLeaves"
         default: return id
         }
     }
@@ -99,6 +101,10 @@ struct AmbientPresetRenderer: View {
             if preset.bubbles && isPreview {
                 bubbleTrail(in: size, elapsed: elapsed)
             }
+
+            if preset.leaves && isPreview {
+                leafDrift(in: size, elapsed: elapsed)
+            }
         }
     }
 
@@ -108,7 +114,7 @@ struct AmbientPresetRenderer: View {
         return AmbientGradientSpec(colors: gradient.colors, duration: 5, vertical: gradient.vertical)
     }
 
-    private var blobBlur: CGFloat { isPreview ? 22 : 40 }
+    private var blobBlur: CGFloat { isPreview ? 22 : 32 }
 
     @ViewBuilder
     private func blobView(
@@ -121,16 +127,21 @@ struct AmbientPresetRenderer: View {
         let height = size.height * blob.heightRatio
         let x = blob.xRatio.map { $0 * size.width } ?? (blob.rightRatio.map { size.width - $0 * size.width - width } ?? 0)
         let y = blob.yRatio.map { $0 * size.height } ?? (blob.bottomRatio.map { size.height - $0 * size.height - height } ?? 0)
-        let driftDuration = isPreview ? 10.0 : 28.0
+        let driftDuration = isPreview ? 10.0 : 24.0
         let driftPhase = preset.driftBlobs
             ? (elapsed.truncatingRemainder(dividingBy: driftDuration)) / driftDuration
             : 0
+        let orbitRadiusX: CGFloat = isPreview ? 14 : 38
+        let orbitRadiusY: CGFloat = isPreview ? 11 : 30
         let driftOffset = preset.driftBlobs
             ? CGSize(
-                width: sin(driftPhase * .pi * 2 + CGFloat(index)) * (isPreview ? 6 : 12),
-                height: cos(driftPhase * .pi * 2 + CGFloat(index)) * (isPreview ? 5 : 10)
+                width: cos(driftPhase * .pi * 2 + CGFloat(index) * 1.25) * orbitRadiusX,
+                height: sin(driftPhase * .pi * 2 + CGFloat(index) * 0.85) * orbitRadiusY
             )
             : .zero
+        let breathe = preset.driftBlobs
+            ? 1.0 + sin(elapsed * 0.45 + Double(index) * 0.8) * 0.10
+            : 1.0
 
         Circle()
             .fill(
@@ -142,6 +153,7 @@ struct AmbientPresetRenderer: View {
                 )
             )
             .frame(width: width, height: height)
+            .scaleEffect(breathe)
             .offset(x: x + driftOffset.width, y: y + driftOffset.height)
             .blur(radius: blobBlur)
     }
@@ -162,6 +174,143 @@ struct AmbientPresetRenderer: View {
                 duration: bubble.duration * durationScale,
                 elapsed: elapsed
             )
+        }
+    }
+
+    @ViewBuilder
+    private func leafDrift(in size: CGSize, elapsed: TimeInterval) -> some View {
+        let leaves = Array(AmbientPresets.leafPositions.prefix(5))
+        let sizeScale: CGFloat = 0.55
+        let durationScale = 0.55
+
+        ForEach(leaves.indices, id: \.self) { index in
+            let leaf = leaves[index]
+            DriftingLeaf(
+                size: leaf.size * sizeScale,
+                startYRatio: leaf.startYRatio,
+                containerSize: size,
+                delay: leaf.delay * durationScale,
+                duration: leaf.duration * durationScale,
+                elapsed: elapsed,
+                tint: leaf.tint
+            )
+        }
+    }
+}
+
+struct AmbientLeafOverlayView: View {
+    let activeAmbient: String?
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.appAnimationsPaused) private var animationsPaused
+
+    private var showsLeaves: Bool {
+        guard let activeAmbient,
+              AmbientCatalog.isValid(activeAmbient),
+              let preset = AmbientPresets.preset(for: activeAmbient) else {
+            return false
+        }
+        return preset.leaves
+    }
+
+    var body: some View {
+        if showsLeaves {
+            GeometryReader { proxy in
+                let motionEnabled = !reduceMotion && !animationsPaused
+
+                Group {
+                    if motionEnabled {
+                        TimelineView(BatteryEfficientAnimation.timelineSchedule) { timeline in
+                            leafLayer(
+                                in: proxy.size,
+                                elapsed: timeline.date.timeIntervalSinceReferenceDate
+                            )
+                        }
+                    } else {
+                        leafLayer(in: proxy.size, elapsed: 0)
+                    }
+                }
+            }
+            .ignoresSafeArea()
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+        }
+    }
+
+    @ViewBuilder
+    private func leafLayer(in size: CGSize, elapsed: TimeInterval) -> some View {
+        ZStack {
+            ForEach(AmbientPresets.leafPositions.indices, id: \.self) { index in
+                let leaf = AmbientPresets.leafPositions[index]
+                DriftingLeaf(
+                    size: leaf.size,
+                    startYRatio: leaf.startYRatio,
+                    containerSize: size,
+                    delay: leaf.delay,
+                    duration: leaf.duration,
+                    elapsed: elapsed,
+                    tint: leaf.tint
+                )
+                .allowsHitTesting(false)
+            }
+        }
+    }
+}
+
+struct AmbientGlowOverlayView: View {
+    let activeAmbient: String?
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.appAnimationsPaused) private var animationsPaused
+
+    private var showsGlow: Bool {
+        guard let activeAmbient,
+              AmbientCatalog.isValid(activeAmbient),
+              let preset = AmbientPresets.preset(for: activeAmbient) else {
+            return false
+        }
+        return preset.driftBlobs && !preset.bubbles && !preset.leaves
+    }
+
+    var body: some View {
+        if showsGlow {
+            GeometryReader { proxy in
+                let motionEnabled = !reduceMotion && !animationsPaused
+
+                Group {
+                    if motionEnabled {
+                        TimelineView(BatteryEfficientAnimation.timelineSchedule) { timeline in
+                            glowLayer(
+                                in: proxy.size,
+                                elapsed: timeline.date.timeIntervalSinceReferenceDate
+                            )
+                        }
+                    } else {
+                        glowLayer(in: proxy.size, elapsed: 0)
+                    }
+                }
+            }
+            .ignoresSafeArea()
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+        }
+    }
+
+    @ViewBuilder
+    private func glowLayer(in size: CGSize, elapsed: TimeInterval) -> some View {
+        ZStack {
+            ForEach(AmbientPresets.glowPositions.indices, id: \.self) { index in
+                let glow = AmbientPresets.glowPositions[index]
+                DriftingGlowMote(
+                    size: glow.size,
+                    startYRatio: glow.startYRatio,
+                    containerSize: size,
+                    delay: glow.delay,
+                    duration: glow.duration,
+                    elapsed: elapsed,
+                    opacity: glow.opacity
+                )
+            }
         }
     }
 }
@@ -235,18 +384,21 @@ private struct AnimatedAmbientGradient: View {
         let cycle = max(spec.duration, 0.1)
         let progress = (elapsed.truncatingRemainder(dividingBy: cycle)) / cycle
         let wave = sin(progress * .pi * 2)
-        let scale: CGFloat = spec.vertical ? 1.05 : 1.06
-        let offsetX = spec.vertical ? 0 : CGFloat(wave) * width * 0.10
+        let ripple = sin(progress * .pi * 4 + 0.5) * 0.4
+        let scale: CGFloat = spec.vertical ? 1.08 : 1.10
+        let offsetX = spec.vertical
+            ? CGFloat(ripple) * width * 0.06
+            : CGFloat(wave) * width * 0.16
         let offsetY = spec.vertical
-            ? CGFloat(wave) * height * 0.08
-            : CGFloat(wave) * height * 0.06
+            ? CGFloat(wave) * height * 0.16
+            : CGFloat(wave + ripple) * height * 0.10
 
         gradientLayer
             .frame(
-                width: width * (spec.vertical ? 1.0 : 1.6),
-                height: height * (spec.vertical ? 2.2 : 1.6)
+                width: width * (spec.vertical ? 1.15 : 1.75),
+                height: height * (spec.vertical ? 2.4 : 1.75)
             )
-            .scaleEffect(spec.vertical ? 1.0 : (1 + (scale - 1) * abs(CGFloat(wave))))
+            .scaleEffect(spec.vertical ? (1 + (scale - 1) * abs(CGFloat(wave))) : (1 + (scale - 1) * abs(CGFloat(wave))))
             .offset(x: offsetX, y: offsetY)
             .position(x: width * 0.5, y: height * 0.5)
             .frame(width: width, height: height)
@@ -290,6 +442,99 @@ private struct RisingBubble: View {
     }
 }
 
+private struct DriftingLeaf: View {
+    let size: CGFloat
+    let startYRatio: CGFloat
+    let containerSize: CGSize
+    let delay: Double
+    let duration: Double
+    let elapsed: TimeInterval
+    let tint: Color
+
+    var body: some View {
+        let cycle = max(duration, 0.1)
+        let shifted = elapsed - delay
+        let progress = shifted < 0
+            ? 0.0
+            : (shifted.truncatingRemainder(dividingBy: cycle)) / cycle
+        let x = containerSize.width * (-0.10 + progress * 1.20)
+        let sway = sin(progress * .pi * 5) * containerSize.height * 0.025
+        let y = containerSize.height * startYRatio + sway
+        let rotation = sin(progress * .pi * 3) * 22 + 28
+        let fade = progress < 0.06
+            ? progress / 0.06
+            : max(0, 1 - (progress - 0.90) / 0.10)
+
+        LeafShape()
+            .fill(
+                LinearGradient(
+                    colors: [tint.opacity(0.95), tint.opacity(0.55)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .frame(width: size, height: size * 1.35)
+            .rotationEffect(.degrees(rotation))
+            .position(x: x, y: y)
+            .opacity(0.88 * fade)
+    }
+}
+
+private struct LeafShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
+        path.addQuadCurve(
+            to: CGPoint(x: rect.maxX, y: rect.midY),
+            control: CGPoint(x: rect.maxX * 0.95, y: rect.minY)
+        )
+        path.addQuadCurve(
+            to: CGPoint(x: rect.midX, y: rect.maxY),
+            control: CGPoint(x: rect.maxX, y: rect.maxY)
+        )
+        path.addQuadCurve(
+            to: CGPoint(x: rect.minX, y: rect.midY),
+            control: CGPoint(x: rect.minX, y: rect.maxY)
+        )
+        path.addQuadCurve(
+            to: CGPoint(x: rect.midX, y: rect.minY),
+            control: CGPoint(x: rect.minX, y: rect.minY)
+        )
+        return path
+    }
+}
+
+private struct DriftingGlowMote: View {
+    let size: CGFloat
+    let startYRatio: CGFloat
+    let containerSize: CGSize
+    let delay: Double
+    let duration: Double
+    let elapsed: TimeInterval
+    let opacity: Double
+
+    var body: some View {
+        let cycle = max(duration, 0.1)
+        let shifted = elapsed - delay
+        let progress = shifted < 0
+            ? 0.0
+            : (shifted.truncatingRemainder(dividingBy: cycle)) / cycle
+        let x = containerSize.width * (-0.08 + progress * 1.16)
+        let sway = sin(progress * .pi * 3) * containerSize.height * 0.018
+        let y = containerSize.height * startYRatio + sway
+        let fade = progress < 0.08
+            ? progress / 0.08
+            : max(0, 1 - (progress - 0.88) / 0.12)
+
+        Circle()
+            .fill(Color.white.opacity(opacity))
+            .frame(width: size, height: size)
+            .blur(radius: size * 0.35)
+            .position(x: x, y: y)
+            .opacity(fade)
+    }
+}
+
 struct AmbientBlob {
     let color: Color
     let opacity: Double
@@ -312,6 +557,7 @@ struct AmbientPreset {
     let blobs: [AmbientBlob]
     let driftBlobs: Bool
     let bubbles: Bool
+    let leaves: Bool
 }
 
 enum AmbientPresets {
@@ -319,6 +565,28 @@ enum AmbientPresets {
         (0.06, 28, 0, 9), (0.14, 18, 2.4, 11), (0.24, 34, 0.8, 10.5), (0.33, 22, 3.6, 12),
         (0.42, 16, 1.2, 8.5), (0.51, 30, 4.2, 11.5), (0.60, 20, 0.3, 9.8), (0.69, 26, 2.8, 10.2),
         (0.78, 14, 5, 8), (0.87, 32, 1.6, 12.5), (0.93, 18, 3.2, 9.2), (0.48, 24, 6, 13),
+    ]
+
+    static let leafPositions: [(startYRatio: CGFloat, size: CGFloat, delay: Double, duration: Double, tint: Color)] = [
+        (0.18, 22, 0, 14, Color(hex: "#4ADE80")),
+        (0.32, 18, 2.5, 16, Color(hex: "#22C55E")),
+        (0.48, 26, 1.2, 15, Color(hex: "#86EFAC")),
+        (0.62, 20, 4.0, 17, Color(hex: "#16A34A")),
+        (0.26, 16, 5.5, 13, Color(hex: "#BBF7D0")),
+        (0.74, 24, 3.2, 18, Color(hex: "#15803D")),
+        (0.40, 19, 6.8, 15, Color(hex: "#65A30D")),
+        (0.56, 21, 8.0, 16, Color(hex: "#34D399")),
+    ]
+
+    static let glowPositions: [(startYRatio: CGFloat, size: CGFloat, delay: Double, duration: Double, opacity: Double)] = [
+        (0.20, 10, 0, 18, 0.35),
+        (0.35, 14, 3.0, 20, 0.28),
+        (0.50, 8, 1.5, 16, 0.32),
+        (0.65, 12, 5.0, 22, 0.25),
+        (0.28, 9, 7.0, 17, 0.30),
+        (0.78, 11, 2.5, 19, 0.27),
+        (0.42, 13, 9.0, 21, 0.24),
+        (0.58, 10, 4.5, 18, 0.29),
     ]
 
     static func preset(for id: String) -> AmbientPreset? {
@@ -341,7 +609,8 @@ enum AmbientPresets {
                     blob("#22D3EE", 0.35, 0.30, nil, nil, right: 0.15, bottom: 0.10),
                 ],
                 driftBlobs: true,
-                bubbles: false
+                bubbles: false,
+                leaves: false
             )
         case "ambient:sunset-lap":
             return AmbientPreset(
@@ -361,7 +630,8 @@ enum AmbientPresets {
                     blob("#EF4444", 0.35, 0.38, nil, nil, right: 0.08, bottom: 0.08),
                 ],
                 driftBlobs: true,
-                bubbles: false
+                bubbles: false,
+                leaves: false
             )
         case "ambient:bubble-trail":
             return AmbientPreset(
@@ -378,7 +648,8 @@ enum AmbientPresets {
                     blob("#A5F3FC", 0.40, 0.40, nil, nil, right: 0.05, bottom: 0.10),
                 ],
                 driftBlobs: false,
-                bubbles: true
+                bubbles: true,
+                leaves: false
             )
         case "ambient:aurora-lap":
             return AmbientPreset(
@@ -398,7 +669,8 @@ enum AmbientPresets {
                     blob("#A78BFA", 0.30, 0.32, nil, nil, right: 0.12, bottom: 0.12),
                 ],
                 driftBlobs: true,
-                bubbles: false
+                bubbles: false,
+                leaves: false
             )
         case "ambient:deep-current":
             return AmbientPreset(
@@ -417,7 +689,27 @@ enum AmbientPresets {
                     blob("#164E63", 0.55, 0.64, 0.06, nil, bottom: 0.20),
                 ],
                 driftBlobs: true,
-                bubbles: false
+                bubbles: false,
+                leaves: false
+            )
+        case "ambient:green-leaves":
+            return AmbientPreset(
+                gradient: AmbientGradientSpec(
+                    colors: [
+                        Color(hex: "#ECFDF5"), Color(hex: "#BBF7D0"), Color(hex: "#4ADE80"),
+                        Color(hex: "#16A34A"), Color(hex: "#14532D"),
+                    ],
+                    duration: 20,
+                    vertical: true
+                ),
+                blobs: [
+                    blob("#86EFAC", 0.40, 0.50, -0.08, -0.10),
+                    blob("#22C55E", 0.35, 0.42, nil, nil, right: 0.10, bottom: 0.12),
+                    blob("#A3E635", 0.30, 0.38, 0.08, nil, bottom: 0.18),
+                ],
+                driftBlobs: true,
+                bubbles: false,
+                leaves: true
             )
         default:
             return nil
@@ -466,6 +758,10 @@ enum WallpaperCatalog {
         "wallpaper:tile-deck",
         "wallpaper:open-water",
         "wallpaper:chlorine-glow",
+        "wallpaper:vitality-pulse",
+        "wallpaper:morning-steps",
+        "wallpaper:achievement-gold",
+        "wallpaper:twilight-run",
     ]
 
     static func isValid(_ id: String?) -> Bool {
@@ -481,6 +777,10 @@ enum WallpaperCatalog {
         case "wallpaper:tile-deck": return "settings.wallpapers.tileDeck"
         case "wallpaper:open-water": return "settings.wallpapers.openWater"
         case "wallpaper:chlorine-glow": return "settings.wallpapers.chlorineGlow"
+        case "wallpaper:vitality-pulse": return "settings.wallpapers.vitalityPulse"
+        case "wallpaper:morning-steps": return "settings.wallpapers.morningSteps"
+        case "wallpaper:achievement-gold": return "settings.wallpapers.achievementGold"
+        case "wallpaper:twilight-run": return "settings.wallpapers.twilightRun"
         default: return id
         }
     }
@@ -515,6 +815,8 @@ struct AppBackdropView: View {
                 AmbientOverlayView(activeAmbient: activeAmbient)
                     .id(activeAmbient ?? "none")
                 AmbientBubbleOverlayView(activeAmbient: activeAmbient)
+                AmbientLeafOverlayView(activeAmbient: activeAmbient)
+                AmbientGlowOverlayView(activeAmbient: activeAmbient)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -543,6 +845,14 @@ struct WallpaperCanvasView: View {
                 openWater(size: size)
             case "wallpaper:chlorine-glow":
                 chlorineGlow(size: size)
+            case "wallpaper:vitality-pulse":
+                vitalityPulse(size: size)
+            case "wallpaper:morning-steps":
+                morningSteps(size: size)
+            case "wallpaper:achievement-gold":
+                achievementGold(size: size)
+            case "wallpaper:twilight-run":
+                twilightRun(size: size)
             default:
                 Color(.systemGroupedBackground)
             }
@@ -706,6 +1016,149 @@ struct WallpaperCanvasView: View {
                 .frame(width: size.width * 0.7, height: size.width * 0.7)
                 .blur(radius: 50)
                 .position(x: size.width * 0.2, y: size.height * 0.75)
+        }
+    }
+
+    private func vitalityPulse(size: CGSize) -> some View {
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color(red: 0.08, green: 0.10, blue: 0.24),
+                    Color(red: 0.16, green: 0.20, blue: 0.42),
+                    Color(red: 0.10, green: 0.14, blue: 0.28),
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            ForEach(0..<4, id: \.self) { index in
+                Circle()
+                    .stroke(Color("BrandBlue").opacity(0.22 - Double(index) * 0.04), lineWidth: 2)
+                    .frame(
+                        width: size.width * (0.35 + CGFloat(index) * 0.18),
+                        height: size.width * (0.35 + CGFloat(index) * 0.18)
+                    )
+                    .position(x: size.width * 0.5, y: size.height * 0.42)
+            }
+            Circle()
+                .fill(
+                    RadialGradient(
+                        colors: [
+                            Color(red: 0.95, green: 0.35, blue: 0.45).opacity(0.55),
+                            Color(red: 0.95, green: 0.35, blue: 0.45).opacity(0),
+                        ],
+                        center: .center,
+                        startRadius: 0,
+                        endRadius: size.width * 0.12
+                    )
+                )
+                .frame(width: size.width * 0.24, height: size.width * 0.24)
+                .position(x: size.width * 0.5, y: size.height * 0.42)
+            Circle()
+                .fill(Color("BrandBlue").opacity(0.18))
+                .frame(width: size.width * 0.8, height: size.width * 0.8)
+                .blur(radius: 40)
+                .position(x: size.width * 0.82, y: size.height * 0.78)
+        }
+    }
+
+    private func morningSteps(size: CGSize) -> some View {
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color(red: 0.88, green: 0.96, blue: 0.90),
+                    Color(red: 0.52, green: 0.82, blue: 0.62),
+                    Color(red: 0.18, green: 0.52, blue: 0.38),
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            ForEach(0..<5, id: \.self) { index in
+                Circle()
+                    .fill(Color.white.opacity(index.isMultiple(of: 2) ? 0.28 : 0.16))
+                    .frame(width: 10 + CGFloat(index % 3) * 4, height: 10 + CGFloat(index % 3) * 4)
+                    .position(
+                        x: size.width * (0.18 + CGFloat(index) * 0.16),
+                        y: size.height * (0.62 - CGFloat(index) * 0.04)
+                    )
+            }
+            Capsule()
+                .fill(Color.white.opacity(0.14))
+                .frame(width: size.width * 0.72, height: 3)
+                .rotationEffect(.degrees(-8))
+                .position(x: size.width * 0.48, y: size.height * 0.58)
+            Circle()
+                .fill(Color.white.opacity(0.22))
+                .frame(width: size.width * 0.45, height: size.width * 0.45)
+                .blur(radius: 30)
+                .position(x: size.width * 0.78, y: size.height * 0.22)
+        }
+    }
+
+    private func achievementGold(size: CGSize) -> some View {
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color(red: 1.0, green: 0.92, blue: 0.72),
+                    Color(red: 0.98, green: 0.72, blue: 0.38),
+                    Color(red: 0.82, green: 0.42, blue: 0.18),
+                    Color(red: 0.42, green: 0.18, blue: 0.10),
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            ForEach(0..<6, id: \.self) { index in
+                let angle = Double(index) * 30 - 15
+                Capsule()
+                    .fill(Color.white.opacity(0.12))
+                    .frame(width: size.width * 0.55, height: 4)
+                    .rotationEffect(.degrees(angle))
+                    .position(x: size.width * 0.5, y: size.height * 0.28)
+            }
+            Circle()
+                .fill(Color.white.opacity(0.35))
+                .frame(width: size.width * 0.38, height: size.width * 0.38)
+                .blur(radius: 26)
+                .position(x: size.width * 0.68, y: size.height * 0.24)
+            Ellipse()
+                .fill(Color(red: 1.0, green: 0.78, blue: 0.32).opacity(0.22))
+                .frame(width: size.width * 1.0, height: size.height * 0.35)
+                .position(x: size.width * 0.5, y: size.height * 0.82)
+                .blur(radius: 20)
+        }
+    }
+
+    private func twilightRun(size: CGSize) -> some View {
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color(red: 0.18, green: 0.12, blue: 0.32),
+                    Color(red: 0.52, green: 0.22, blue: 0.42),
+                    Color(red: 0.92, green: 0.42, blue: 0.28),
+                    Color(red: 0.22, green: 0.10, blue: 0.24),
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            Ellipse()
+                .fill(Color(red: 1.0, green: 0.55, blue: 0.35).opacity(0.35))
+                .frame(width: size.width * 0.55, height: size.width * 0.22)
+                .blur(radius: 18)
+                .position(x: size.width * 0.5, y: size.height * 0.72)
+            ForEach(0..<3, id: \.self) { index in
+                Capsule()
+                    .fill(Color.white.opacity(0.10))
+                    .frame(width: size.width * 0.22, height: 2)
+                    .rotationEffect(.degrees(-6))
+                    .position(
+                        x: size.width * (0.25 + CGFloat(index) * 0.25),
+                        y: size.height * (0.78 + CGFloat(index) * 0.03)
+                    )
+            }
+            Circle()
+                .fill(Color(red: 0.98, green: 0.72, blue: 0.45).opacity(0.25))
+                .frame(width: size.width * 0.35, height: size.width * 0.35)
+                .blur(radius: 24)
+                .position(x: size.width * 0.2, y: size.height * 0.18)
         }
     }
 
