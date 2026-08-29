@@ -45,8 +45,6 @@
 		B10000000000000000000043 /* SecretSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000043 /* SecretSettingsSheet.swift */; };
 		B10000000000000000000044 /* en.json in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000044 /* en.json */; };
 		B10000000000000000000045 /* nl.json in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000045 /* nl.json */; };
-		B10000000000000000000046 /* ru.json in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000046 /* ru.json */; };
-		B10000000000000000000047 /* tr.json in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000047 /* tr.json */; };
 		B10000000000000000000048 /* MascotCharacterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000048 /* MascotCharacterView.swift */; };
 		B10000000000000000000050 /* SwimTopBarActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000050 /* SwimTopBarActions.swift */; };
 		B10000000000000000000051 /* MascotStageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000051 /* MascotStageView.swift */; };
@@ -152,8 +150,6 @@
 		F10000000000000000000043 /* SecretSettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretSettingsSheet.swift; sourceTree = "<group>"; };
 		F10000000000000000000044 /* en.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = en.json; sourceTree = "<group>"; };
 		F10000000000000000000045 /* nl.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = nl.json; sourceTree = "<group>"; };
-		F10000000000000000000046 /* ru.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ru.json; sourceTree = "<group>"; };
-		F10000000000000000000047 /* tr.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tr.json; sourceTree = "<group>"; };
 		F10000000000000000000048 /* MascotCharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MascotCharacterView.swift; sourceTree = "<group>"; };
 		F10000000000000000000050 /* SwimTopBarActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimTopBarActions.swift; sourceTree = "<group>"; };
 		F10000000000000000000051 /* MascotStageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MascotStageView.swift; sourceTree = "<group>"; };
@@ -379,8 +375,6 @@
 			children = (
 				F10000000000000000000044 /* en.json */,
 				F10000000000000000000045 /* nl.json */,
-				F10000000000000000000046 /* ru.json */,
-				F10000000000000000000047 /* tr.json */,
 			);
 			path = Localizations;
 			sourceTree = "<group>";
@@ -503,8 +497,6 @@
 				B10000000000000000000018 /* Assets.xcassets in Resources */,
 				B10000000000000000000044 /* en.json in Resources */,
 				B10000000000000000000045 /* nl.json in Resources */,
-				B10000000000000000000046 /* ru.json in Resources */,
-				B10000000000000000000047 /* tr.json in Resources */,
 				B10000000000000000000066 /* Oxanium-Regular.ttf in Resources */,
 				B10000000000000000000067 /* Oxanium-Medium.ttf in Resources */,
 				B10000000000000000000068 /* Oxanium-SemiBold.ttf in Resources */,
