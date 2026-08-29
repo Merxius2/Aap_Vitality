@@ -835,7 +835,9 @@
       "consistency": "Consistency path",
       "recovery": "Recovery path",
       "next": "Next: {medal}",
-      "complete": "Path complete!"
+      "complete": "Path complete!",
+      "detailProgress": "{completed} of {total} medals on this path",
+      "step": "Step {step} of {total}"
     },
     "workoutBadges": {
       "title": "Workout type badges",

@@ -835,7 +835,9 @@
       "consistency": "Consistentiepad",
       "recovery": "Herstelpad",
       "next": "Volgende: {medal}",
-      "complete": "Pad voltooid!"
+      "complete": "Pad voltooid!",
+      "detailProgress": "{completed} van {total} medailles op dit pad",
+      "step": "Stap {step} van {total}"
     },
     "workoutBadges": {
       "title": "Workouttype-badges",

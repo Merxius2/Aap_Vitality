@@ -133,6 +133,18 @@ final class VitalityFeaturesTests: XCTestCase {
         XCTAssertEqual(VitalityGoals.todayPoints(records: [record], dateKey: "2026-08-28"), 0)
     }
 
+    func testAchievementPathsMedalsLookup() {
+        let medals = VitalityMedals.evaluateAllMedals([], profile: .default, goalState: .empty)
+        let paths = VitalityPaths.progress(for: medals)
+        guard let first = paths.first else {
+            XCTFail("expected path")
+            return
+        }
+        let ordered = VitalityPaths.medals(for: first, from: medals)
+        XCTAssertEqual(ordered.count, first.totalCount)
+        XCTAssertEqual(ordered.map(\.id), first.medalIds)
+    }
+
     func testDailyGoalStatusReflectsProgress() {
         let profile = VitalityProfile.default
         let goalState = VitalityGoalState.empty
