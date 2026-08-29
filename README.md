@@ -1,10 +1,10 @@
 # Aap Vitality
 
-Scaffolding copied from [Merxius2/swimming_app](https://github.com/Merxius2/swimming_app) (Aap-SC Swim Coach). Adapt this codebase for the Vitality app while reusing the existing iOS architecture, services, and UI patterns.
+Scaffolding copied from [Merxius2/swimming_app](https://github.com/Merxius2/swimming_app) (Aap Vitality). Adapt this codebase for the Vitality app while reusing the existing iOS architecture, services, and UI patterns.
 
 Native iOS vitality app for earning daily points from steps and workouts, with personalized weekly, monthly, and yearly goals.
 
-The repository contains **only the iOS app**. Open `ios/AapSC.xcodeproj` in Xcode on macOS to build and run.
+The repository contains **only the iOS app**. Open `ios/AapVitality.xcodeproj` in Xcode on macOS to build and run.
 
 ## Requirements
 
@@ -15,10 +15,10 @@ The repository contains **only the iOS app**. Open `ios/AapSC.xcodeproj` in Xcod
 ## Quick start
 
 ```bash
-open ios/AapSC.xcodeproj
+open ios/AapVitality.xcodeproj
 ```
 
-Select the **AapSC** scheme, choose a simulator, and press **⌘R**.
+Select the **AapVitality** scheme, choose a simulator, and press **⌘R**.
 
 See [ios/README.md](ios/README.md) for signing, architecture, and feature details.
 
@@ -45,7 +45,7 @@ node scripts/generate-app-icons.mjs
 Run unit tests in Xcode (**⌘U**) or:
 
 ```bash
-xcodebuild test -project ios/AapSC.xcodeproj -scheme AapSC -destination 'platform=iOS Simulator,name=iPhone 16'
+xcodebuild test -project ios/AapVitality.xcodeproj -scheme AapVitality -destination 'platform=iOS Simulator,name=iPhone 16'
 ```
 
 ## TestFlight (automatic builds)

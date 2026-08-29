@@ -1,11 +1,11 @@
-# Aap-SC — Native iOS App
+# Aap Vitality — Native iOS App
 
-Native **SwiftUI** swim coach app for iPhone and iPad.
+Native **SwiftUI** vitality coach app for iPhone and iPad.
 
 Open and build in **Xcode** on macOS:
 
 ```bash
-open ios/AapSC.xcodeproj
+open ios/AapVitality.xcodeproj
 ```
 
 ## Requirements
@@ -18,13 +18,13 @@ open ios/AapSC.xcodeproj
 
 | Tab | Screen |
 |-----|--------|
-| Settings | Profile, themes, background vibes, upload, import/export |
-| Medals | Medal gallery and monthly history |
-| **Progress (center FAB)** | Charts, challenges, records, coach feedback |
-| Benchmark | Age-group pace comparison |
-| History | Session list and detail |
+| Settings | Profile, themes, Apple Health sync, import/export |
+| Medals | Vitality medal gallery and monthly history |
+| **Progress (center FAB)** | Daily points, charts, coach feedback |
+| Goals | Weekly, monthly, and yearly point targets |
+| History | Daily activity list and calendar |
 
-Upload is available from **Settings → Upload swim session**.
+Sync is available from **Settings → Sync Apple Health** or the **Upload** tab.
 
 ## What's included
 
@@ -44,8 +44,8 @@ Upload is available from **Settings → Upload swim session**.
 ## Architecture
 
 ```
-ios/AapSC/
-├── AapSCApp.swift
+ios/AapVitality/
+├── AapVitalityApp.swift
 ├── ContentView.swift        # Tab shell + sheets
 ├── Models/
 ├── Services/
@@ -60,7 +60,7 @@ ios/AapSC/
 ## Tests
 
 ```bash
-xcodebuild test -project ios/AapSC.xcodeproj -scheme AapSC \
+xcodebuild test -project ios/AapVitality.xcodeproj -scheme AapVitality \
   -destination 'platform=iOS Simulator,name=iPhone 16'
 ```
 
@@ -72,6 +72,6 @@ See [docs/TESTFLIGHT.md](../docs/TESTFLIGHT.md) for App Store Connect API key an
 
 ## Signing
 
-1. Select **AapSC** target → **Signing & Capabilities**
+1. Select **AapVitality** target → **Signing & Capabilities**
 2. Set your **Team**
-3. Adjust **Bundle Identifier** if needed (default `com.aapft.aapsc`)
+3. Adjust **Bundle Identifier** if needed (default `com.aapft.vitality`)

@@ -1,0 +1,1137 @@
+{
+  "landing": {
+    "title": "Aap Vitality",
+    "subtitle": "Vitality Coach",
+    "description": "Earn vitality points from daily steps and workouts. Reach personalized weekly, monthly, and yearly goals.",
+    "cta": "Get started",
+    "uploadLabel": "Upload workout",
+    "uploadDesc": "Import a screenshot from Apple Fitness",
+    "progressLabel": "Progress",
+    "progressDesc": "Charts and trends over time",
+    "benchmarkLabel": "Benchmarks",
+    "benchmarkDesc": "Compare pace with your age group",
+    "historyLabel": "History",
+    "historyDesc": "All saved daily activity",
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode"
+  },
+  "navigation": {
+    "swimCoach": "Vitality Coach",
+    "progress": "Progress",
+    "upload": "Upload",
+    "miniGames": "Mini games",
+    "history": "History",
+    "benchmark": "Goals",
+    "medals": "Medals",
+    "settings": "Settings",
+    "home": "Home",
+    "goals": "Goals"
+  },
+  "coins": {
+    "label": "Swim coins",
+    "earnedTitle": "Coins earned",
+    "earnedBreakdown": "{session} from session · {medals} from medals",
+    "popupTitle": "Coins earned!",
+    "popupSubtitle": "Here's how your swim paid off",
+    "close": "Close",
+    "continue": "Continue",
+    "sessionSection": "Session rewards",
+    "bonusSection": "Medal & challenge bonuses",
+    "penaltySection": "Coach penalties",
+    "lineBase": "Session logged",
+    "lineDistance": "{distance} swum (+1 per 500 m)",
+    "lineDuration": "{duration} in the pool (+1 per 15 min)",
+    "lineKcal": "{kcal} kcal burned (+1 per 100 kcal)",
+    "lineLongDistance3k": "Long swim bonus (3 km+)",
+    "lineLongDistance5k": "Epic swim bonus (5 km+)",
+    "lineLongDuration": "Endurance bonus (1 hr+)",
+    "linePaceImprovement": "Faster than your avg ({pace} vs {avgPace})",
+    "lineFinsBonus": "Fins' push — big bonus for improving",
+    "lineFinsPenalty": "Fins expected more ({pace} vs {avgPace} avg)",
+    "lineCoachShare": "Flip's easy mode — half coins, but you never lose any",
+    "lineMonthlyShortfall": "Missed {tier} in {month} — your coach's standard",
+    "lineMedal": "{tier} medal: {title}",
+    "lineMonthly": "Monthly challenge upgrade ({from} → {to})",
+    "tipTitle": "Earn more next time",
+    "tipDistance": "+1 coin for every 500 m",
+    "tipDuration": "+1 coin for every 15 minutes",
+    "tipKcal": "+1 coin for every 100 active kcal",
+    "tipLongSwim": "+10 at 3 km, +15 at 5 km, +8 for 1 hr+",
+    "tipPace": "Beat your average pace for up to +20 bonus coins",
+    "alreadyClaimedTitle": "No coins this time",
+    "alreadyClaimedSubtitle": "You already earned coins for this workout. Try a new swim to earn more.",
+    "monthlyRewards": "Monthly medal coin rewards",
+    "monthlyNextUpgrade": "Reach {tier} for +{amount} bonus coins on upgrade",
+    "wheel": {
+      "title": "Wheel of Fortune",
+      "subtitle": "Spend coins for a spin — win swim coins, free spins, or nothing.",
+      "pickBet": "Choose your bet",
+      "spin": "Spin for {bet} coins",
+      "spinFree": "Free spin ({count} left)",
+      "spinning": "Spinning…",
+      "notEnough": "Not enough coins for this bet.",
+      "paidSpinsRemaining": "{remaining}/{limit} paid spins left today",
+      "dailyLimitReached": "No paid spins left today — free spins still work. Come back tomorrow!",
+      "freeSpinReady": "{count} free spin(s) ready",
+      "resultTitle": "You landed on",
+      "wonCoins": "+{amount} coins!",
+      "wonFreeSpin": "Free spin — spin again without paying!",
+      "wonFreeSpinMulti": "{count} free spins — spin again without paying!",
+      "wonNothing": "Lost {amount} coins — better luck next spin!",
+      "segmentCoinMult": "{mult}×",
+      "segmentFreeSpin": "Free",
+      "segmentFreeSpinMulti": "{count}×",
+      "segmentNothing": "Nothing"
+    },
+    "store": {
+      "title": "Swim Coin Store",
+      "subtitle": "Spend swim coins on themes, icon sets, background vibes, flair, and boosts.",
+      "buy": "Unlock",
+      "buyConsumable": "Buy",
+      "owned": "Owned",
+      "ownedCount": "You have {count} ready to use",
+      "bonusSpinOwned": "+{count} extra paid spin(s) per day",
+      "notEnough": "Need {amount} more",
+      "vibesIosNote": "On iPhone and iPad, vibe animations may not play when Reduce Motion is enabled in Settings → Accessibility → Motion. Colors and glow still appear, but movement may be static.",
+      "categories": {
+        "themes": "Themes",
+        "icons": "Icon sets",
+        "vibes": "Background vibes",
+        "flair": "Flair",
+        "boosts": "Boosts"
+      },
+      "items": {
+        "genZ": {
+          "name": "Gen-Z",
+          "desc": "Bold flat colors and sharp contrast."
+        },
+        "classic": {
+          "name": "Classic Playstation",
+          "desc": "Retro flat panels inspired by console UIs."
+        },
+        "olympicPool": {
+          "name": "Olympic Pool",
+          "desc": "Competition tiles, lane blue, and touchpad gold."
+        },
+        "midnightLane": {
+          "name": "Midnight Lane",
+          "desc": "Late-night laps under bioluminescent pool lights."
+        },
+        "retroWave": {
+          "name": "Retro Wave",
+          "desc": "Synthwave neon on a midnight pool deck."
+        },
+        "tropicalOpen": {
+          "name": "Tropical Open Water",
+          "desc": "Turquoise lagoon warmth with coral sunset accents."
+        },
+        "goldLuxe": {
+          "name": "Gold Luxe",
+          "desc": "Champagne canvas with trophy-gold accents — the podium tier."
+        },
+        "platinumElite": {
+          "name": "Platinum Elite",
+          "desc": "Cool silver panels with icy prestige — the ultimate lap."
+        },
+        "goldMedalIcon": {
+          "name": "Gold Medalist",
+          "desc": "Full icon set — home screen, navigation, and page headers."
+        },
+        "neonLaneIcon": {
+          "name": "Neon Lane",
+          "desc": "Synth lane lines across every icon in the app."
+        },
+        "trophySplashIcon": {
+          "name": "Trophy Splash",
+          "desc": "Victory splash icon set for the whole app."
+        },
+        "platinumStarIcon": {
+          "name": "Platinum Star",
+          "desc": "Silver star crest icon set for home screen, tabs, and headers."
+        },
+        "neonLagoon": {
+          "name": "Neon Lagoon",
+          "desc": "Electric cyan and magenta lights with a slowly shifting gradient."
+        },
+        "sunsetLap": {
+          "name": "Sunset Lap",
+          "desc": "Golden-hour warmth that drifts like a late-evening lap."
+        },
+        "bubbleTrail": {
+          "name": "Bubble Trail",
+          "desc": "Rising lane bubbles float over your swim screens."
+        },
+        "auroraLap": {
+          "name": "Aurora Lap",
+          "desc": "Northern-lights greens and violets sweep across the pool."
+        },
+        "deepCurrent": {
+          "name": "Deep Current",
+          "desc": "Dark ocean blues flow like an underwater lane."
+        },
+        "goldenCoins": {
+          "name": "Golden Coins",
+          "desc": "Your coin balance gleams like a trophy case."
+        },
+        "confettiCannon": {
+          "name": "Confetti Cannon",
+          "desc": "Epic confetti bursts when you earn medals."
+        },
+        "medalShimmer": {
+          "name": "Medal Shimmer+",
+          "desc": "Earned medals pulse with extra shine on the shelf."
+        },
+        "bonusSpin": {
+          "name": "Bonus Wheel Spin",
+          "desc": "Permanently add one extra paid wheel spin every day. Each purchase costs more than the last.",
+          "preview": "paid spins"
+        },
+        "challengeReroll": {
+          "name": "Challenge Reroll",
+          "desc": "Swap one monthly challenge for another type. Use it on the Progress page.",
+          "preview": "monthly challenge"
+        }
+      }
+    }
+  },
+  "miniGames": {
+    "title": "Mini games",
+    "subtitle": "Spend or earn swim coins with quick pool-side games.",
+    "coinFlip": {
+      "title": "Coin flip",
+      "desc": "Bet swim coins on heads or tails — double your bet when you win.",
+      "heads": "Fast lane",
+      "tails": "Long swim",
+      "play": "Flip coin",
+      "flipping": "Flipping…",
+      "won": "+{amount} coins!",
+      "lost": "No luck this time."
+    },
+    "pacePick": {
+      "title": "Pace pick",
+      "desc": "Which session had the faster pace? Free to play — build a streak for bigger rewards.",
+      "needSessions": "Log at least two swims with pace data to play.",
+      "streak": "Streak: {count}",
+      "next": "Next round",
+      "free": "Free to play"
+    },
+    "laneTimer": {
+      "title": "Lane timer",
+      "desc": "Tap when the lane turns green. Faster reactions earn more coins.",
+      "wait": "Wait for green…",
+      "go": "Tap now!",
+      "tap": "Tap to start",
+      "start": "Start ({cost} coins)",
+      "again": "Play again",
+      "listening": "Stay ready…",
+      "early": "Too early — wait for green.",
+      "result": "Reaction: {ms} ms",
+      "won": "+{amount} coins!",
+      "noReward": "Too slow this time."
+    }
+  },
+  "progress": {
+    "title": "Vitality",
+    "subtitle": "Daily points, steps, and goal progress",
+    "emptyTitle": "No activity yet",
+    "emptyDesc": "Sync Apple Health in Settings to import steps and workouts.",
+    "emptyCta": "Open settings to sync",
+    "latestSession": "Latest session",
+    "paceChart": "Pace over time",
+    "distanceChart": "Distance per session",
+    "caloriesChart": "Calories",
+    "heartRateChart": "Heart rate",
+    "weeklyVolume": "Weekly volume",
+    "strokeMix": "Stroke mix",
+    "activeKcal": "Active",
+    "totalKcal": "Total",
+    "chartsSection": "Trend charts",
+    "chartsInteractiveOff": "Enable chart interaction",
+    "chartsInteractiveOn": "Chart interaction on",
+    "movingAverage": "3-session avg",
+    "actual": "Session",
+    "allTimeStats": "All-time statistics",
+    "statsBasedOn": "Based on {count} of {total} sessions",
+    "totalSessions": "Sessions",
+    "totalDistance": "Total distance",
+    "totalTime": "Total time",
+    "avgPace": "Average pace",
+    "bestPace": "Best pace",
+    "totalCalories": "Total active calories",
+    "totalLaps": "Total laps",
+    "avgHeartRate": "Avg heart rate",
+    "mascotDefault": "{name}, here's how your vitality is going — keep stacking points!",
+    "mascotEmpty": "{name}, sync Apple Health and I'll coach you toward your vitality goals!",
+    "overviewTitle": "Coach overview",
+    "sessionFeedbackTitle": "Latest session feedback",
+    "overviewSingleSession": "One session logged so far — great start building the habit.",
+    "overviewSessions": "You've logged {count} sessions totalling {distance}, averaging {pace}.",
+    "overviewMonthVolume": "You've swum {distance} so far this month.",
+    "overviewMonthVolumeUp": "This month you're at {distance} — {percent}% ahead of last month.",
+    "overviewMonthVolumeDown": "This month is at {distance} so far — lighter than last month.",
+    "overviewMonthlyGold": "All three monthly challenges are done — gold medal secured!",
+    "overviewMonthlySilver": "Two of three monthly challenges done — one more for gold.",
+    "overviewMonthlyBronze": "One monthly challenge down — {remaining} more to upgrade your medal.",
+    "overviewMonthlyNone": "No monthly challenges completed yet. Closest target: {challenge} ({current} / {target}).",
+    "overviewMonthlyNoneFlip": "No monthly challenges done yet, but you're close on {challenge} ({current} / {target}).",
+    "overviewCoachRequirement": "Remember: I expect at least {tier} this month.",
+    "chartScope": {
+      "week": "Week",
+      "month": "Month",
+      "quarter": "Quarter",
+      "ytd": "YTD",
+      "allTime": "All time"
+    },
+    "overviewTodayPoints": "Today you earned {points} points with {steps} steps.",
+    "overviewStep5k": "You cleared the 5k step tier — nice walking!",
+    "overviewStep10k": "10k steps today — strong movement day!",
+    "overviewWorkoutPoints": "Workouts added {points} points from effort and heart-rate zones.",
+    "overviewMonthlyGoal": "Monthly goal: {current} / {target} points ({percent}%).",
+    "overviewMonthlyComplete": "Monthly goal reached — your coach is proud!",
+    "overviewMonthlyNear": "You're close to this month's goal — one more strong week could do it.",
+    "overviewMonthlyBehind": "{name}, the month is slipping — let's pick up steps and a workout.",
+    "overviewWeeklyComplete": "Weekly goal complete!"
+  },
+  "records": {
+    "title": "Personal records",
+    "subtitle": "Your best single-session achievements across all swims.",
+    "longestDistance": "Longest distance",
+    "fastestPace": "Fastest pace",
+    "mostCalories": "Most active calories",
+    "mostTotalCalories": "Most total calories",
+    "mostLaps": "Most laps",
+    "longestDuration": "Longest duration",
+    "highestHeartRate": "Highest heart rate"
+  },
+  "medals": {
+    "title": "Medals",
+    "subtitle": "Earn medals for steps, workouts, goals, and consistency.",
+    "empty": "Sync activity to start earning vitality medals.",
+    "earned": "Earned",
+    "earnedOn": "Earned on {date}",
+    "celebration": {
+      "title": "New medal earned!",
+      "titleMultiple": "New medals earned!",
+      "titleAndMonthly": "New achievements unlocked!",
+      "subtitleOne": "You unlocked a new achievement — keep going!",
+      "subtitleMultiple": "You unlocked {count} new achievements — keep going!",
+      "close": "Close",
+      "continue": "Continue",
+      "viewMedals": "View medals",
+      "motivation": {
+        "bronze": "A solid step forward. Every lap builds the swimmer you are becoming.",
+        "silver": "Real progress in the pool. You are earning this through consistency.",
+        "gold": "Outstanding work! This is the kind of achievement champions stack over time."
+      }
+    },
+    "progress": {
+      "summary": "{current} / {target}",
+      "percentComplete": "{percent}% complete",
+      "alsoBest": "Best so far: {detail}",
+      "noPaceYet": "No pace recorded yet — upload a session with pace data.",
+      "scope": {
+        "lifetime": "All-time progress",
+        "best_session": "Best single session",
+        "best_week": "Best calendar week so far",
+        "current_month": "Progress this month",
+        "best_month": "Best month so far",
+        "current_season": "Progress this season",
+        "best_season": "Best season so far"
+      }
+    },
+    "categories": {
+      "milestone": "Milestones",
+      "steps": "Steps",
+      "workout": "Workouts",
+      "goals": "Goals",
+      "streak": "Streaks",
+      "monthly": "Monthly totals",
+      "special": "Special"
+    },
+    "seasons": {
+      "summer": "Summer",
+      "winter": "Winter",
+      "spring": "Spring",
+      "autumn": "Autumn"
+    },
+    "items": {
+      "first_splash": {
+        "title": "First splash",
+        "desc": "Log your first swim session."
+      },
+      "ten_sessions": {
+        "title": "Regular swimmer",
+        "desc": "Complete 10 swim sessions."
+      },
+      "twenty_five_sessions": {
+        "title": "Pool regular",
+        "desc": "Complete 25 swim sessions."
+      },
+      "ten_k_lifetime": {
+        "title": "10 km club",
+        "desc": "Swim 10 km total across all sessions."
+      },
+      "fifty_k_lifetime": {
+        "title": "50 km club",
+        "desc": "Swim 50 km total across all sessions."
+      },
+      "hundred_k_lifetime": {
+        "title": "Century swimmer",
+        "desc": "Swim 100 km total across all sessions."
+      },
+      "two_k_session": {
+        "title": "2 km session",
+        "desc": "Swim 2 km in a single session."
+      },
+      "two_five_k_session": {
+        "title": "2.5 km session",
+        "desc": "Swim 2.5 km in a single session."
+      },
+      "three_k_session": {
+        "title": "3 km session",
+        "desc": "Swim 3 km in a single session."
+      },
+      "sub_200_pace": {
+        "title": "Sub 2:00 pace",
+        "desc": "Swim faster than 2:00 per 100m in any session."
+      },
+      "four_sessions_week": {
+        "title": "Four-a-week",
+        "desc": "Log 4 sessions in a single calendar week."
+      },
+      "five_k_week": {
+        "title": "5 km week",
+        "desc": "Swim 5 km in a single calendar week."
+      },
+      "eight_sessions_month": {
+        "title": "Monthly regular",
+        "desc": "Log 8 sessions in one calendar month."
+      },
+      "ten_k_month": {
+        "title": "10 km month",
+        "desc": "Swim 10 km in a single calendar month."
+      },
+      "twenty_k_month": {
+        "title": "20 km month",
+        "desc": "Swim 20 km in a single calendar month."
+      },
+      "ten_k_cal_month": {
+        "title": "Calorie burner",
+        "desc": "Burn 10,000 active calories in one month."
+      },
+      "season_summer": {
+        "title": "Summer swimmer",
+        "desc": "Swim 15 km during a summer season (Jun–Aug)."
+      },
+      "season_winter": {
+        "title": "Winter warrior",
+        "desc": "Swim 10 km during a winter season (Dec–Feb)."
+      },
+      "season_spring": {
+        "title": "Spring splash",
+        "desc": "Swim 10 km during a spring season (Mar–May)."
+      },
+      "season_autumn": {
+        "title": "Autumn lanes",
+        "desc": "Swim 10 km during an autumn season (Sep–Nov)."
+      },
+      "fifty_sessions": {
+        "title": "Half century club",
+        "desc": "Complete 50 swim sessions."
+      },
+      "two_hundred_k": {
+        "title": "200 km legend",
+        "desc": "Swim 200 km total across all sessions."
+      },
+      "lap_legend": {
+        "title": "Lap legend",
+        "desc": "Log 1,000 laps across all sessions."
+      },
+      "calorie_collector": {
+        "title": "Calorie collector",
+        "desc": "Burn 25,000 active calories in total."
+      },
+      "sub_210_pace": {
+        "title": "Sub 2:10 pace",
+        "desc": "Swim faster than 2:10 per 100m in any session."
+      },
+      "marathon_session": {
+        "title": "Pool marathon",
+        "desc": "Swim for 90 minutes or more in one session."
+      },
+      "century_laps": {
+        "title": "Century laps",
+        "desc": "Complete 100 laps in a single session."
+      },
+      "furnace": {
+        "title": "Furnace",
+        "desc": "Burn 800+ active calories in one session."
+      },
+      "pulse_racer": {
+        "title": "Pulse racer",
+        "desc": "Average 155+ bpm for an entire session."
+      },
+      "goal_crusher": {
+        "title": "Goal crusher",
+        "desc": "Meet or beat your distance goal in a session."
+      },
+      "frog_master": {
+        "title": "Frog master",
+        "desc": "Swim 1 km breaststroke in a single session."
+      },
+      "hat_trick": {
+        "title": "Hat trick",
+        "desc": "Earn points 3 days in a row."
+      },
+      "week_warrior": {
+        "title": "Week warrior",
+        "desc": "Earn points 7 days in a row."
+      },
+      "fortnight_flow": {
+        "title": "Fortnight flow",
+        "desc": "Earn points 14 days in a row."
+      },
+      "early_bird": {
+        "title": "Early bird",
+        "desc": "Start a swim before 7:00 AM."
+      },
+      "night_owl": {
+        "title": "Night owl",
+        "desc": "Start a swim at 8:00 PM or later."
+      },
+      "comeback": {
+        "title": "Comeback",
+        "desc": "Return after 30+ days away."
+      },
+      "double_dip": {
+        "title": "Double dip",
+        "desc": "Log two swims on the same day."
+      },
+      "holiday_splash": {
+        "title": "Holiday splash",
+        "desc": "Swim between Dec 20 and Jan 5."
+      },
+      "january_jolt": {
+        "title": "January jolt",
+        "desc": "Kick off the year with a swim in January."
+      },
+      "first_points": {
+        "title": "First points",
+        "desc": "Earn your first vitality point."
+      },
+      "ten_active_days": {
+        "title": "Active ten",
+        "desc": "Log points on 10 different days."
+      },
+      "fifty_active_days": {
+        "title": "Fifty active days",
+        "desc": "Log points on 50 different days."
+      },
+      "five_k_steps": {
+        "title": "5k walker",
+        "desc": "Reach 5,000 steps in a day."
+      },
+      "ten_k_steps": {
+        "title": "10k walker",
+        "desc": "Reach 10,000 steps in a day."
+      },
+      "twenty_k_steps": {
+        "title": "20k walker",
+        "desc": "Reach 20,000 steps in a day."
+      },
+      "step_streak_7": {
+        "title": "Step streak 7",
+        "desc": "Stay active 7 days in a row."
+      },
+      "step_streak_14": {
+        "title": "Step streak 14",
+        "desc": "Stay active 14 days in a row."
+      },
+      "first_workout": {
+        "title": "First workout",
+        "desc": "Log a qualifying 30+ minute workout."
+      },
+      "ten_workouts": {
+        "title": "Ten workouts",
+        "desc": "Complete 10 qualifying workouts."
+      },
+      "thirty_workouts": {
+        "title": "Thirty workouts",
+        "desc": "Complete 30 qualifying workouts."
+      },
+      "endurance_45": {
+        "title": "Endurance 45",
+        "desc": "Complete a 45+ minute workout."
+      },
+      "zone_master": {
+        "title": "Zone master",
+        "desc": "Spend 10+ minutes in max heart-rate zone."
+      },
+      "weekly_goal_hit": {
+        "title": "Weekly finisher",
+        "desc": "Hit a weekly point goal."
+      },
+      "monthly_goal_hit": {
+        "title": "Monthly finisher",
+        "desc": "Hit a monthly point goal."
+      },
+      "yearly_halfway": {
+        "title": "Year halfway",
+        "desc": "Reach halfway to your yearly goal."
+      },
+      "yearly_goal_hit": {
+        "title": "Year complete",
+        "desc": "Hit your yearly point goal."
+      },
+      "early_finisher": {
+        "title": "Early finisher",
+        "desc": "Complete a monthly goal in 20 days or less."
+      },
+      "ten_k_points_month": {
+        "title": "10k month",
+        "desc": "Earn 10,000 points in one month."
+      },
+      "twenty_k_points_month": {
+        "title": "20k month",
+        "desc": "Earn 20,000 points in one month."
+      },
+      "forty_k_points_month": {
+        "title": "40k month",
+        "desc": "Earn 40,000 points in one month."
+      },
+      "double_day": {
+        "title": "Double session",
+        "desc": "Log two workouts in one day."
+      },
+      "walk_and_work": {
+        "title": "Walk & work",
+        "desc": "Earn both step and workout points in one day."
+      }
+    }
+  },
+  "upload": {
+    "title": "Sync",
+    "subtitle": "Sync steps and workouts from Apple Health",
+    "healthImport": "Sync from Apple Health",
+    "healthSyncing": "Syncing steps and workouts…",
+    "healthHint": "Imports daily steps and workouts (30+ min earn points) with heart-rate zones.",
+    "healthImported": "Imported {count} workout(s) from Apple Health.",
+    "healthImportedPartial": "Imported {count} sessions. Tap again to import more.",
+    "healthNoWorkouts": "No workouts found in Apple Health yet.",
+    "healthAlreadySynced": "All workouts from Apple Health are already in the app.",
+    "healthUnavailable": "Apple Health is not available on this device.",
+    "dropzone": "Drop screenshot here or tap to choose",
+    "dropzoneHint": "PNG or JPG from Apple Fitness",
+    "analyzing": "Analyzing screenshot…",
+    "reviewTitle": "Review extracted data",
+    "reviewDesc": "Check and edit values before saving.",
+    "saveSession": "Save session",
+    "cancel": "Cancel",
+    "dateRequired": "Date required",
+    "dateRequiredDesc": "We could not detect the workout date. When did this session take place?",
+    "confirmDate": "Confirm date",
+    "ocrFailed": "Could not read screenshot. Try a clearer image or enter data manually.",
+    "confidence": "Confidence",
+    "duplicateTitle": "Session already uploaded",
+    "duplicateMessage": "This workout matches a session you already saved on {date}. It was not added again.",
+    "notSwim": {
+      "run": "This screenshot looks like a run, not a swim. Upload an Apple Fitness pool swim screenshot.",
+      "walk": "This screenshot looks like a walk, not a swim. Upload an Apple Fitness pool swim screenshot.",
+      "cycle": "This screenshot looks like cycling, not a swim. Upload an Apple Fitness pool swim screenshot.",
+      "row": "This screenshot looks like rowing, not a swim. Upload an Apple Fitness pool swim screenshot.",
+      "hike": "This screenshot looks like hiking, not a swim. Upload an Apple Fitness pool swim screenshot.",
+      "yoga": "This screenshot looks like yoga or pilates, not a swim. Upload an Apple Fitness pool swim screenshot.",
+      "strength": "This screenshot looks like strength training, not a swim. Upload an Apple Fitness pool swim screenshot.",
+      "elliptical": "This screenshot looks like elliptical training, not a swim. Upload an Apple Fitness pool swim screenshot.",
+      "stair": "This screenshot looks like stair climbing, not a swim. Upload an Apple Fitness pool swim screenshot.",
+      "dance": "This screenshot looks like dance, not a swim. Upload an Apple Fitness pool swim screenshot.",
+      "other": "This workout type is not supported by Aap Vitality.",
+      "unknown": "This does not appear to be a swim workout. Upload an Apple Fitness pool swim screenshot."
+    },
+    "uploadAnother": "Upload another screenshot",
+    "fields": {
+      "date": "Date",
+      "duration": "Duration",
+      "distance": "Distance",
+      "pace": "Pace /100m",
+      "activeKcal": "Active calories",
+      "totalKcal": "Total calories",
+      "heartRate": "Avg heart rate",
+      "laps": "Laps",
+      "poolLength": "Pool length",
+      "goal": "Goal",
+      "location": "Location",
+      "timeRange": "Time",
+      "mixed": "Mixed",
+      "breaststroke": "Breaststroke",
+      "freestyle": "Freestyle",
+      "backstroke": "Backstroke",
+      "butterfly": "Butterfly"
+    },
+    "healthNoData": "No new steps or workouts found in Apple Health yet.",
+    "scoringSteps": "Walking: bonus at 5k, 10k, and 20k steps",
+    "scoringWorkouts": "Workouts: points from 30+ minutes",
+    "scoringZones": "Higher heart-rate zones earn more points"
+  },
+  "history": {
+    "title": "History",
+    "subtitle": "Daily vitality activity",
+    "empty": "No activity saved yet.",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this session?",
+    "confirm": "Delete",
+    "cancel": "Cancel",
+    "viewDetails": "Details",
+    "calendarTitle": "Activity calendar",
+    "calendarEmpty": "No swims this month",
+    "calendarMonthCount": "{count} sessions this month",
+    "calendarPrev": "Previous month",
+    "calendarNext": "Next month",
+    "calendarLegend": "Less → more",
+    "calendarDaySessions": "{count} sessions",
+    "filterDate": "Showing sessions on {date}",
+    "clearFilter": "Show all",
+    "noSessionsOnDate": "No sessions on this date.",
+    "coinsEarned": "Coins earned",
+    "includeInStats": "Include in statistics",
+    "includeInStatsDesc": "Turn off for casual swims that should not affect averages on the Progress page.",
+    "excludedBadge": "Excluded",
+    "workoutCount": "{count} workout(s)",
+    "workoutType": {
+      "running": "Run",
+      "walking": "Walk",
+      "cycling": "Cycle",
+      "swimming": "Swim",
+      "yoga": "Yoga",
+      "strength": "Strength",
+      "hiit": "HIIT",
+      "hiking": "Hike",
+      "elliptical": "Elliptical",
+      "rowing": "Row",
+      "other": "Workout"
+    }
+  },
+  "benchmark": {
+    "title": "Benchmark",
+    "subtitle": "Compare your pace with recreational swimmers in your age group",
+    "yourPace": "Your pace",
+    "median": "Age group median",
+    "level": "Level",
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced",
+      "developing": "Developing",
+      "unknown": "Unknown"
+    },
+    "methodology": "Benchmarks reflect recreational 25m pool fitness swimmers (Apple Fitness style), not competitive long-course times. Pace slows slightly with age; women typically ~12–18s slower per 100m than men in the same bracket.",
+    "profileRequired": "Set your sex and age in Settings to see benchmarks.",
+    "goSettings": "Go to settings",
+    "badges": {
+      "aboveMedian": "Faster than median",
+      "belowMedian": "Slower than median"
+    },
+    "chartTitle": "Pace comparison (sec/100m — lower is better)"
+  },
+  "monthlyChallenges": {
+    "title": "Monthly point challenge",
+    "subtitle": "Hit 50%, 75%, and 100% of your monthly point goal to upgrade your medal.",
+    "tierHint": "Your monthly medal upgrades as you finish challenges: 1 → bronze · 2 → silver · 3 → gold.",
+    "done": "Done",
+    "progress": "{current} / {target}",
+    "historyTitle": "Monthly medals",
+    "historySubtitle": "Months where you earned a monthly medal.",
+    "historyEmpty": "Complete monthly challenges to earn your first medal.",
+    "previewActive": "Preview cheat active — sample medals shown.",
+    "previewLabel": "Preview",
+    "yearLabel": "Year",
+    "inProgress": "In progress",
+    "completedCount": "{count}/3 challenges completed",
+    "tiers": {
+      "bronze": "Bronze",
+      "silver": "Silver",
+      "gold": "Gold"
+    },
+    "types": {
+      "sessions": "Session count",
+      "distance": "Total distance",
+      "kcal": "Active calories",
+      "streak": "Swim streak",
+      "active_weeks": "Active weeks",
+      "monthly_points_bronze": "Bronze pace (50%)",
+      "monthly_points_silver": "Silver pace (75%)",
+      "monthly_points_gold": "Gold pace (100%)"
+    },
+    "targets": {
+      "sessions": "Swim {count} sessions this month",
+      "distance": "Swim {distance} this month",
+      "kcal": "Burn {kcal} active kcal this month",
+      "streak": "Swim {days} days in a row",
+      "activeWeeks": "Swim in {weeks} different weeks",
+      "monthlyPointsBronze": "Reach {points} points (50% of monthly goal)",
+      "monthlyPointsSilver": "Reach {points} points (75% of monthly goal)",
+      "monthlyPointsGold": "Reach {points} points (100% of monthly goal)"
+    },
+    "celebrationTitle": "Monthly medal earned!",
+    "celebrationUpgradeTitle": "Monthly medal upgraded!",
+    "celebrationSubtitle": "You earned {tier} for {month}.",
+    "celebrationUpgradeSubtitle": "Your {month} medal upgraded from {fromTier} to {tier}.",
+    "celebrationDesc": "{count} of 3 monthly challenges completed.",
+    "reroll": "Reroll",
+    "rerollUsed": "You used your free monthly reroll.",
+    "coachRequirement": "{name} expects at least {tier} this month.",
+    "coachCheerFlip": "{name} is over the moon — every medal counts, and this one is yours!",
+    "rerollCredits": "{count} reroll credit(s) ready to use",
+    "rerollBuyHint": "Buy more rerolls in the Swim Coin Store for 500 swim coins.",
+    "tooltip": {
+      "tierEarned": "{tier} — {month}",
+      "challengesCompleted": "{count}/3 challenges completed",
+      "earnedOn": "Last progress: {date}",
+      "inProgress": "In progress — {count}/3 challenges done",
+      "noActivity": "No swims this month",
+      "challengeLine": "{type}: {current} / {target}"
+    }
+  },
+  "strokes": {
+    "mixed": "Mixed",
+    "breaststroke": "Breaststroke",
+    "freestyle": "Freestyle",
+    "backstroke": "Backstroke",
+    "butterfly": "Butterfly"
+  },
+  "feedback": {
+    "title": "Session feedback",
+    "paceFaster": "{seconds} sec faster per 100m than last session",
+    "paceSlower": "{seconds} sec slower per 100m than last session",
+    "paceSame": "Same pace as last session",
+    "overGoal": "{meters} m over your goal",
+    "underGoal": "{meters} m under your goal",
+    "hitGoal": "Exactly hit your distance goal",
+    "hrHigher": "Heart rate {bpm} bpm higher than last time",
+    "hrLower": "Heart rate {bpm} bpm lower than last time",
+    "pbPace": "Personal best pace",
+    "pbDistance": "Personal best distance",
+    "pbLaps": "Personal best laps",
+    "weeklyVolume": "Weekly volume: {distance}",
+    "moreBreaststroke": "More breaststroke than last session",
+    "firstSession": "Great start! Your first swim is logged — every champion began with a single lap.",
+    "welcomeBack": "Nice work today! You covered {distance} at {pace}. That takes discipline.",
+    "welcomeBack2": "Solid session — {distance} at {pace}. Showing up is half the battle.",
+    "welcomeBack3": "Good swim today: {distance} logged at {pace}. Keep stacking these sessions.",
+    "motivationFirst": "Welcome to your swim journey. Consistency beats perfection — see you at the next session!",
+    "motivationPaceUp": "You picked up the pace — {seconds} seconds faster per 100m. That kind of progress is earned in the pool, not given.",
+    "motivationPaceDown": "Today was a bit slower, and that is okay. Recovery swims and tough days both make you stronger over time.",
+    "motivationPaceDownCritical": "That was below your average, and you know it. I expect better next session — show me what you can really do.",
+    "motivationGoal": "You hit your distance goal. That is something to be proud of — trust the process.",
+    "motivationConsistent": "Solid, steady swimming. Showing up regularly is how real improvement happens.",
+    "motivationConsistent2": "You are building a real rhythm in the pool — consistency is your superpower.",
+    "motivationKeepGoing": "Another session in the books. Keep stacking these workouts and the numbers will follow.",
+    "motivationKeepGoing2": "Logged and done — every lap you swim is building something bigger.",
+    "motivationKeepGoing3": "One more session banked. Stay patient and the pace will come.",
+    "motivationPersonalBest": "A personal best! Celebrate this moment — you earned it lap by lap.",
+    "streak": "{count} sessions in the last 7 days — you are building a real habit.",
+    "allTimeDistance": "All-time: {distance} across {count} sessions. The pool knows your name.",
+    "ageNote": "At {age}, every session counts toward long-term fitness.",
+    "aiLoading": "Your AI coach is reviewing your swim…",
+    "aiFailed": "AI coach unavailable — showing on-device feedback instead.",
+    "tipTitle": "Coach tip",
+    "highlightPace": "Pace",
+    "highlightDistance": "Distance",
+    "highlightLevel": "Level",
+    "highlightWeek": "This week",
+    "highlightPercentile": "Age group",
+    "highlightVsRecent": "Vs recent",
+    "percentileValue": "Top {percentile}%",
+    "vsRecentFasterShort": "{seconds}s faster",
+    "vsRecentSlowerShort": "{seconds}s slower",
+    "vsRecentAvgFaster": "{seconds} sec faster than your recent average pace",
+    "vsRecentAvgSlower": "{seconds} sec slower than your recent average pace",
+    "vsAllTimeAvgFaster": "{seconds} sec faster than your all-time average pace",
+    "vsAllTimeAvgSlower": "{seconds} sec slower than your all-time average pace",
+    "longerThanRecent": "{distance} longer than your recent sessions",
+    "shorterThanRecent": "{distance} shorter than your recent sessions",
+    "daysSinceLast": "{days} days since your previous swim",
+    "benchmarkLevel": "Pace level for your age group: {level}",
+    "vsMedianFaster": "{seconds} sec faster than the typical swimmer in your age group",
+    "vsMedianSlower": "{seconds} sec slower than the typical swimmer in your age group",
+    "monthlyDistance": "{distance} swum so far this month",
+    "monthlyCompare": "{distance} this month ({change}% vs last month)",
+    "caloriesBurned": "{kcal} active calories burned",
+    "sustainedEffort": "Sustained output of about {rate} m/min",
+    "dominantStroke": "{stroke} made up {percent}% of today's distance",
+    "trendImproving": "Pace is trending faster over your last {sessions} sessions",
+    "trendSlowing": "Pace has dipped a little over your last {sessions} sessions",
+    "coachPersonalBest": "You set a personal best today — that is a session worth remembering.",
+    "coachComeback": "Welcome back after {days} days away. Showing up again is the hardest part.",
+    "coachStrongSession": "Strong swim today — {seconds} seconds per 100m faster than your recent average.",
+    "coachCriticalSession": "That pace was below your standard. I expect sharper work next time — no excuses.",
+    "coachRecovery": "This looked like a steadier or recovery-focused swim. Easy days still move fitness forward.",
+    "coachRecovery2": "A controlled, recovery-style swim today — smart athletes know when to ease off.",
+    "coachBenchmark": "For swimmers your age, that pace sits in the {level} range.",
+    "coachTrendUp": "Your recent sessions show pace moving in the right direction.",
+    "coachMonthUp": "Monthly volume is up {percent}% — consistency is building.",
+    "coachMonthDown": "This month has been lighter so far. One steady week can turn that around.",
+    "motivationTrendUp": "Your recent pace trend is moving the right way — keep trusting the work.",
+    "tipFirst": "Log a few more sessions and the app can compare trends, benchmarks, and habits for you.",
+    "tipConsistency": "It has been {days} days since your last swim. A short session still keeps the habit alive.",
+    "tipRecovery": "Pace and heart rate both suggest a harder day. An easier next swim can help you absorb the work.",
+    "tipDeveloping": "Focus on smooth breathing and steady laps — consistency will pull pace down over time.",
+    "tipStrokeVariety": "{stroke} was {percent}% of today's swim. Mixing strokes can balance muscles and keep training fresh.",
+    "tipBuildDistance": "You swam fast today on shorter distance. Try holding a similar pace for a few extra lengths next time.",
+    "tipSlowingTrend": "Recent pace has slipped a little. A relaxed technique-focused swim may help you reset.",
+    "tipImprovingTrend": "Your pace trend is improving — this is a good moment to keep the rhythm steady rather than forcing more.",
+    "tipNearGoal": "You were {meters} m shy of your distance goal — close enough that the next swim could nail it.",
+    "tipDefault": "Keep stacking sessions like this. Regular laps beat one perfect workout every time.",
+    "tipDefault2": "Trust the routine — steady sessions like this add up faster than you think.",
+    "tipDefault3": "Small, consistent swims win over time. This session is another brick in the wall."
+  },
+  "settings": {
+    "title": "Settings",
+    "profileTitle": "Vitality profile",
+    "profileDesc": "Used for heart-rate zones, goals, and coach feedback",
+    "swimmerName": "Your name",
+    "swimmerNamePlaceholder": "How should your coach address you?",
+    "defaultSwimmerName": "Swimmer",
+    "mascotTitle": "Vitality coach",
+    "mascotDesc": "Choose who coaches your steps, workouts, and goals.",
+    "mascotFlipName": "Flip",
+    "mascotFlipDesc": "Named for the flip turn — agile, acrobatic, and all about the pool.",
+    "mascotFlipRules": "Easier goals · steady point multiplier",
+    "mascotFloName": "Flo",
+    "mascotFloDesc": "Short for flow — smooth technique and effortless hydrodynamics.",
+    "mascotFloRules": "Balanced goals · full point multiplier · reach silver monthly",
+    "mascotFinsName": "Fins",
+    "mascotFinsDesc": "Puts the fins on you — maximum intensity, refinement, and power.",
+    "mascotFinsRules": "Ambitious goals · higher zone bonuses · expects gold monthly",
+    "mascotActiveCoach": "Your coach: {name}",
+    "mascotUnlockHint": "Earn {pace} total points or complete {medals} monthly goals",
+    "mascotSwitchHint": "You can switch coaches once at the start of each month, before your first swim, when new monthly goals are set.",
+    "mascotSwitchBlocked": {
+      "alreadySwitched": "You already picked a coach for this month. You can switch again when the next monthly goals are set.",
+      "afterFirstSession": "Coach switches are only available at the start of the month, before your first swim of the month."
+    },
+    "mascotPreviewFlip": "Hey {name}, I'm Flip! Every lap counts — I'll be cheering you on the whole way.",
+    "mascotPreviewFlo": "Hi {name}, I'm Flo! We're going to make every swim feel amazing. Let's go!",
+    "mascotPreviewFins": "{name}, I'm Fins. I expect your best every session — beat your average pace and I'll make it worth your while.",
+    "storeCosmeticsTitle": "Unlocked cosmetics",
+    "storeCosmeticsDesc": "Choose your icon set and background vibe.",
+    "activeAppIcon": "Icon set",
+    "iconDefault": "Default",
+    "activeAmbient": "Background vibe",
+    "ambientDefault": "Default",
+    "ambientIosNote": "On iPhone and iPad, vibe animations may not play when Reduce Motion is enabled in Settings → Accessibility → Motion. Colors and glow still appear, but movement may be static.",
+    "sex": "Sex",
+    "sexMale": "Male",
+    "sexFemale": "Female",
+    "age": "Age",
+    "exportTitle": "Export data",
+    "exportDesc": "Copy this string to back up or share all sessions and graphs.",
+    "exportButton": "Generate export string",
+    "importTitle": "Import data",
+    "importDesc": "Paste an export string to restore sessions and profile.",
+    "importPlaceholder": "Paste export string here…",
+    "importButton": "Import data",
+    "importSuccess": "Import successful! Reloading…",
+    "importConfirm": "Import data?",
+    "importConfirmDesc": "This will replace your current swim sessions and profile.",
+    "resetData": "Reset data",
+    "resetDesc": "Permanently delete all swim sessions and profile data.",
+    "warning": "This cannot be undone. Export your data first if needed.",
+    "clearButton": "Clear all data",
+    "confirm": "Are you sure?",
+    "confirmDesc": "All swim sessions and profile data will be deleted.",
+    "resetProgress": "Step {step} of {total}",
+    "resetStep1Title": "Delete all swim data?",
+    "resetStep1Desc": "This will remove every saved session and reset your profile.",
+    "resetStep1Continue": "Yes, continue",
+    "resetStep2Title": "Are you absolutely sure?",
+    "resetStep2Desc": "There is no backup and no undo. Medals, history, and progress will be gone forever.",
+    "resetStep2Continue": "I understand, continue",
+    "resetStep3Title": "Type to confirm deletion",
+    "resetStep3Desc": "Type the phrase below exactly to permanently erase your data.",
+    "resetConfirmPhrase": "DELETE ALL",
+    "resetTypePrompt": "Type {phrase} to confirm",
+    "resetTypePlaceholder": "Type confirmation phrase…",
+    "resetSessionCount": "You currently have {count} saved sessions.",
+    "cancel": "Cancel",
+    "success": "Data cleared successfully.",
+    "error": "Something went wrong.",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "language": "Language",
+    "languageDesc": "Choose your preferred language for the app interface.",
+    "theme": "Theme",
+    "themeDesc": "Pick a visual style for the app.",
+    "uploadTitle": "Sync Apple Health",
+    "uploadDesc": "Import steps and workouts to earn vitality points.",
+    "uploadCta": "Open sync",
+    "darkMode": "Dark mode",
+    "darkModeDesc": "Use a dark color scheme for the interface.",
+    "autoDarkMode": "Match system theme",
+    "autoDarkModeDesc": "Automatically follow your device light/dark setting.",
+    "themes": {
+      "liquidOs": {
+        "name": "Liquid OS",
+        "desc": "Glass panels with soft gradient blobs."
+      },
+      "genZ": {
+        "name": "Gen-Z",
+        "desc": "Bold flat colors and sharp contrast."
+      },
+      "classic": {
+        "name": "Classic Playstation",
+        "desc": "Retro flat panels inspired by console UIs."
+      },
+      "olympicPool": {
+        "name": "Olympic Pool",
+        "desc": "Competition tiles, lane blue, and touchpad gold."
+      },
+      "midnightLane": {
+        "name": "Midnight Lane",
+        "desc": "Late-night laps under bioluminescent pool lights."
+      },
+      "retroWave": {
+        "name": "Retro Wave",
+        "desc": "Synthwave neon on a midnight pool deck."
+      },
+      "tropicalOpen": {
+        "name": "Tropical Open Water",
+        "desc": "Turquoise lagoon warmth with coral sunset accents."
+      },
+      "goldLuxe": {
+        "name": "Gold Luxe",
+        "desc": "Champagne canvas with trophy-gold accents — the podium tier."
+      },
+      "platinumElite": {
+        "name": "Platinum Elite",
+        "desc": "Cool silver panels with icy prestige — the ultimate lap."
+      }
+    },
+    "aiTitle": "AI coach (optional)",
+    "aiDesc": "The app already gives detailed on-device feedback after each swim. Add an OpenAI API key if you want AI-written coach messages on top.",
+    "aiHint": "Your key stays on this device and is never included in exports. Without a key, smart local analysis covers benchmarks, trends, and coaching tips.",
+    "aiPlaceholder": "sk-…",
+    "aiSave": "Save API key",
+    "aiClear": "Remove key",
+    "aiActive": "AI coach enabled — you will get enhanced feedback after uploads.",
+    "aiInactive": "On-device feedback only — add a key above to enable AI coaching.",
+    "secretTitle": "Secret Settings",
+    "secretUnlockHint": "Tap the icon set badge 3× in Settings to unlock this menu.",
+    "secretCheatsSection": "Cheats",
+    "secretUnlockAllMedals": "Unlock all medals",
+    "secretPreviewMonthlyMedals": "Preview monthly medals",
+    "secretUnlockAllThemes": "Unlock all themes",
+    "secretAdd500Coins": "Add 500 swim coins",
+    "ambientTitle": "Background vibe",
+    "ambientDesc": "Adds animated color and motion on top of your wallpaper (under the UI).",
+    "ambients": {
+      "neonLagoon": "Neon Lagoon",
+      "sunsetLap": "Sunset Lap",
+      "bubbleTrail": "Bubble Trail",
+      "auroraLap": "Aurora Lap",
+      "deepCurrent": "Deep Current"
+    },
+    "wallpaperTitle": "Background wallpaper",
+    "wallpaperDesc": "Sets the base image behind the app. Vibes animate on top of this wallpaper.",
+    "wallpaperDefault": "Theme default",
+    "wallpapers": {
+      "lanePool": "Lane Pool",
+      "dawnWater": "Dawn Water",
+      "deepLane": "Deep Lane",
+      "tileDeck": "Tile Deck",
+      "openWater": "Open Water",
+      "chlorineGlow": "Chlorine Glow"
+    },
+    "defaultProfileName": "Vitality user"
+  },
+  "mascot": {
+    "thinking": "Let me think about your swim…",
+    "cheerFlip": "Great job logging a session, {name} — every swim counts!",
+    "cheerFlo": "Another swim in the books, {name} — love to see it!",
+    "cheerFins": "{name}, session logged. Now let's talk about beating it next time.",
+    "coachWrap": {
+      "flip": "{name}, {message}",
+      "flo": "{name}, {message}",
+      "fins": "{name}. {message}"
+    },
+    "traits": {
+      "encouraging": "Encouraging",
+      "approachable": "Approachable",
+      "friendly": "Friendly",
+      "motivating": "Motivating",
+      "focused": "Focused",
+      "challenging": "Challenging"
+    }
+  },
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "bpm": "bpm",
+    "kcal": "kcal",
+    "meters": "m",
+    "laps": "laps",
+    "close": "Close"
+  },
+  "notifications": {
+    "dismiss": "Dismiss",
+    "monthlyGoalsTitle": "Monthly goals still open",
+    "monthlyGoalsBody": "{count} challenge(s) left with {days} day(s) to go — e.g. {goals}. Sync activity to finish strong!",
+    "uploadSyncTitle": "Time to move?",
+    "uploadSyncBody": "Your last activity was {days} days ago. Sync Apple Health to stay on track."
+  },
+  "launch": {
+    "searchingNewSessions": "Looking for new sessions…"
+  },
+  "goals": {
+    "title": "Goals",
+    "subtitle": "Personalized weekly, monthly, and yearly point targets",
+    "monthly": "Monthly goal",
+    "weekly": "Weekly goal",
+    "yearly": "Yearly goal",
+    "progressLine": "{current} / {target} points",
+    "howItWorksTitle": "How goals work",
+    "howItWorksDesc": "On the first of each month your monthly point goal is set from your age, history, and recent activity.",
+    "earlyFinishNote": "Reach your monthly goal in 20 days or less and next month's target increases to keep you challenged.",
+    "scoringTitle": "How you earn points",
+    "scoringSteps": "Walking: bonus points at 5k, 10k, and 20k steps",
+    "scoringWorkouts": "Workouts: points from 30+ minutes of activity",
+    "scoringZones": "Higher heart-rate zones (based on your age and sex) earn more points",
+    "profileRequired": "Set your sex and age in Settings so goals and heart-rate zones can be personalized.",
+    "snapshotTitle": "Goal progress"
+  },
+  "vitality": {
+    "points": "points",
+    "todayTitle": "Today's vitality",
+    "stepPoints": "Step points",
+    "workoutPoints": "Workout points",
+    "recentPoints": "Recent daily points",
+    "highlight": {
+      "steps": "Steps",
+      "points": "Points"
+    },
+    "badges": {
+      "step5k": "5k steps",
+      "step10k": "10k steps",
+      "step20k": "20k steps",
+      "workoutLogged": "Workout logged"
+    },
+    "insights": {
+      "highIntensity": "{minutes} minutes in high heart-rate zones.",
+      "workoutTooShort": "Workout under 30 minutes — no workout points yet.",
+      "dailyTotal": "Daily total: {points} points."
+    },
+    "coach": {
+      "strongDay": "Huge vitality day — steps and effort are both showing up!",
+      "goodDay": "Solid day. You're building consistent vitality.",
+      "lightDay": "Light day, but every point still counts.",
+      "restDay": "Rest day — recovery is part of the plan too."
+    },
+    "motivation": {
+      "keepGoing": "Keep moving — your goals adjust as you improve."
+    },
+    "tip": {
+      "daily": "A 30-minute workout plus a 10k step day is a powerful combo."
+    }
+  }
+}
