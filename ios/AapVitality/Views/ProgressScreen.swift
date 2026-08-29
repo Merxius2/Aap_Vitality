@@ -14,6 +14,10 @@ struct ProgressScreen: View {
                         emptyState
                     } else {
                         dailyPointsHeaderCard
+                        if viewModel.profile.bodyProgressEnabled {
+                            BodyProgressTrendCard()
+                            BodyProgressChallengesCard()
+                        }
                         overviewCard
                         levelAndStreakCard
                         MonthlyChallengesCardView()
