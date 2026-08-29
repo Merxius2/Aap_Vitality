@@ -24,20 +24,32 @@ enum VitalityHRZones {
     }
 
     static func zoneMinutes(from heartRates: [(bpm: Int, durationSec: Int)], maxHR: Int) -> HRZoneMinutes {
-        var zones = HRZoneMinutes()
+        var zoneSeconds = [Int](repeating: 0, count: 6)
         for sample in heartRates {
             let z = zone(for: sample.bpm, maxHR: maxHR)
-            let minutes = max(1, Int(round(Double(sample.durationSec) / 60.0)))
-            switch z {
-            case 1: zones.zone1 += minutes
-            case 2: zones.zone2 += minutes
-            case 3: zones.zone3 += minutes
-            case 4: zones.zone4 += minutes
-            case 5: zones.zone5 += minutes
-            default: break
-            }
+            guard (1...5).contains(z) else { continue }
+            zoneSeconds[z] += sample.durationSec
         }
-        return zones
+        return HRZoneMinutes(
+            zone1: zoneSeconds[1] / 60,
+            zone2: zoneSeconds[2] / 60,
+            zone3: zoneSeconds[3] / 60,
+            zone4: zoneSeconds[4] / 60,
+            zone5: zoneSeconds[5] / 60
+        )
+    }
+
+    static func resolvedZoneMinutes(
+        stored: HRZoneMinutes?,
+        averageHeartRate: Int?,
+        durationSec: Int,
+        maxHR: Int
+    ) -> HRZoneMinutes {
+        let durationMinutes = max(1, durationSec / 60)
+        if let stored, stored.total <= durationMinutes {
+            return stored
+        }
+        return zoneMinutes(from: averageHeartRate, durationSec: durationSec, maxHR: maxHR)
     }
 
     static func zoneMinutes(from averageHeartRate: Int?, durationSec: Int, maxHR: Int) -> HRZoneMinutes {

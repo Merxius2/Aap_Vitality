@@ -63,12 +63,12 @@ enum VitalityPoints {
         var scoredWorkouts = workouts
         var workoutPointsTotal = 0
         for index in scoredWorkouts.indices {
-            let zones = scoredWorkouts[index].zoneMinutes
-                ?? VitalityHRZones.zoneMinutes(
-                    from: scoredWorkouts[index].avgHeartRate,
-                    durationSec: scoredWorkouts[index].durationSec,
-                    maxHR: maxHR
-                )
+            let zones = VitalityHRZones.resolvedZoneMinutes(
+                stored: scoredWorkouts[index].zoneMinutes,
+                averageHeartRate: scoredWorkouts[index].avgHeartRate,
+                durationSec: scoredWorkouts[index].durationSec,
+                maxHR: maxHR
+            )
             let earned = workoutPoints(
                 durationSec: scoredWorkouts[index].durationSec,
                 zoneMinutes: zones,
