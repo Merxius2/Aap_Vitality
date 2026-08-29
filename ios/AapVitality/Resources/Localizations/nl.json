@@ -446,7 +446,7 @@
     "coachRequirement": "{name} verwacht deze maand minstens {tier} — anders verlies je {amount} munten.",
     "coachCheerFlip": "{name} is door het dolle heen — elke medaille telt, en deze is van jou!",
     "rerollCredits": "{count} reroll-tegoed klaar om te gebruiken",
-    "rerollBuyHint": "Koop meer rerolls in de Zwem Munten Winkel voor 500 munten.",
+    "rerollBuyHint": "Je hebt je gratis reroll voor deze maand al gebruikt.",
     "tooltip": {
       "tierEarned": "{tier} — {month}",
       "challengesCompleted": "{count}/3 uitdagingen voltooid",
