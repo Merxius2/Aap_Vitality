@@ -56,6 +56,9 @@ enum HealthKitService {
         if let heartRate = HKQuantityType.quantityType(forIdentifier: .heartRate) {
             types.insert(heartRate)
         }
+        if let sleep = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) {
+            types.insert(sleep)
+        }
         return types
     }()
 
@@ -226,6 +229,42 @@ enum HealthKitService {
                     if steps > 0 {
                         result[dateKeyFormatter.string(from: stats.startDate)] = Int(steps.rounded())
                     }
+                }
+                continuation.resume(returning: result)
+            }
+            store.execute(query)
+        }
+    }
+
+    static func fetchDailySleep(since: Date) async throws -> [String: Int] {
+        guard isAvailable else { throw HealthKitServiceError.unavailable }
+        guard let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else { return [:] }
+
+        return try await withCheckedThrowingContinuation { continuation in
+            let predicate = HKQuery.predicateForSamples(withStart: since, end: Date(), options: .strictStartDate)
+            let query = HKSampleQuery(
+                sampleType: sleepType,
+                predicate: predicate,
+                limit: HKObjectQueryNoLimit,
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: true)]
+            ) { _, samples, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                var result: [String: Int] = [:]
+                let asleepValues: Set<Int> = [
+                    HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue,
+                    HKCategoryValueSleepAnalysis.asleepCore.rawValue,
+                    HKCategoryValueSleepAnalysis.asleepDeep.rawValue,
+                    HKCategoryValueSleepAnalysis.asleepREM.rawValue,
+                ]
+                for sample in (samples as? [HKCategorySample]) ?? [] {
+                    guard asleepValues.contains(sample.value) else { continue }
+                    let minutes = max(0, Int(sample.endDate.timeIntervalSince(sample.startDate) / 60))
+                    guard minutes > 0 else { continue }
+                    let day = dateKeyFormatter.string(from: sample.endDate)
+                    result[day, default: 0] += minutes
                 }
                 continuation.resume(returning: result)
             }

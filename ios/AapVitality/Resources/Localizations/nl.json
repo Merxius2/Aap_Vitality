@@ -609,6 +609,18 @@
       "walk_and_work": {
         "title": "Lopen & trainen",
         "desc": "Verdien zowel stap- als workoutpunten op één dag."
+      },
+      "sleep_7h": {
+        "title": "Uitgerust",
+        "desc": "Log 7+ uur slaap in één nacht."
+      },
+      "sleep_8h": {
+        "title": "Diepe rust",
+        "desc": "Log 8+ uur slaap in één nacht."
+      },
+      "sleep_streak_3": {
+        "title": "Slaapreeks",
+        "desc": "Log 3 nachten op rij 7+ uur slaap."
       }
     }
   },

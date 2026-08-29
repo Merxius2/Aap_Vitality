@@ -89,6 +89,22 @@ final class SwimViewModel: ObservableObject {
         return medals
     }
 
+    var vitalityLevelSnapshot: VitalityLevelSnapshot {
+        VitalityLevels.snapshot(records: dailyRecords)
+    }
+
+    var vitalityStreakSnapshot: VitalityStreakSnapshot {
+        VitalityStreak.snapshot(goalState: goalState, records: dailyRecords)
+    }
+
+    var achievementPathProgress: [AchievementPathProgress] {
+        VitalityPaths.progress(for: evaluatedMedals)
+    }
+
+    var workoutTypeBadges: [WorkoutTypeBadge] {
+        VitalityWorkoutBadges.earnedBadges(from: dailyRecords)
+    }
+
     var monthlyChallengeHistory: [MonthlyChallengeState] {
         if let cached = cachedMonthlyChallengeHistory {
             return cached
@@ -616,6 +632,7 @@ final class SwimViewModel: ObservableObject {
         let recordsBefore = dailyRecords
 
         async let stepsTask = HealthKitService.fetchDailySteps(since: since)
+        async let sleepTask = HealthKitService.fetchDailySleep(since: since)
         async let workoutsTask = HealthKitService.fetchNewVitalityWorkouts(
             excluding: existingWorkoutUUIDs,
             since: since,
@@ -625,17 +642,18 @@ final class SwimViewModel: ObservableObject {
         )
 
         let stepsByDate = try await stepsTask
+        let sleepByDate = try await sleepTask
         let fetchResult = try await workoutsTask
 
         var recordsByDate = Dictionary(uniqueKeysWithValues: dailyRecords.map { ($0.date, $0) })
         var importedCount = 0
 
-        for (date, steps) in stepsByDate {
+        func upsertRecord(date: String, steps: Int, sleepMinutes: Int, workouts: [VitalityWorkout]) {
             let existing = recordsByDate[date]
-            var workouts = existing?.workouts ?? []
             let record = VitalityPoints.buildDailyRecord(
                 date: date,
                 steps: steps,
+                sleepMinutes: sleepMinutes,
                 workouts: workouts,
                 profile: profile,
                 mascotId: mascotId
@@ -646,9 +664,21 @@ final class SwimViewModel: ObservableObject {
                 profile: profile,
                 mascotId: mascotId
             )
-            if existing == nil || existing?.steps != steps {
+        }
+
+        let allDates = Set(stepsByDate.keys).union(sleepByDate.keys).union(recordsByDate.keys)
+        for date in allDates.sorted() {
+            let existing = recordsByDate[date]
+            let steps = stepsByDate[date] ?? existing?.steps ?? 0
+            let sleepMinutes = sleepByDate[date] ?? existing?.sleepMinutes ?? 0
+            let workouts = existing?.workouts ?? []
+            let before = existing
+            upsertRecord(date: date, steps: steps, sleepMinutes: sleepMinutes, workouts: workouts)
+            let after = recordsByDate[date]
+            if before == nil || before?.steps != steps || before?.sleepMinutes != sleepMinutes {
                 importedCount += 1
             }
+            _ = after
         }
 
         for workout in fetchResult.workouts {
@@ -669,20 +699,15 @@ final class SwimViewModel: ObservableObject {
             if workouts.contains(where: { $0.healthKitWorkoutUUID == workout.id }) { continue }
             workouts.append(vitalityWorkout)
             let steps = existing?.steps ?? stepsByDate[workout.date] ?? 0
-            let record = VitalityPoints.buildDailyRecord(
-                date: workout.date,
-                steps: steps,
-                workouts: workouts,
-                profile: profile,
-                mascotId: mascotId
-            )
-            recordsByDate[workout.date] = record
+            let sleepMinutes = existing?.sleepMinutes ?? sleepByDate[workout.date] ?? 0
+            upsertRecord(date: workout.date, steps: steps, sleepMinutes: sleepMinutes, workouts: workouts)
             importedCount += 1
         }
 
         let nextRecords = recordsByDate.values.sorted { $0.date < $1.date }
         if nextRecords != dailyRecords {
             data.dailyRecords = nextRecords
+            _ = VitalityStreak.reconcile(goalState: &data.goalState, records: nextRecords)
             VitalityGoals.ensureGoals(
                 data: &data,
                 intensity: MascotConstants.gameplay(mascotId).challengeIntensity

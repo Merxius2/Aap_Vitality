@@ -24,6 +24,11 @@ enum VitalityAnalysis {
                 "points": String(today.totalPoints),
                 "steps": String(today.steps)
             ]))
+            if today.sleepPoints > 0 {
+                parts.append(t.t("vitality.overview.sleepBonus", params: [
+                    "points": String(today.sleepPoints)
+                ]))
+            }
             if today.stepTiersReached.contains(10000) {
                 parts.append(t.t("progress.overviewStep10k"))
             } else if today.stepTiersReached.contains(5000) {
@@ -75,6 +80,18 @@ enum VitalityAnalysis {
             badges.append(t.t("vitality.badges.step5k"))
         }
 
+        if record.sleepMinutes >= 480 {
+            badges.append(t.t("vitality.badges.sleep8h"))
+        } else if record.sleepMinutes >= 420 {
+            badges.append(t.t("vitality.badges.sleep7h"))
+        }
+
+        for workoutType in VitalityWorkoutBadges.dailyTypeBadges(for: record) {
+            badges.append(t.t("vitality.badges.workoutType", params: [
+                "type": t.t("history.workoutType.\(workoutType)")
+            ]))
+        }
+
         let qualifyingWorkouts = record.workouts.filter { $0.durationSec >= VitalityPoints.minWorkoutMinutes * 60 }
         if !qualifyingWorkouts.isEmpty {
             badges.append(t.t("vitality.badges.workoutLogged"))
@@ -84,6 +101,13 @@ enum VitalityAnalysis {
             }
         } else if !record.workouts.isEmpty {
             insights.append(t.t("vitality.insights.workoutTooShort"))
+        }
+
+        if record.sleepPoints > 0 {
+            insights.append(t.t("vitality.insights.sleepBonus", params: [
+                "minutes": String(record.sleepMinutes),
+                "points": String(record.sleepPoints)
+            ]))
         }
 
         insights.append(t.t("vitality.insights.dailyTotal", params: ["points": String(record.totalPoints)]))

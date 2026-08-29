@@ -21,8 +21,10 @@ struct ProgressScreen: View {
                         emptyState
                     } else {
                         overviewCard
+                        levelAndStreakCard
                         MonthlyChallengesCardView()
                         todayVitalityCard
+                        workoutBadgesCard
                         goalSnapshotCard
                         recentPointsChart
                     }
@@ -113,6 +115,119 @@ struct ProgressScreen: View {
         }
     }
 
+    private var levelAndStreakCard: some View {
+        let level = viewModel.vitalityLevelSnapshot
+        let streak = viewModel.vitalityStreakSnapshot
+        return Card {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(preferences.t("vitality.levels.title"))
+                            .themeFont(.caption, weight: .bold)
+                            .foregroundStyle(.secondary)
+                            .textCase(.uppercase)
+                        Text(preferences.t(level.titleKey))
+                            .themeFont(.title3, weight: .bold)
+                        Text(preferences.t("vitality.levels.line", params: [
+                            "level": String(level.level),
+                            "points": String(level.lifetimePoints)
+                        ]))
+                        .themeFont(.caption)
+                        .foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    Text("L\(level.level)")
+                        .themeFont(size: 28, weight: .bold)
+                        .foregroundStyle(Color("BrandBlue"))
+                }
+                ProgressView(value: Double(level.progressPercent), total: 100)
+                    .tint(Color("BrandBlue"))
+                if level.pointsToNextLevel > 0 {
+                    Text(preferences.t("vitality.levels.next", params: [
+                        "points": String(level.pointsToNextLevel)
+                    ]))
+                    .themeFont(.caption2)
+                    .foregroundStyle(.secondary)
+                }
+
+                Divider()
+
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(preferences.t("vitality.streak.title"))
+                            .themeFont(.caption, weight: .bold)
+                            .foregroundStyle(.secondary)
+                            .textCase(.uppercase)
+                        Text(preferences.t("vitality.streak.current", params: [
+                            "days": String(streak.currentStreak)
+                        ]))
+                        .themeFont(.headline, weight: .semibold)
+                    }
+                    Spacer()
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text(preferences.t("vitality.streak.shields"))
+                            .themeFont(.caption2)
+                            .foregroundStyle(.secondary)
+                        HStack(spacing: 4) {
+                            Image(systemName: "shield.fill")
+                                .foregroundStyle(streak.shieldsAvailable > 0 ? Color("BrandBlue") : .secondary)
+                            Text("\(streak.shieldsAvailable)")
+                                .themeFont(.subheadline, weight: .bold)
+                        }
+                    }
+                }
+                Text(preferences.t("vitality.streak.hint"))
+                    .themeFont(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    private var workoutBadgesCard: some View {
+        let badges = viewModel.workoutTypeBadges
+        guard !badges.isEmpty else { return AnyView(EmptyView()) }
+        return AnyView(
+            Card {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(preferences.t("vitality.workoutBadges.title"))
+                        .themeFont(.headline, weight: .semibold)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            ForEach(badges) { badge in
+                                workoutBadgePill(badge)
+                            }
+                        }
+                    }
+                }
+            }
+        )
+    }
+
+    private func workoutBadgePill(_ badge: WorkoutTypeBadge) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(preferences.t("history.workoutType.\(badge.workoutType)"))
+                .themeFont(.caption, weight: .semibold)
+            Text(preferences.t("vitality.workoutBadges.count", params: [
+                "count": String(badge.count),
+                "target": String(badge.target)
+            ]))
+            .themeFont(.caption2)
+            .foregroundStyle(.secondary)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .background(badgeTierColor(badge.tier).opacity(0.15), in: RoundedRectangle(cornerRadius: 10))
+    }
+
+    private func badgeTierColor(_ tier: String) -> Color {
+        switch tier {
+        case "gold": return .yellow
+        case "silver": return .gray
+        case "bronze": return .orange
+        default: return Color("BrandBlue")
+        }
+    }
+
     private var todayVitalityCard: some View {
         let record = viewModel.todayVitalityRecord ?? viewModel.dailyRecords.max(by: { $0.date < $1.date })
         guard let record else { return AnyView(EmptyView()) }
@@ -130,8 +245,15 @@ struct ProgressScreen: View {
                         metricBlock(preferences.t("vitality.highlight.points"), value: "\(record.totalPoints)", color: Color("BrandBlue"))
                         metricBlock(preferences.t("vitality.stepPoints"), value: "\(record.stepPoints)", color: .teal)
                         metricBlock(preferences.t("vitality.workoutPoints"), value: "\(record.workoutPoints)", color: .orange)
+                        if record.sleepMinutes > 0 {
+                            metricBlock(preferences.t("vitality.sleepPoints"), value: "\(record.sleepPoints)", color: .purple)
+                        }
                     }
                     stepTierRow(record: record)
+                    if record.sleepMinutes > 0 {
+                        sleepTierRow(record: record)
+                    }
+                    dailyBadgesRow(record: record)
                 }
             }
         )
@@ -147,6 +269,51 @@ struct ProgressScreen: View {
                     .padding(.vertical, 4)
                     .background(reached ? Color.green.opacity(0.18) : Color.secondary.opacity(0.12), in: Capsule())
                     .foregroundStyle(reached ? .green : .secondary)
+            }
+        }
+    }
+
+    private func sleepTierRow(record: DailyVitalityRecord) -> some View {
+        HStack(spacing: 8) {
+            let hours7 = record.sleepMinutes >= 420
+            let hours8 = record.sleepMinutes >= 480
+            Text("7h")
+                .themeFont(.caption2, weight: .semibold)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(hours7 ? Color.purple.opacity(0.18) : Color.secondary.opacity(0.12), in: Capsule())
+                .foregroundStyle(hours7 ? .purple : .secondary)
+            Text("8h")
+                .themeFont(.caption2, weight: .semibold)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(hours8 ? Color.purple.opacity(0.18) : Color.secondary.opacity(0.12), in: Capsule())
+                .foregroundStyle(hours8 ? .purple : .secondary)
+            Text(preferences.t("vitality.sleepMinutes", params: ["minutes": String(record.sleepMinutes)]))
+                .themeFont(.caption2)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    @ViewBuilder
+    private func dailyBadgesRow(record: DailyVitalityRecord) -> some View {
+        let feedback = VitalityAnalysis.buildDailyFeedback(
+            record: record,
+            profile: viewModel.profile,
+            t: preferences.translations,
+            mascotId: viewModel.mascotId
+        )
+        if !feedback.badges.isEmpty {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach(feedback.badges, id: \.self) { badge in
+                        Text(badge)
+                            .themeFont(.caption2, weight: .semibold)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color("BrandBlue").opacity(0.12), in: Capsule())
+                    }
+                }
             }
         }
     }

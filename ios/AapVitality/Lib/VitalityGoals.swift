@@ -12,6 +12,13 @@ enum VitalityGoals {
         String(Calendar.current.component(.year, from: date))
     }
 
+    static func todayDateKey(_ date: Date = Date()) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter.string(from: date)
+    }
+
     static func weekKey(for dateString: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"

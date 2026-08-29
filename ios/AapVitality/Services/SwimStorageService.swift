@@ -48,6 +48,7 @@ enum SwimStorageService {
         )
         VitalityGoals.ensureGoals(data: &next)
         VitalityGoals.recordMonthlyCompletionIfNeeded(data: &next, monthKey: VitalityGoals.getMonthKey())
+        _ = VitalityStreak.reconcile(goalState: &next.goalState, records: next.dailyRecords)
         return next
     }
 

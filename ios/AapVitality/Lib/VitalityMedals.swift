@@ -29,6 +29,9 @@ enum VitalityMedals {
         MedalDefinition(id: "double_day", category: "special", tier: "bronze", season: nil),
         MedalDefinition(id: "walk_and_work", category: "special", tier: "silver", season: nil),
         MedalDefinition(id: "comeback", category: "special", tier: "silver", season: nil),
+        MedalDefinition(id: "sleep_7h", category: "special", tier: "bronze", season: nil),
+        MedalDefinition(id: "sleep_8h", category: "special", tier: "silver", season: nil),
+        MedalDefinition(id: "sleep_streak_3", category: "special", tier: "gold", season: nil),
     ]
 
     struct MedalContext {
@@ -56,6 +59,9 @@ enum VitalityMedals {
         var currentMonthPoints: Int
         var yearlyPoints: Int
         var yearlyTarget: Int
+        var daysWith7hSleep: Int
+        var daysWith8hSleep: Int
+        var maxConsecutiveSleepDays: Int
     }
 
     static func buildMedalContext(
@@ -80,6 +86,8 @@ enum VitalityMedals {
         var monthlyHits: Set<String> = []
         var walkAndWork = false
         var doubleWorkout = false
+        var daysWith7h = 0
+        var daysWith8h = 0
 
         var byMonth: [String: Int] = [:]
         for record in sorted {
@@ -87,6 +95,8 @@ enum VitalityMedals {
             if record.steps >= 5000 { daysWith5k += 1 }
             if record.steps >= 10000 { daysWith10k += 1 }
             if record.steps >= 20000 { daysWith20k += 1 }
+            if record.sleepMinutes >= 420 { daysWith7h += 1 }
+            if record.sleepMinutes >= 480 { daysWith8h += 1 }
             let month = String(record.date.prefix(7))
             byMonth[month, default: 0] += record.totalPoints
             if record.stepPoints > 0 && record.workoutPoints > 0 { walkAndWork = true }
@@ -118,6 +128,8 @@ enum VitalityMedals {
         let yearlyTarget = goalState.yearlyTargets[yearKey]
             ?? VitalityGoals.computeYearlyTarget(profile: profile, records: sorted, yearKey: yearKey, goalState: goalState)
 
+        let sleepStreakDates = sorted.filter { $0.sleepMinutes >= 420 }.map(\.date)
+
         return MedalContext(
             records: sorted,
             totalPoints: sorted.reduce(0) { $0 + $1.totalPoints },
@@ -127,7 +139,10 @@ enum VitalityMedals {
             daysWith5k: daysWith5k,
             daysWith10k: daysWith10k,
             daysWith20k: daysWith20k,
-            maxConsecutiveActiveDays: maxConsecutiveDays(sorted.filter { $0.totalPoints > 0 }.map(\.date)),
+            maxConsecutiveActiveDays: VitalityStreak.maxConsecutiveActiveDays(
+                records: sorted,
+                shieldUsedDates: goalState.shieldUsedDates
+            ),
             maxWorkoutMinutes: maxWorkoutMinutes,
             maxZone5Minutes: maxZone5,
             monthsWith10kPoints: Array(months10k).sorted(),
@@ -144,7 +159,10 @@ enum VitalityMedals {
             currentMonthKey: monthKey,
             currentMonthPoints: VitalityGoals.monthlyProgress(records: sorted, monthKey: monthKey),
             yearlyPoints: VitalityGoals.yearlyProgress(records: sorted, yearKey: yearKey),
-            yearlyTarget: yearlyTarget
+            yearlyTarget: yearlyTarget,
+            daysWith7hSleep: daysWith7h,
+            daysWith8hSleep: daysWith8h,
+            maxConsecutiveSleepDays: VitalityStreak.maxConsecutiveDays(from: sleepStreakDates)
         )
     }
 
@@ -251,6 +269,12 @@ enum VitalityMedals {
             return MedalEvaluation(earned: ctx.hasWalkAndWorkDay, periods: [])
         case "comeback":
             return MedalEvaluation(earned: ctx.hasComeback, periods: [])
+        case "sleep_7h":
+            return MedalEvaluation(earned: ctx.daysWith7hSleep >= 1, periods: [])
+        case "sleep_8h":
+            return MedalEvaluation(earned: ctx.daysWith8hSleep >= 1, periods: [])
+        case "sleep_streak_3":
+            return MedalEvaluation(earned: ctx.maxConsecutiveSleepDays >= 3, periods: [])
         default:
             return MedalEvaluation(earned: false, periods: [])
         }
@@ -297,6 +321,8 @@ enum VitalityMedals {
             if map["thirty_workouts"] == nil, workouts >= 30 { map["thirty_workouts"] = record.date }
             if map["walk_and_work"] == nil, record.stepPoints > 0 && record.workoutPoints > 0 { map["walk_and_work"] = record.date }
             if map["double_day"] == nil, record.workouts.count >= 2 { map["double_day"] = record.date }
+            if map["sleep_7h"] == nil, record.sleepMinutes >= 420 { map["sleep_7h"] = record.date }
+            if map["sleep_8h"] == nil, record.sleepMinutes >= 480 { map["sleep_8h"] = record.date }
         }
 
         for (month, completion) in goalState.monthlyCompletions {
@@ -307,28 +333,6 @@ enum VitalityMedals {
         }
 
         return map
-    }
-
-    private static func maxConsecutiveDays(_ dates: [String]) -> Int {
-        guard !dates.isEmpty else { return 0 }
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        let sortedDates = dates.compactMap { formatter.date(from: $0) }.sorted()
-        guard !sortedDates.isEmpty else { return 0 }
-
-        var best = 1
-        var current = 1
-        for index in 1..<sortedDates.count {
-            let delta = Calendar.current.dateComponents([.day], from: sortedDates[index - 1], to: sortedDates[index]).day ?? 0
-            if delta == 1 {
-                current += 1
-                best = max(best, current)
-            } else if delta > 1 {
-                current = 1
-            }
-        }
-        return best
     }
 
     private static func detectComeback(_ records: [DailyVitalityRecord]) -> Bool {

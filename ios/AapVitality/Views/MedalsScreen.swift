@@ -27,6 +27,10 @@ struct MedalsScreen: View {
 
                     statsCard(medals: medals)
 
+                    if !viewModel.dailyRecords.isEmpty {
+                        achievementPathsSection
+                    }
+
                     if viewModel.sessions.isEmpty {
                         emptyState
                     }
@@ -84,6 +88,43 @@ struct MedalsScreen: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)
+        }
+    }
+
+    private var achievementPathsSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(preferences.t("vitality.paths.title"))
+                .themeFont(.caption, weight: .bold)
+                .foregroundStyle(.secondary)
+                .textCase(.uppercase)
+
+            ForEach(viewModel.achievementPathProgress) { path in
+                Card {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Text(preferences.t(path.titleKey))
+                                .themeFont(.subheadline, weight: .semibold)
+                            Spacer()
+                            Text("\(path.completedCount)/\(path.totalCount)")
+                                .themeFont(.caption, weight: .bold)
+                                .foregroundStyle(.secondary)
+                        }
+                        ProgressView(value: Double(path.progressPercent), total: 100)
+                            .tint(Color("BrandBlue"))
+                        if let nextId = path.nextMedalId {
+                            Text(preferences.t("vitality.paths.next", params: [
+                                "medal": SwimMedalCopy.title(for: nextId, t: preferences.translations)
+                            ]))
+                            .themeFont(.caption2)
+                            .foregroundStyle(.secondary)
+                        } else {
+                            Text(preferences.t("vitality.paths.complete"))
+                                .themeFont(.caption2)
+                                .foregroundStyle(.green)
+                        }
+                    }
+                }
+            }
         }
     }
 

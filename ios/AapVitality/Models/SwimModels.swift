@@ -510,9 +510,63 @@ struct DailyVitalityRecord: Codable, Identifiable, Equatable {
     var steps: Int
     var stepPoints: Int
     var workoutPoints: Int
+    var sleepMinutes: Int
+    var sleepPoints: Int
     var totalPoints: Int
     var workouts: [VitalityWorkout]
     var stepTiersReached: [Int]
+
+    init(
+        id: String,
+        date: String,
+        steps: Int,
+        stepPoints: Int,
+        workoutPoints: Int,
+        sleepMinutes: Int = 0,
+        sleepPoints: Int = 0,
+        totalPoints: Int,
+        workouts: [VitalityWorkout],
+        stepTiersReached: [Int]
+    ) {
+        self.id = id
+        self.date = date
+        self.steps = steps
+        self.stepPoints = stepPoints
+        self.workoutPoints = workoutPoints
+        self.sleepMinutes = sleepMinutes
+        self.sleepPoints = sleepPoints
+        self.totalPoints = totalPoints
+        self.workouts = workouts
+        self.stepTiersReached = stepTiersReached
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        date = try container.decode(String.self, forKey: .date)
+        steps = try container.decode(Int.self, forKey: .steps)
+        stepPoints = try container.decode(Int.self, forKey: .stepPoints)
+        workoutPoints = try container.decode(Int.self, forKey: .workoutPoints)
+        sleepMinutes = try container.decodeIfPresent(Int.self, forKey: .sleepMinutes) ?? 0
+        sleepPoints = try container.decodeIfPresent(Int.self, forKey: .sleepPoints) ?? 0
+        totalPoints = try container.decode(Int.self, forKey: .totalPoints)
+        workouts = try container.decode([VitalityWorkout].self, forKey: .workouts)
+        stepTiersReached = try container.decode([Int].self, forKey: .stepTiersReached)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(date, forKey: .date)
+        try container.encode(steps, forKey: .steps)
+        try container.encode(stepPoints, forKey: .stepPoints)
+        try container.encode(workoutPoints, forKey: .workoutPoints)
+        try container.encode(sleepMinutes, forKey: .sleepMinutes)
+        try container.encode(sleepPoints, forKey: .sleepPoints)
+        try container.encode(totalPoints, forKey: .totalPoints)
+        try container.encode(workouts, forKey: .workouts)
+        try container.encode(stepTiersReached, forKey: .stepTiersReached)
+    }
 }
 
 struct MonthlyGoalCompletion: Codable, Equatable {
@@ -528,14 +582,100 @@ struct VitalityGoalState: Codable, Equatable {
     var yearlyTargets: [String: Int]
     var monthlyCompletions: [String: MonthlyGoalCompletion]
     var goalBoostFactor: Double
+    var streakShieldsAvailable: Int
+    var shieldUsedDates: [String]
+    var streakShieldMonthKey: String?
 
     static let empty = VitalityGoalState(
         monthlyTargets: [:],
         weeklyTargets: [:],
         yearlyTargets: [:],
         monthlyCompletions: [:],
-        goalBoostFactor: 1.0
+        goalBoostFactor: 1.0,
+        streakShieldsAvailable: 1,
+        shieldUsedDates: [],
+        streakShieldMonthKey: nil
     )
+
+    init(
+        monthlyTargets: [String: Int],
+        weeklyTargets: [String: Int],
+        yearlyTargets: [String: Int],
+        monthlyCompletions: [String: MonthlyGoalCompletion],
+        goalBoostFactor: Double,
+        streakShieldsAvailable: Int = 1,
+        shieldUsedDates: [String] = [],
+        streakShieldMonthKey: String? = nil
+    ) {
+        self.monthlyTargets = monthlyTargets
+        self.weeklyTargets = weeklyTargets
+        self.yearlyTargets = yearlyTargets
+        self.monthlyCompletions = monthlyCompletions
+        self.goalBoostFactor = goalBoostFactor
+        self.streakShieldsAvailable = streakShieldsAvailable
+        self.shieldUsedDates = shieldUsedDates
+        self.streakShieldMonthKey = streakShieldMonthKey
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        monthlyTargets = try container.decodeIfPresent([String: Int].self, forKey: .monthlyTargets) ?? [:]
+        weeklyTargets = try container.decodeIfPresent([String: Int].self, forKey: .weeklyTargets) ?? [:]
+        yearlyTargets = try container.decodeIfPresent([String: Int].self, forKey: .yearlyTargets) ?? [:]
+        monthlyCompletions = try container.decodeIfPresent(
+            [String: MonthlyGoalCompletion].self,
+            forKey: .monthlyCompletions
+        ) ?? [:]
+        goalBoostFactor = try container.decodeIfPresent(Double.self, forKey: .goalBoostFactor) ?? 1.0
+        streakShieldsAvailable = try container.decodeIfPresent(Int.self, forKey: .streakShieldsAvailable) ?? 1
+        shieldUsedDates = try container.decodeIfPresent([String].self, forKey: .shieldUsedDates) ?? []
+        streakShieldMonthKey = try container.decodeIfPresent(String.self, forKey: .streakShieldMonthKey)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(monthlyTargets, forKey: .monthlyTargets)
+        try container.encode(weeklyTargets, forKey: .weeklyTargets)
+        try container.encode(yearlyTargets, forKey: .yearlyTargets)
+        try container.encode(monthlyCompletions, forKey: .monthlyCompletions)
+        try container.encode(goalBoostFactor, forKey: .goalBoostFactor)
+        try container.encode(streakShieldsAvailable, forKey: .streakShieldsAvailable)
+        try container.encode(shieldUsedDates, forKey: .shieldUsedDates)
+        try container.encodeIfPresent(streakShieldMonthKey, forKey: .streakShieldMonthKey)
+    }
+}
+
+struct VitalityStreakSnapshot: Equatable {
+    var currentStreak: Int
+    var shieldsAvailable: Int
+    var lastShieldUsedDate: String?
+}
+
+struct VitalityLevelSnapshot: Equatable {
+    var level: Int
+    var titleKey: String
+    var lifetimePoints: Int
+    var pointsIntoLevel: Int
+    var pointsToNextLevel: Int
+    var progressPercent: Int
+}
+
+struct AchievementPathProgress: Equatable, Identifiable {
+    var id: String
+    var titleKey: String
+    var medalIds: [String]
+    var completedCount: Int
+    var totalCount: Int
+    var nextMedalId: String?
+    var progressPercent: Int
+}
+
+struct WorkoutTypeBadge: Equatable, Identifiable {
+    var id: String
+    var workoutType: String
+    var tier: String
+    var count: Int
+    var target: Int
 }
 
 struct VitalityGoalSnapshot: Equatable {
