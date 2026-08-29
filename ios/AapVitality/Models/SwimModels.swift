@@ -312,31 +312,6 @@ struct SwimCheats: Codable, Equatable {
     }
 }
 
-struct ParsedScreenshotFields: Equatable {
-    var date: String?
-    var durationSec: Int?
-    var distanceM: Int?
-    var activeKcal: Int?
-    var totalKcal: Int?
-    var paceSecPer100m: Int?
-    var avgHeartRate: Int?
-    var laps: Int?
-    var poolLengthM: Int
-    var goalM: Int?
-    var location: String
-    var timeRange: String
-    var strokes: StrokeDistances
-}
-
-struct ParsedScreenshotResult: Equatable {
-    var fields: ParsedScreenshotFields
-    var confidence: Int
-    var missingDate: Bool
-    var warnings: [String]
-    var isSwimWorkout: Bool
-    var detectedSport: String?
-}
-
 struct WeeklyVolumePoint: Identifiable, Equatable {
     var id: String { weekLabel }
     var weekLabel: String
