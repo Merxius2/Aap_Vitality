@@ -698,12 +698,16 @@
     "wallpaperDesc": "Sets the base image behind the app. Vibes animate on top of this wallpaper.",
     "wallpaperDefault": "Theme default",
     "wallpapers": {
-      "lanePool": "Lane Pool",
-      "dawnWater": "Dawn Water",
-      "deepLane": "Deep Lane",
-      "tileDeck": "Tile Deck",
-      "openWater": "Open Water",
-      "chlorineGlow": "Chlorine Glow"
+      "lanePool": "Active Flow",
+      "dawnWater": "Sunrise Energy",
+      "deepLane": "Deep Focus",
+      "tileDeck": "Fresh Grid",
+      "openWater": "Horizon Air",
+      "chlorineGlow": "Vitality Glow",
+      "vitalityPulse": "Pulse Rings",
+      "morningSteps": "Step Path",
+      "achievementGold": "Golden Hour",
+      "twilightRun": "Twilight Run"
     },
     "defaultProfileName": "Vitality user"
   },

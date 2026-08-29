@@ -466,6 +466,10 @@ enum WallpaperCatalog {
         "wallpaper:tile-deck",
         "wallpaper:open-water",
         "wallpaper:chlorine-glow",
+        "wallpaper:vitality-pulse",
+        "wallpaper:morning-steps",
+        "wallpaper:achievement-gold",
+        "wallpaper:twilight-run",
     ]
 
     static func isValid(_ id: String?) -> Bool {
@@ -481,6 +485,10 @@ enum WallpaperCatalog {
         case "wallpaper:tile-deck": return "settings.wallpapers.tileDeck"
         case "wallpaper:open-water": return "settings.wallpapers.openWater"
         case "wallpaper:chlorine-glow": return "settings.wallpapers.chlorineGlow"
+        case "wallpaper:vitality-pulse": return "settings.wallpapers.vitalityPulse"
+        case "wallpaper:morning-steps": return "settings.wallpapers.morningSteps"
+        case "wallpaper:achievement-gold": return "settings.wallpapers.achievementGold"
+        case "wallpaper:twilight-run": return "settings.wallpapers.twilightRun"
         default: return id
         }
     }
@@ -543,6 +551,14 @@ struct WallpaperCanvasView: View {
                 openWater(size: size)
             case "wallpaper:chlorine-glow":
                 chlorineGlow(size: size)
+            case "wallpaper:vitality-pulse":
+                vitalityPulse(size: size)
+            case "wallpaper:morning-steps":
+                morningSteps(size: size)
+            case "wallpaper:achievement-gold":
+                achievementGold(size: size)
+            case "wallpaper:twilight-run":
+                twilightRun(size: size)
             default:
                 Color(.systemGroupedBackground)
             }
@@ -706,6 +722,149 @@ struct WallpaperCanvasView: View {
                 .frame(width: size.width * 0.7, height: size.width * 0.7)
                 .blur(radius: 50)
                 .position(x: size.width * 0.2, y: size.height * 0.75)
+        }
+    }
+
+    private func vitalityPulse(size: CGSize) -> some View {
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color(red: 0.08, green: 0.10, blue: 0.24),
+                    Color(red: 0.16, green: 0.20, blue: 0.42),
+                    Color(red: 0.10, green: 0.14, blue: 0.28),
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            ForEach(0..<4, id: \.self) { index in
+                Circle()
+                    .stroke(Color("BrandBlue").opacity(0.22 - Double(index) * 0.04), lineWidth: 2)
+                    .frame(
+                        width: size.width * (0.35 + CGFloat(index) * 0.18),
+                        height: size.width * (0.35 + CGFloat(index) * 0.18)
+                    )
+                    .position(x: size.width * 0.5, y: size.height * 0.42)
+            }
+            Circle()
+                .fill(
+                    RadialGradient(
+                        colors: [
+                            Color(red: 0.95, green: 0.35, blue: 0.45).opacity(0.55),
+                            Color(red: 0.95, green: 0.35, blue: 0.45).opacity(0),
+                        ],
+                        center: .center,
+                        startRadius: 0,
+                        endRadius: size.width * 0.12
+                    )
+                )
+                .frame(width: size.width * 0.24, height: size.width * 0.24)
+                .position(x: size.width * 0.5, y: size.height * 0.42)
+            Circle()
+                .fill(Color("BrandBlue").opacity(0.18))
+                .frame(width: size.width * 0.8, height: size.width * 0.8)
+                .blur(radius: 40)
+                .position(x: size.width * 0.82, y: size.height * 0.78)
+        }
+    }
+
+    private func morningSteps(size: CGSize) -> some View {
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color(red: 0.88, green: 0.96, blue: 0.90),
+                    Color(red: 0.52, green: 0.82, blue: 0.62),
+                    Color(red: 0.18, green: 0.52, blue: 0.38),
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            ForEach(0..<5, id: \.self) { index in
+                Circle()
+                    .fill(Color.white.opacity(index.isMultiple(of: 2) ? 0.28 : 0.16))
+                    .frame(width: 10 + CGFloat(index % 3) * 4, height: 10 + CGFloat(index % 3) * 4)
+                    .position(
+                        x: size.width * (0.18 + CGFloat(index) * 0.16),
+                        y: size.height * (0.62 - CGFloat(index) * 0.04)
+                    )
+            }
+            Capsule()
+                .fill(Color.white.opacity(0.14))
+                .frame(width: size.width * 0.72, height: 3)
+                .rotationEffect(.degrees(-8))
+                .position(x: size.width * 0.48, y: size.height * 0.58)
+            Circle()
+                .fill(Color.white.opacity(0.22))
+                .frame(width: size.width * 0.45, height: size.width * 0.45)
+                .blur(radius: 30)
+                .position(x: size.width * 0.78, y: size.height * 0.22)
+        }
+    }
+
+    private func achievementGold(size: CGSize) -> some View {
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color(red: 1.0, green: 0.92, blue: 0.72),
+                    Color(red: 0.98, green: 0.72, blue: 0.38),
+                    Color(red: 0.82, green: 0.42, blue: 0.18),
+                    Color(red: 0.42, green: 0.18, blue: 0.10),
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            ForEach(0..<6, id: \.self) { index in
+                let angle = Double(index) * 30 - 15
+                Capsule()
+                    .fill(Color.white.opacity(0.12))
+                    .frame(width: size.width * 0.55, height: 4)
+                    .rotationEffect(.degrees(angle))
+                    .position(x: size.width * 0.5, y: size.height * 0.28)
+            }
+            Circle()
+                .fill(Color.white.opacity(0.35))
+                .frame(width: size.width * 0.38, height: size.width * 0.38)
+                .blur(radius: 26)
+                .position(x: size.width * 0.68, y: size.height * 0.24)
+            Ellipse()
+                .fill(Color(red: 1.0, green: 0.78, blue: 0.32).opacity(0.22))
+                .frame(width: size.width * 1.0, height: size.height * 0.35)
+                .position(x: size.width * 0.5, y: size.height * 0.82)
+                .blur(radius: 20)
+        }
+    }
+
+    private func twilightRun(size: CGSize) -> some View {
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color(red: 0.18, green: 0.12, blue: 0.32),
+                    Color(red: 0.52, green: 0.22, blue: 0.42),
+                    Color(red: 0.92, green: 0.42, blue: 0.28),
+                    Color(red: 0.22, green: 0.10, blue: 0.24),
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            Ellipse()
+                .fill(Color(red: 1.0, green: 0.55, blue: 0.35).opacity(0.35))
+                .frame(width: size.width * 0.55, height: size.width * 0.22)
+                .blur(radius: 18)
+                .position(x: size.width * 0.5, y: size.height * 0.72)
+            ForEach(0..<3, id: \.self) { index in
+                Capsule()
+                    .fill(Color.white.opacity(0.10))
+                    .frame(width: size.width * 0.22, height: 2)
+                    .rotationEffect(.degrees(-6))
+                    .position(
+                        x: size.width * (0.25 + CGFloat(index) * 0.25),
+                        y: size.height * (0.78 + CGFloat(index) * 0.03)
+                    )
+            }
+            Circle()
+                .fill(Color(red: 0.98, green: 0.72, blue: 0.45).opacity(0.25))
+                .frame(width: size.width * 0.35, height: size.width * 0.35)
+                .blur(radius: 24)
+                .position(x: size.width * 0.2, y: size.height * 0.18)
         }
     }
 

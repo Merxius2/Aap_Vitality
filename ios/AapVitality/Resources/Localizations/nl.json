@@ -698,12 +698,16 @@
     "wallpaperDesc": "Stelt de basisafbeelding achter de app in. Vibes animeren bovenop deze wallpaper.",
     "wallpaperDefault": "Thema standaard",
     "wallpapers": {
-      "lanePool": "Baanbad",
-      "dawnWater": "Ochtendwater",
-      "deepLane": "Diepe baan",
-      "tileDeck": "Tegeldek",
-      "openWater": "Open water",
-      "chlorineGlow": "Chloor glow"
+      "lanePool": "Actieve flow",
+      "dawnWater": "Zonsopgang energie",
+      "deepLane": "Diepe focus",
+      "tileDeck": "Fris raster",
+      "openWater": "Horizon lucht",
+      "chlorineGlow": "Vitality gloed",
+      "vitalityPulse": "Pulsringen",
+      "morningSteps": "Stappenpad",
+      "achievementGold": "Gouden uur",
+      "twilightRun": "Schemerloop"
     },
     "defaultProfileName": "Vitality-gebruiker"
   },
