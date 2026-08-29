@@ -678,6 +678,7 @@ struct VitalityGoalSnapshot: Equatable {
     var weeklyEarned: Int
     var yearlyTarget: Int
     var yearlyEarned: Int
+    var earlyFinish: EarlyFinishSnapshot
 
     var monthlyPercent: Int {
         guard monthlyTarget > 0 else { return 0 }
@@ -692,6 +693,32 @@ struct VitalityGoalSnapshot: Equatable {
     var yearlyPercent: Int {
         guard yearlyTarget > 0 else { return 0 }
         return min(100, Int((Double(yearlyEarned) / Double(yearlyTarget) * 100).rounded()))
+    }
+}
+
+struct EarlyFinishSnapshot: Equatable {
+    enum Status: Equatable {
+        case secured(completedOnDay: Int)
+        case inWindow(daysRemaining: Int, onTrack: Bool)
+        case missedWindow
+        case completedLate(completedOnDay: Int)
+    }
+
+    var status: Status
+    var deadlineDay: Int
+    var currentDayOfMonth: Int
+    var monthlyEarned: Int
+    var monthlyTarget: Int
+    var boostPercent: Int
+
+    var timeProgress: Double {
+        guard deadlineDay > 0 else { return 0 }
+        return min(1, Double(currentDayOfMonth) / Double(deadlineDay))
+    }
+
+    var pointsProgress: Double {
+        guard monthlyTarget > 0 else { return 0 }
+        return min(1, Double(monthlyEarned) / Double(monthlyTarget))
     }
 }
 
