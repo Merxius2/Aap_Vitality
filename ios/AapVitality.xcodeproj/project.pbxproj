@@ -83,7 +83,6 @@
 		B20000000000000000000015 /* MascotUnlockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000015 /* MascotUnlockTests.swift */; };
 		B20000000000000000000016 /* SwimBenchmarksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000016 /* SwimBenchmarksTests.swift */; };
 		B20000000000000000000020 /* ChartMovingAverageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000020 /* ChartMovingAverageTests.swift */; };
-		B20000000000000000000019 /* XCTest.framework in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000019 /* XCTest.framework */; };
 		C5B5E60A300CCB2B0092F38E /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F20000000000000000000019 /* XCTest.framework */; };
 	B10000000000000000000080 /* VitalityHRZones.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000080 /* VitalityHRZones.swift */; };
 	B10000000000000000000081 /* VitalityPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000081 /* VitalityPoints.swift */; };
@@ -600,7 +599,6 @@
 				B20000000000000000000086 /* VitalityPointsTests.swift in Sources */,
 				B20000000000000000000087 /* VitalityGoalsTests.swift in Sources */,
 				B20000000000000000000088 /* VitalityFeaturesTests.swift in Sources */,
-				B20000000000000000000019 /* XCTest.framework in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
