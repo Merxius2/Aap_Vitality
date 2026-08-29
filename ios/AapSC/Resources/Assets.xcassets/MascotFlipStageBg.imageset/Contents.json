@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "flip-stage-bg.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -1,0 +1,30 @@
+# dependencies
+node_modules/
+
+# next.js (legacy)
+.next/
+out/
+
+# ios / fastlane
+ios/build/
+ios/TestResults.xcresult/
+ios/fastlane/report.xml
+ios/fastlane/test_output/
+ios/fastlane/README.md
+
+# misc
+.DS_Store
+*.pem
+.env*.local
+
+# tesseract language data (downloaded at runtime)
+*.traineddata
+
+# large icon source (sized variants are committed)
+public/icon-sc-source.png
+
+# debug
+npm-debug.log*
+
+# vercel
+.vercel
