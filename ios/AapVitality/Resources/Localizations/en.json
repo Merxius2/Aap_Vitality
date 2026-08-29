@@ -787,6 +787,8 @@
     "points": "points",
     "todayTitle": "Today's vitality",
     "stepPoints": "Step points",
+    "stepsGoalTitle": "Daily step goals",
+    "stepsGoalPoints": "+{points} pts",
     "workoutPoints": "Workout points",
     "sleepPoints": "Sleep points",
     "sleepMinutes": "{minutes} min sleep",
