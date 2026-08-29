@@ -259,10 +259,14 @@ struct MascotSettingsSection: View {
     }
 
     private var previewMessage: String {
-        let template = preferences.t(MascotConstants.previewKey(viewModel.mascotId))
-        let name = viewModel.profile.name.trimmingCharacters(in: .whitespacesAndNewlines)
-        let displayName = name.isEmpty ? preferences.t("settings.defaultSwimmerName") : name
-        return template.replacingOccurrences(of: "{name}", with: displayName)
+        preferences.t(
+            MascotConstants.previewKey(viewModel.mascotId),
+            params: [
+                "name": viewModel.profile.displayName(
+                    fallback: preferences.t("settings.defaultProfileName")
+                ),
+            ]
+        )
     }
 
     private func unlockHint(for mascotId: String, unlockStatus: (unlocked: Bool, pointsMet: Bool, goalsMet: Bool, totalPoints: Int, monthlyGoals: Int)) -> String? {

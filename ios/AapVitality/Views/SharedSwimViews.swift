@@ -175,6 +175,7 @@ struct MonthlyChallengesCardView: View {
         default: return .orange
         }
     }
+}
 
 struct VitalityCalendarView: View {
     @EnvironmentObject private var preferences: UserPreferencesService

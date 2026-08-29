@@ -1,0 +1,35 @@
+---
+description: Build the iOS app via CLI after implementing code changes
+alwaysApply: true
+---
+
+# Build After Implementation
+
+After finishing an implementation (code edits that can affect compile), verify with a CLI build before considering the task done.
+
+## Command
+
+From `ios/`:
+
+```bash
+xcodebuild -scheme AapVitality -destination 'generic/platform=iOS' build
+```
+
+Request unrestricted permissions when needed so Xcode/simulator services work.
+
+## When to run
+
+- After implementing or fixing Swift/iOS code
+- After resolving build errors
+- Before telling the user the work is complete
+
+## When to skip
+
+- Pure docs, rules, or non-code changes
+- The user explicitly asks not to build
+- Only exploring/reading code with no edits
+
+## On failure
+
+- Fix compile errors and rebuild
+- Report remaining failures clearly if blocked

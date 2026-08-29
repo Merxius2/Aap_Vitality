@@ -11,13 +11,6 @@ struct VitalityGoalsScreen: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    ScreenHeader(
-                        preferences.t("goals.title"),
-                        subtitle: preferences.t("goals.subtitle"),
-                        pageKey: "goals",
-                        systemImage: "target"
-                    )
-
                     if viewModel.profile.sex.isEmpty || viewModel.profile.age <= 0 {
                         profileRequiredCard
                     } else {
@@ -70,9 +63,7 @@ struct VitalityGoalsScreen: View {
                 }
                 .padding()
             }
-            .navigationTitle(preferences.t("goals.title"))
-            .navigationBarTitleDisplayMode(.inline)
-            .themedNavigationBar()
+            .toolbar(.hidden, for: .navigationBar)
             .themedPageBackground()
         }
     }

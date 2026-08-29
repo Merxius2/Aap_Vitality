@@ -64,10 +64,7 @@ struct HistoryScreen: View {
                 }
                 .padding()
             }
-            .navigationTitle(preferences.t("history.title"))
-            .navigationBarTitleDisplayMode(.inline)
-            .swimTopBarActions()
-            .themedNavigationBar()
+            .toolbar(.hidden, for: .navigationBar)
             .confirmationDialog(
                 preferences.t("history.deleteConfirm"),
                 isPresented: Binding(

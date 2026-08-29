@@ -66,6 +66,16 @@
 		B10000000000000000000075 /* SwimNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000076 /* SwimNotifications.swift */; };
 		B10000000000000000000077 /* ChartMovingAverage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000077 /* ChartMovingAverage.swift */; };
 		B10000000000000000000079 /* ProgressChartScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000079 /* ProgressChartScope.swift */; };
+		B10000000000000000000080 /* VitalityHRZones.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000080 /* VitalityHRZones.swift */; };
+		B10000000000000000000081 /* VitalityPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000081 /* VitalityPoints.swift */; };
+		B10000000000000000000082 /* VitalityGoals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000082 /* VitalityGoals.swift */; };
+		B10000000000000000000083 /* VitalityMedals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000083 /* VitalityMedals.swift */; };
+		B10000000000000000000084 /* VitalityAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000084 /* VitalityAnalysis.swift */; };
+		B10000000000000000000085 /* VitalityGoalsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000085 /* VitalityGoalsScreen.swift */; };
+		B10000000000000000000086 /* VitalityStreak.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000086 /* VitalityStreak.swift */; };
+		B10000000000000000000087 /* VitalityLevels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000087 /* VitalityLevels.swift */; };
+		B10000000000000000000088 /* VitalityPaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000088 /* VitalityPaths.swift */; };
+		B10000000000000000000089 /* VitalityWorkoutBadges.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000089 /* VitalityWorkoutBadges.swift */; };
 		B20000000000000000000001 /* TestFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000001 /* TestFixtures.swift */; };
 		B20000000000000000000003 /* SwimImportExportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000003 /* SwimImportExportTests.swift */; };
 		B20000000000000000000004 /* SwimRecordsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000004 /* SwimRecordsTests.swift */; };
@@ -77,20 +87,10 @@
 		B20000000000000000000015 /* MascotUnlockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000015 /* MascotUnlockTests.swift */; };
 		B20000000000000000000016 /* SwimBenchmarksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000016 /* SwimBenchmarksTests.swift */; };
 		B20000000000000000000020 /* ChartMovingAverageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000020 /* ChartMovingAverageTests.swift */; };
+		B20000000000000000000086 /* VitalityPointsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000086 /* VitalityPointsTests.swift */; };
+		B20000000000000000000087 /* VitalityGoalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000087 /* VitalityGoalsTests.swift */; };
+		B20000000000000000000088 /* VitalityFeaturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000088 /* VitalityFeaturesTests.swift */; };
 		C5B5E60A300CCB2B0092F38E /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F20000000000000000000019 /* XCTest.framework */; };
-	B10000000000000000000080 /* VitalityHRZones.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000080 /* VitalityHRZones.swift */; };
-	B10000000000000000000081 /* VitalityPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000081 /* VitalityPoints.swift */; };
-	B10000000000000000000082 /* VitalityGoals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000082 /* VitalityGoals.swift */; };
-	B10000000000000000000083 /* VitalityMedals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000083 /* VitalityMedals.swift */; };
-	B10000000000000000000084 /* VitalityAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000084 /* VitalityAnalysis.swift */; };
-	B10000000000000000000085 /* VitalityGoalsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000085 /* VitalityGoalsScreen.swift */; };
-	B10000000000000000000086 /* VitalityStreak.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000086 /* VitalityStreak.swift */; };
-	B10000000000000000000087 /* VitalityLevels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000087 /* VitalityLevels.swift */; };
-	B10000000000000000000088 /* VitalityPaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000088 /* VitalityPaths.swift */; };
-	B10000000000000000000089 /* VitalityWorkoutBadges.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000089 /* VitalityWorkoutBadges.swift */; };
-	B20000000000000000000086 /* VitalityPointsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000086 /* VitalityPointsTests.swift */; };
-	B20000000000000000000087 /* VitalityGoalsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000087 /* VitalityGoalsTests.swift */; };
-	B20000000000000000000088 /* VitalityFeaturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000088 /* VitalityFeaturesTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -165,20 +165,6 @@
 		F10000000000000000000076 /* SwimNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimNotifications.swift; sourceTree = "<group>"; };
 		F10000000000000000000077 /* ChartMovingAverage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartMovingAverage.swift; sourceTree = "<group>"; };
 		F10000000000000000000079 /* ProgressChartScope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressChartScope.swift; sourceTree = "<group>"; };
-		F20000000000000000000001 /* TestFixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFixtures.swift; sourceTree = "<group>"; };
-		F20000000000000000000003 /* SwimImportExportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimImportExportTests.swift; sourceTree = "<group>"; };
-		F20000000000000000000004 /* SwimRecordsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimRecordsTests.swift; sourceTree = "<group>"; };
-		F20000000000000000000005 /* SwimMedalsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimMedalsTests.swift; sourceTree = "<group>"; };
-		F20000000000000000000010 /* SwimMonthlyChallengesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimMonthlyChallengesTests.swift; sourceTree = "<group>"; };
-		F20000000000000000000011 /* SwimAnalysisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimAnalysisTests.swift; sourceTree = "<group>"; };
-		F20000000000000000000013 /* SwimStorageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimStorageServiceTests.swift; sourceTree = "<group>"; };
-		F20000000000000000000014 /* MascotMoodTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MascotMoodTests.swift; sourceTree = "<group>"; };
-		F20000000000000000000015 /* MascotUnlockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MascotUnlockTests.swift; sourceTree = "<group>"; };
-		F20000000000000000000016 /* SwimBenchmarksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimBenchmarksTests.swift; sourceTree = "<group>"; };
-		F20000000000000000000020 /* ChartMovingAverageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartMovingAverageTests.swift; sourceTree = "<group>"; };
-		F20000000000000000000019 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		P10000000000000000000001 /* AapVitality.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AapVitality.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		P10000000000000000000002 /* AapVitalityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AapVitalityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F10000000000000000000080 /* VitalityHRZones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityHRZones.swift; sourceTree = "<group>"; };
 		F10000000000000000000081 /* VitalityPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityPoints.swift; sourceTree = "<group>"; };
 		F10000000000000000000082 /* VitalityGoals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityGoals.swift; sourceTree = "<group>"; };
@@ -189,9 +175,23 @@
 		F10000000000000000000087 /* VitalityLevels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityLevels.swift; sourceTree = "<group>"; };
 		F10000000000000000000088 /* VitalityPaths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityPaths.swift; sourceTree = "<group>"; };
 		F10000000000000000000089 /* VitalityWorkoutBadges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityWorkoutBadges.swift; sourceTree = "<group>"; };
+		F20000000000000000000001 /* TestFixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFixtures.swift; sourceTree = "<group>"; };
+		F20000000000000000000003 /* SwimImportExportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimImportExportTests.swift; sourceTree = "<group>"; };
+		F20000000000000000000004 /* SwimRecordsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimRecordsTests.swift; sourceTree = "<group>"; };
+		F20000000000000000000005 /* SwimMedalsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimMedalsTests.swift; sourceTree = "<group>"; };
+		F20000000000000000000010 /* SwimMonthlyChallengesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimMonthlyChallengesTests.swift; sourceTree = "<group>"; };
+		F20000000000000000000011 /* SwimAnalysisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimAnalysisTests.swift; sourceTree = "<group>"; };
+		F20000000000000000000013 /* SwimStorageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimStorageServiceTests.swift; sourceTree = "<group>"; };
+		F20000000000000000000014 /* MascotMoodTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MascotMoodTests.swift; sourceTree = "<group>"; };
+		F20000000000000000000015 /* MascotUnlockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MascotUnlockTests.swift; sourceTree = "<group>"; };
+		F20000000000000000000016 /* SwimBenchmarksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimBenchmarksTests.swift; sourceTree = "<group>"; };
+		F20000000000000000000019 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		F20000000000000000000020 /* ChartMovingAverageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartMovingAverageTests.swift; sourceTree = "<group>"; };
 		F20000000000000000000086 /* VitalityPointsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityPointsTests.swift; sourceTree = "<group>"; };
 		F20000000000000000000087 /* VitalityGoalsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityGoalsTests.swift; sourceTree = "<group>"; };
 		F20000000000000000000088 /* VitalityFeaturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityFeaturesTests.swift; sourceTree = "<group>"; };
+		P10000000000000000000001 /* AapVitality.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AapVitality.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		P10000000000000000000002 /* AapVitalityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AapVitalityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -700,6 +700,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = AapVitality/AapVitality.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 9K9HVVH7AL;
@@ -717,6 +718,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aapft.vitality;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -730,6 +732,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = AapVitality/AapVitality.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 9K9HVVH7AL;
@@ -747,6 +750,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aapft.vitality;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

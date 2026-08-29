@@ -10,13 +10,6 @@ struct ProgressScreen: View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: true) {
                 VStack(alignment: .leading, spacing: 16) {
-                    ScreenHeader(
-                        preferences.t("progress.title"),
-                        subtitle: preferences.t("progress.subtitle"),
-                        pageKey: "progress",
-                        systemImage: "chart.line.uptrend.xyaxis"
-                    )
-
                     if viewModel.dailyRecords.isEmpty {
                         emptyState
                     } else {
@@ -33,9 +26,7 @@ struct ProgressScreen: View {
                 .frame(maxWidth: .infinity)
             }
             .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
-            .navigationTitle(preferences.t("progress.title"))
-            .navigationBarTitleDisplayMode(.inline)
-            .themedNavigationBar()
+            .toolbar(.hidden, for: .navigationBar)
             .themedPageBackground()
         }
     }
@@ -82,10 +73,14 @@ struct ProgressScreen: View {
     }
 
     private var emptyMascotMessage: String {
-        let template = preferences.t("progress.mascotEmpty")
-        let name = viewModel.profile.name.trimmingCharacters(in: .whitespacesAndNewlines)
-        let displayName = name.isEmpty ? preferences.t("settings.defaultProfileName") : name
-        return template.replacingOccurrences(of: "{name}", with: displayName)
+        preferences.t(
+            "progress.mascotEmpty",
+            params: [
+                "name": viewModel.profile.displayName(
+                    fallback: preferences.t("settings.defaultProfileName")
+                ),
+            ]
+        )
     }
 
     private var overviewCard: some View {

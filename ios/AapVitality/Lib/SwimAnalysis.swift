@@ -100,7 +100,12 @@ enum SwimAnalysis {
     ) -> String {
         let includedSessions = statsSessions(sessions)
         guard let combined = combinedStats(sessions), !includedSessions.isEmpty else {
-            return applyMessagePlaceholders(t.t("progress.mascotEmpty"), profile: profile, t: t)
+            return t.t(
+                "progress.mascotEmpty",
+                params: [
+                    "name": profile.displayName(fallback: t.t("settings.defaultProfileName")),
+                ]
+            )
         }
 
         let monthKey = SwimMonthlyChallenges.getMonthKey()
@@ -180,7 +185,12 @@ enum SwimAnalysis {
 
         var message = parts.filter { !$0.isEmpty }.joined(separator: " ")
         if message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            message = applyMessagePlaceholders(t.t("progress.mascotDefault"), profile: profile, t: t)
+            message = t.t(
+                "progress.mascotDefault",
+                params: [
+                    "name": profile.displayName(fallback: t.t("settings.defaultProfileName")),
+                ]
+            )
         }
         return wrapCoachMessage(mascotId: mascotId, profile: profile, t: t, message: message)
     }
@@ -234,8 +244,7 @@ enum SwimAnalysis {
         case "fins": key = "mascot.coachWrap.fins"
         default: key = "mascot.coachWrap.flip"
         }
-        let name = profile.name.trimmingCharacters(in: .whitespacesAndNewlines)
-        let displayName = name.isEmpty ? MascotConstants.displayName(mascotId, t: t) : name
+        let displayName = profile.displayName(fallback: t.t("settings.defaultProfileName"))
         return t.t(key, params: ["name": displayName, "message": message])
     }
 
@@ -274,12 +283,6 @@ enum SwimAnalysis {
         case "bronze": return 1
         default: return 0
         }
-    }
-
-    private static func applyMessagePlaceholders(_ template: String, profile: VitalityProfile, t: TranslationService) -> String {
-        let name = profile.name.trimmingCharacters(in: .whitespacesAndNewlines)
-        let displayName = name.isEmpty ? t.t("settings.swimmerNamePlaceholder") : name
-        return template.replacingOccurrences(of: "{name}", with: displayName)
     }
 
 }

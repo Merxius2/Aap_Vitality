@@ -64,9 +64,9 @@ enum MascotPresentation {
 
     static func stageBorderColor(mascotId: String) -> Color {
         switch mascotId {
-        case "flo": return Color(red: 0.23, green: 0.36, blue: 1.0, opacity: 0.28)
-        case "fins": return Color(red: 0.86, green: 0.15, blue: 0.15, opacity: 0.35)
-        default: return Color(red: 0.2, green: 0.83, blue: 0.6, opacity: 0.3)
+        case "flo": return Color(red: 0.12, green: 0.55, blue: 0.62, opacity: 0.32)
+        case "fins": return Color(red: 0.86, green: 0.38, blue: 0.12, opacity: 0.38)
+        default: return Color(red: 0.28, green: 0.72, blue: 0.42, opacity: 0.32)
         }
     }
 

@@ -86,6 +86,35 @@ final class VitalityViewModel: ObservableObject {
         VitalityWorkoutBadges.earnedBadges(from: dailyRecords)
     }
 
+    var currentMonthlyChallenges: MonthlyChallengeState {
+        ensureProgressSessionCache()
+        return cachedCurrentMonthlyChallenges ?? MonthlyChallengeState(
+            monthKey: SwimMonthlyChallenges.getMonthKey(),
+            challenges: [],
+            completedCount: 0,
+            tier: nil,
+            earnedAt: nil
+        )
+    }
+
+    func progressOverviewMessage(t: TranslationService) -> String {
+        ensureProgressSessionCache()
+        let cacheKey = progressLocalizedCacheKey(language: currentLanguageCode())
+        if let cached = cachedProgressOverviewMessage, progressOverviewCacheKey == cacheKey {
+            return cached
+        }
+        let message = VitalityAnalysis.buildProgressOverviewMessage(
+            profile: profile,
+            records: dailyRecords,
+            goalSnapshot: vitalityGoalSnapshot,
+            t: t,
+            mascotId: mascotId
+        )
+        cachedProgressOverviewMessage = message
+        progressOverviewCacheKey = cacheKey
+        return message
+    }
+
     var monthlyChallengeHistory: [MonthlyChallengeState] {
         if let cached = cachedMonthlyChallengeHistory {
             return cached

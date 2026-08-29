@@ -9,13 +9,6 @@ struct UploadScreen: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    ScreenHeader(
-                        preferences.t("upload.title"),
-                        subtitle: preferences.t("upload.subtitle"),
-                        pageKey: "upload",
-                        systemImage: "heart.text.square.fill"
-                    )
-
                     Card {
                         VStack(spacing: 16) {
                             Button {
@@ -76,7 +69,7 @@ struct UploadScreen: View {
                 }
                 .padding()
             }
-            .navigationTitle(preferences.t("upload.title"))
+            .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

@@ -18,13 +18,6 @@ struct MedalsScreen: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    ScreenHeader(
-                        preferences.t("medals.title"),
-                        subtitle: preferences.t("medals.subtitle"),
-                        pageKey: "medals",
-                        systemImage: "medal"
-                    )
-
                     statsCard(medals: medals)
 
                     if !viewModel.dailyRecords.isEmpty {
@@ -43,9 +36,7 @@ struct MedalsScreen: View {
                 }
                 .padding()
             }
-            .navigationTitle(preferences.t("medals.title"))
-            .navigationBarTitleDisplayMode(.inline)
-            .themedNavigationBar()
+            .toolbar(.hidden, for: .navigationBar)
             .themedPageBackground()
         }
     }

@@ -37,7 +37,7 @@ struct SettingsScreen: View {
                 ambientSection
             }
             .safeAreaPadding(.bottom, tabBarScrollInset)
-            .navigationTitle(preferences.t("settings.title"))
+            .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 if !embedded {
@@ -46,6 +46,7 @@ struct SettingsScreen: View {
                     }
                 }
             }
+            .toolbar(embedded ? .hidden : .automatic, for: .navigationBar)
             .onTapGesture(count: 3) {
                 showSecretSettings = true
             }

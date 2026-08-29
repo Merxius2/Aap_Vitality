@@ -96,3 +96,21 @@ struct MedalCelebrationSheet: View {
         .presentationDetents([.medium, .large])
     }
 }
+
+struct SearchingNewSessionsSheet: View {
+    @EnvironmentObject private var preferences: UserPreferencesService
+
+    var body: some View {
+        VStack(spacing: 20) {
+            ProgressView()
+                .controlSize(.large)
+            Text(preferences.t("launch.searchingNewSessions"))
+                .themeFont(.headline, weight: .semibold)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .presentationDetents([.medium])
+        .interactiveDismissDisabled()
+    }
+}

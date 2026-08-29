@@ -222,6 +222,11 @@ struct VitalityProfile: Codable, Equatable {
         try container.encodeIfPresent(activeAmbient, forKey: .activeAmbient)
         try container.encodeIfPresent(activeWallpaper, forKey: .activeWallpaper)
     }
+
+    func displayName(fallback: String) -> String {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? fallback : trimmed
+    }
 }
 
 struct VitalityData: Codable, Equatable {
@@ -515,6 +520,11 @@ struct DailyVitalityRecord: Codable, Identifiable, Equatable {
         self.stepTiersReached = stepTiersReached
     }
 
+    enum CodingKeys: String, CodingKey {
+        case id, date, steps, stepPoints, workoutPoints
+        case sleepMinutes, sleepPoints, totalPoints, workouts, stepTiersReached
+    }
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)
@@ -590,6 +600,11 @@ struct VitalityGoalState: Codable, Equatable {
         self.streakShieldsAvailable = streakShieldsAvailable
         self.shieldUsedDates = shieldUsedDates
         self.streakShieldMonthKey = streakShieldMonthKey
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case monthlyTargets, weeklyTargets, yearlyTargets, monthlyCompletions
+        case goalBoostFactor, streakShieldsAvailable, shieldUsedDates, streakShieldMonthKey
     }
 
     init(from decoder: Decoder) throws {

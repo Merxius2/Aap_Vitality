@@ -9,8 +9,7 @@ enum VitalityAnalysis {
         mascotId: String
     ) -> String {
         let gameplay = MascotConstants.gameplay(mascotId)
-        let name = profile.name.trimmingCharacters(in: .whitespacesAndNewlines)
-        let displayName = name.isEmpty ? MascotConstants.displayName(mascotId, t: t) : name
+        let displayName = profile.displayName(fallback: t.t("settings.defaultProfileName"))
 
         guard !records.isEmpty else {
             return t.t("progress.mascotEmpty", params: ["name": displayName])

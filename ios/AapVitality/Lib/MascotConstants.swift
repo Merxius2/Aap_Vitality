@@ -99,9 +99,9 @@ enum MascotConstants {
 
     static func displayName(_ id: String?) -> String {
         switch id {
-        case "flo": return "Flo"
-        case "fins": return "Fins"
-        default: return "Flip"
+        case "flo": return "Pulse"
+        case "fins": return "Forge"
+        default: return "Spark"
         }
     }
 

@@ -47,48 +47,48 @@ struct MascotStageView<Content: View>: View {
         case "flo":
             LinearGradient(
                 colors: [
-                    Color.white.opacity(0.9),
-                    Color.white.opacity(0.68),
-                    Color.white.opacity(0.25),
-                    Color.white.opacity(0.1),
+                    Color.white.opacity(0.78),
+                    Color.white.opacity(0.42),
+                    Color.white.opacity(0.12),
+                    Color.clear,
                 ],
-                startPoint: UnitPoint(x: 0.05, y: 0.1),
-                endPoint: UnitPoint(x: 0.95, y: 0.9)
+                startPoint: UnitPoint(x: 0.05, y: 0.05),
+                endPoint: UnitPoint(x: 0.95, y: 0.95)
             )
             LinearGradient(
-                colors: [.clear, Color(red: 0.12, green: 0.23, blue: 0.54, opacity: 0.12)],
+                colors: [.clear, Color(red: 0.08, green: 0.45, blue: 0.55, opacity: 0.14)],
                 startPoint: .top,
                 endPoint: .bottom
             )
         case "fins":
             LinearGradient(
                 colors: [
-                    Color.white.opacity(0.92),
-                    Color.white.opacity(0.72),
-                    Color.white.opacity(0.28),
-                    Color.white.opacity(0.12),
+                    Color.white.opacity(0.55),
+                    Color.white.opacity(0.22),
+                    Color.clear,
+                    Color.black.opacity(0.18),
                 ],
-                startPoint: UnitPoint(x: 0.05, y: 0.1),
-                endPoint: UnitPoint(x: 0.95, y: 0.9)
+                startPoint: UnitPoint(x: 0.1, y: 0.05),
+                endPoint: UnitPoint(x: 0.9, y: 0.95)
             )
             LinearGradient(
-                colors: [.clear, Color.black.opacity(0.15)],
+                colors: [.clear, Color(red: 0.55, green: 0.18, blue: 0.08, opacity: 0.18)],
                 startPoint: .top,
                 endPoint: .bottom
             )
         default:
             LinearGradient(
                 colors: [
-                    Color.white.opacity(0.92),
-                    Color.white.opacity(0.7),
-                    Color.white.opacity(0.28),
-                    Color.white.opacity(0.1),
+                    Color.white.opacity(0.82),
+                    Color.white.opacity(0.45),
+                    Color.white.opacity(0.12),
+                    Color.clear,
                 ],
-                startPoint: UnitPoint(x: 0.05, y: 0.1),
-                endPoint: UnitPoint(x: 0.95, y: 0.9)
+                startPoint: UnitPoint(x: 0.05, y: 0.05),
+                endPoint: UnitPoint(x: 0.95, y: 0.95)
             )
             LinearGradient(
-                colors: [.clear, Color(red: 0.024, green: 0.31, blue: 0.23, opacity: 0.1)],
+                colors: [.clear, Color(red: 0.12, green: 0.42, blue: 0.28, opacity: 0.12)],
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -101,9 +101,9 @@ struct MascotStageView<Content: View>: View {
         case "flo":
             LinearGradient(
                 colors: [
-                    Color(red: 0.82, green: 0.94, blue: 1.0),
-                    Color(red: 0.55, green: 0.82, blue: 0.98),
-                    Color(red: 0.20, green: 0.55, blue: 0.86),
+                    Color(red: 0.78, green: 0.93, blue: 0.98),
+                    Color(red: 0.42, green: 0.78, blue: 0.82),
+                    Color(red: 0.18, green: 0.55, blue: 0.62),
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
@@ -111,9 +111,9 @@ struct MascotStageView<Content: View>: View {
         case "fins":
             LinearGradient(
                 colors: [
-                    Color(red: 0.03, green: 0.09, blue: 0.16),
-                    Color(red: 0.04, green: 0.24, blue: 0.34),
-                    Color(red: 0.08, green: 0.45, blue: 0.52),
+                    Color(red: 0.18, green: 0.10, blue: 0.28),
+                    Color(red: 0.45, green: 0.18, blue: 0.16),
+                    Color(red: 0.92, green: 0.48, blue: 0.18),
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
@@ -121,9 +121,9 @@ struct MascotStageView<Content: View>: View {
         default:
             LinearGradient(
                 colors: [
-                    Color(red: 0.88, green: 0.98, blue: 0.94),
-                    Color(red: 0.74, green: 0.93, blue: 0.86),
-                    Color(red: 0.47, green: 0.78, blue: 0.66),
+                    Color(red: 0.95, green: 0.97, blue: 0.86),
+                    Color(red: 0.72, green: 0.90, blue: 0.62),
+                    Color(red: 0.35, green: 0.72, blue: 0.48),
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
