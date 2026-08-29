@@ -1103,7 +1103,7 @@
     "uploadSyncBody": "Je laatste activiteit was {days} dagen geleden. Synchroniseer Apple Gezondheid om op koers te blijven."
   },
   "launch": {
-    "searchingNewSessions": "Zoeken naar nieuwe sessies…"
+    "searchingNewSessions": "Activiteit synchroniseren vanuit Apple Gezondheid…"
   },
   "goals": {
     "title": "Doelen",

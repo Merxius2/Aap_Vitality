@@ -31,7 +31,7 @@ struct MedalsScreen: View {
                         achievementPathsSection
                     }
 
-                    if viewModel.sessions.isEmpty {
+                    if viewModel.dailyRecords.isEmpty {
                         emptyState
                     }
 

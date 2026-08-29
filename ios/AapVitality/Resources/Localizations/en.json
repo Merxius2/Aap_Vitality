@@ -1100,7 +1100,7 @@
     "uploadSyncBody": "Your last activity was {days} days ago. Sync Apple Health to stay on track."
   },
   "launch": {
-    "searchingNewSessions": "Looking for new sessions…"
+    "searchingNewSessions": "Syncing activity from Apple Health…"
   },
   "goals": {
     "title": "Goals",
