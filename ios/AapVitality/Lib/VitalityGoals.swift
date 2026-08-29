@@ -46,7 +46,7 @@ enum VitalityGoals {
         return Calendar.current.range(of: .day, in: .month, for: date)?.count ?? 30
     }
 
-    static func baselineDailyPoints(profile: SwimProfile) -> Int {
+    static func baselineDailyPoints(profile: VitalityProfile) -> Int {
         let ageFactor: Double
         switch profile.age {
         case ..<25: ageFactor = 1.1
@@ -71,7 +71,7 @@ enum VitalityGoals {
     }
 
     static func computeMonthlyTarget(
-        profile: SwimProfile,
+        profile: VitalityProfile,
         records: [DailyVitalityRecord],
         monthKey: String,
         goalState: VitalityGoalState,
@@ -91,7 +91,7 @@ enum VitalityGoals {
         max(75, Int((Double(monthlyTarget) / 4.3).rounded()))
     }
 
-    static func computeDailyTarget(weeklyTarget: Int, profile: SwimProfile, intensity: Double = 1) -> Int {
+    static func computeDailyTarget(weeklyTarget: Int, profile: VitalityProfile, intensity: Double = 1) -> Int {
         let fromWeekly = max(25, Int((Double(weeklyTarget) / 7.0).rounded()))
         let baseline = Int((Double(baselineDailyPoints(profile: profile)) * intensity).rounded())
         return max(fromWeekly, baseline)
@@ -101,7 +101,7 @@ enum VitalityGoals {
         records.first { $0.date == dateKey }?.totalPoints ?? 0
     }
 
-    static func computeYearlyTarget(profile: SwimProfile, records: [DailyVitalityRecord], yearKey: String, goalState: VitalityGoalState) -> Int {
+    static func computeYearlyTarget(profile: VitalityProfile, records: [DailyVitalityRecord], yearKey: String, goalState: VitalityGoalState) -> Int {
         if let stored = goalState.yearlyTargets[yearKey] {
             return stored
         }
@@ -128,7 +128,7 @@ enum VitalityGoals {
     }
 
     static func ensureGoals(
-        data: inout SwimData,
+        data: inout VitalityData,
         monthKey: String = getMonthKey(),
         intensity: Double = 1
     ) {
@@ -169,7 +169,7 @@ enum VitalityGoals {
         data.goalState = goalState
     }
 
-    static func recordMonthlyCompletionIfNeeded(data: inout SwimData, monthKey: String) {
+    static func recordMonthlyCompletionIfNeeded(data: inout VitalityData, monthKey: String) {
         guard data.goalState.monthlyCompletions[monthKey] == nil,
               let target = data.goalState.monthlyTargets[monthKey] else { return }
         let earned = monthlyProgress(records: data.dailyRecords, monthKey: monthKey)
@@ -203,7 +203,7 @@ enum VitalityGoals {
 
     static func evaluatePointChallenges(
         records: [DailyVitalityRecord],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         goalState: VitalityGoalState,
         monthKey: String = getMonthKey(),
         intensity: Double = 1
@@ -257,7 +257,7 @@ enum VitalityGoals {
 
     static func goalSnapshot(
         records: [DailyVitalityRecord],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         goalState: VitalityGoalState,
         intensity: Double = 1
     ) -> VitalityGoalSnapshot {

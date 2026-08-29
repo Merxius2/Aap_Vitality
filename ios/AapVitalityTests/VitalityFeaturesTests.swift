@@ -102,7 +102,7 @@ final class VitalityFeaturesTests: XCTestCase {
     }
 
     func testComputeDailyTargetUsesWeeklyAndBaseline() {
-        let profile = SwimProfile.default
+        let profile = VitalityProfile.default
         let weeklyTarget = 350
         let target = VitalityGoals.computeDailyTarget(
             weeklyTarget: weeklyTarget,
@@ -134,7 +134,7 @@ final class VitalityFeaturesTests: XCTestCase {
     }
 
     func testDailyGoalStatusReflectsProgress() {
-        let profile = SwimProfile.default
+        let profile = VitalityProfile.default
         let goalState = VitalityGoalState.empty
         let dateKey = "2026-08-29"
         let records = [

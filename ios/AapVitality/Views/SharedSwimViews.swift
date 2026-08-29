@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MonthlyChallengesCardView: View {
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
     @EnvironmentObject private var preferences: UserPreferencesService
 
     private let tierSteps = ["bronze", "silver", "gold"]

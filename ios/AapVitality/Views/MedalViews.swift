@@ -415,7 +415,7 @@ struct MonthlyMedalIconView: View {
 }
 
 struct MonthlyChallengeHistoryView: View {
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
     @EnvironmentObject private var preferences: UserPreferencesService
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
 

@@ -14,7 +14,7 @@ enum SwimImportExport {
         }
     }()
 
-    static func generateExportString(from data: SwimData) async throws -> String {
+    static func generateExportString(from data: VitalityData) async throws -> String {
         let payload: [String: Any] = [
             "v": exportVersion,
             "p": [
@@ -33,7 +33,7 @@ enum SwimImportExport {
         return "\(encoded):\(checksum)"
     }
 
-    static func parseImportString(_ str: String) async throws -> SwimData {
+    static func parseImportString(_ str: String) async throws -> VitalityData {
         let trimmed = str.trimmingCharacters(in: .whitespacesAndNewlines)
         let parts = trimmed.split(separator: ":", maxSplits: 1).map(String.init)
         guard parts.count == 2 else { throw SwimImportExportError.invalidFormat }
@@ -52,7 +52,7 @@ enum SwimImportExport {
             throw SwimImportExportError.unsupportedVersion
         }
 
-        let profile = SwimProfile(
+        let profile = VitalityProfile(
             name: "",
             sex: (compressed["p"] as? [String: Any])?["sex"] as? String ?? "male",
             age: (compressed["p"] as? [String: Any])?["age"] as? Int ?? 30,
@@ -64,7 +64,7 @@ enum SwimImportExport {
 
         let sessions = (compressed["s"] as? [[String: Any]] ?? []).map(decompressSession)
 
-        return SwimData(
+        return VitalityData(
             profile: profile,
             sessions: sessions,
             monthlyChallengeRerolls: [:]

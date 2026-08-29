@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct HistoryScreen: View {
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
     @EnvironmentObject private var preferences: UserPreferencesService
     @State private var expandedId: String?
     @State private var deleteId: String?

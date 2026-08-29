@@ -2,7 +2,7 @@ import SwiftUI
 
 @main
 struct AapVitalityApp: App {
-    @StateObject private var viewModel = SwimViewModel()
+    @StateObject private var viewModel = VitalityViewModel()
     @StateObject private var preferences = UserPreferencesService()
 
     var body: some Scene {
@@ -15,7 +15,7 @@ struct AapVitalityApp: App {
 }
 
 private struct AppRootView: View {
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
     @EnvironmentObject private var preferences: UserPreferencesService
     @Environment(\.colorScheme) private var systemColorScheme
     @Environment(\.scenePhase) private var scenePhase

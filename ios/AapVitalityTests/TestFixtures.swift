@@ -2,7 +2,7 @@ import Foundation
 @testable import AapVitality
 
 enum TestFixtures {
-    static let profile = SwimProfile(
+    static let profile = VitalityProfile(
         name: "",
         sex: "male",
         age: 30,
@@ -63,8 +63,8 @@ enum TestFixtures {
         return session(id: "s-\(date)", date: date, metrics: m)
     }
 
-    static func baseData() -> SwimData {
-        SwimData.empty
+    static func baseData() -> VitalityData {
+        VitalityData.empty
     }
 
     static func identityTranslator() -> TranslationService {
@@ -137,9 +137,9 @@ enum TestFixtures {
     Baanlengte 25 M
     """
 
-    static let sampleImportData: SwimData = {
-        var data = SwimData.empty
-        data.profile = SwimProfile(
+    static let sampleImportData: VitalityData = {
+        var data = VitalityData.empty
+        data.profile = VitalityProfile(
             name: "",
             sex: "male",
             age: 35,

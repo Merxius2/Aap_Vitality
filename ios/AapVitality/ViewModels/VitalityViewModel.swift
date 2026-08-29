@@ -2,8 +2,8 @@ import Foundation
 import SwiftUI
 
 @MainActor
-final class SwimViewModel: ObservableObject {
-    @Published private(set) var data: SwimData = .empty
+final class VitalityViewModel: ObservableObject {
+    @Published private(set) var data: VitalityData = .empty
     @Published private(set) var cheats: SwimCheats = .empty
     @Published private(set) var isLoading = true
     @Published var pendingMedalCelebration: [EvaluatedMedal]?
@@ -25,7 +25,7 @@ final class SwimViewModel: ObservableObject {
     var sessions: [SwimSession] { data.sessions }
     var dailyRecords: [DailyVitalityRecord] { data.dailyRecords }
     var goalState: VitalityGoalState { data.goalState }
-    var profile: SwimProfile { data.profile }
+    var profile: VitalityProfile { data.profile }
     var monthlyChallengeRerolls: [String: MonthRerollEntry] { data.monthlyChallengeRerolls }
 
     var vitalityGoalSnapshot: VitalityGoalSnapshot {
@@ -118,7 +118,7 @@ final class SwimViewModel: ObservableObject {
         isLoading = false
     }
 
-    func updateProfile(_ updates: (inout SwimProfile) -> Void) {
+    func updateProfile(_ updates: (inout VitalityProfile) -> Void) {
         var next = data
         updates(&next.profile)
         if let ambient = next.profile.activeAmbient, !AmbientCatalog.isValid(ambient) {
@@ -190,7 +190,7 @@ final class SwimViewModel: ObservableObject {
         persist()
     }
 
-    func replaceData(_ nextData: SwimData) {
+    func replaceData(_ nextData: VitalityData) {
         data = SwimStorageService.normalize(nextData)
         invalidateDerivedCaches()
         persist(immediate: true)

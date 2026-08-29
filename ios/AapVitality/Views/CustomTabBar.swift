@@ -62,7 +62,7 @@ enum TabBarLayout {
 
 struct CustomTabBar: View {
     @EnvironmentObject private var preferences: UserPreferencesService
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
     @Environment(\.appIsDark) private var appIsDark
     @Binding var selectedTab: Int
     let progressActive: Bool
@@ -274,7 +274,7 @@ struct CustomTabButton: View {
     let fadesUnselected: Bool
     let action: () -> Void
 
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
 
     var body: some View {
         VStack(spacing: TabBarLayout.itemSpacing) {
@@ -314,7 +314,7 @@ struct CustomCenterFAB: View {
     let systemImage: String
     var usesPlainIcon: Bool = false
     let action: () -> Void
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
 
     var body: some View {
         Button(action: action) {

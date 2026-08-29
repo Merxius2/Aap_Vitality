@@ -19,7 +19,7 @@ enum SwimNotifications {
     static func refreshAllReminders(
         sessions: [SwimSession],
         dailyRecords: [DailyVitalityRecord],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         goalState: VitalityGoalState,
         monthlyChallengeRerolls: [String: MonthRerollEntry],
         intensity: Double,
@@ -47,7 +47,7 @@ enum SwimNotifications {
 
     static func refreshMonthlyGoalReminders(
         sessions: [SwimSession],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         monthlyChallengeRerolls: [String: MonthRerollEntry],
         t: TranslationService,
         now: Date = Date()
@@ -92,7 +92,7 @@ enum SwimNotifications {
 
     static func refreshDailyGoalNotifications(
         records: [DailyVitalityRecord],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         goalState: VitalityGoalState,
         intensity: Double,
         enabled: Bool,
@@ -150,7 +150,7 @@ enum SwimNotifications {
 
     static func dailyGoalStatus(
         records: [DailyVitalityRecord],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         goalState: VitalityGoalState,
         intensity: Double,
         dateKey: String = VitalityGoals.todayDateKey()
@@ -268,7 +268,7 @@ enum SwimNotifications {
 
     static func monthlyGoalReminders(
         sessions: [SwimSession],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         monthlyChallengeRerolls: [String: MonthRerollEntry],
         t: TranslationService,
         now: Date = Date()

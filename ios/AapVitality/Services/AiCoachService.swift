@@ -10,7 +10,7 @@ enum AiCoachService {
     static func fetchFeedback(
         apiKey: String,
         language: String,
-        profile: SwimProfile,
+        profile: VitalityProfile,
         session: SwimSession,
         sessions: [SwimSession],
         localFeedback: SessionFeedbackSummary,

@@ -17,7 +17,7 @@ final class VitalityPointsTests: XCTestCase {
     }
 
     func testWorkoutRequiresThirtyMinutes() {
-        let profile = SwimProfile.default
+        let profile = VitalityProfile.default
         let short = VitalityPoints.workoutPoints(
             durationSec: 20 * 60,
             zoneMinutes: HRZoneMinutes(zone5: 10),
@@ -36,7 +36,7 @@ final class VitalityPointsTests: XCTestCase {
     }
 
     func testHigherZonesEarnMorePoints() {
-        let profile = SwimProfile.default
+        let profile = VitalityProfile.default
         let low = VitalityPoints.workoutPoints(
             durationSec: 40 * 60,
             zoneMinutes: HRZoneMinutes(zone2: 10),

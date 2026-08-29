@@ -4,19 +4,19 @@ enum SwimStorageService {
     static let storageKey = "AUDIT_SWIM_DATA"
     static var defaults: UserDefaults = .standard
 
-    static func load() -> SwimData {
+    static func load() -> VitalityData {
         guard let raw = defaults.data(forKey: storageKey) else {
             return .empty
         }
         do {
-            let parsed = try JSONDecoder().decode(SwimData.self, from: raw)
+            let parsed = try JSONDecoder().decode(VitalityData.self, from: raw)
             return migrate(parsed)
         } catch {
             return .empty
         }
     }
 
-    static func save(_ data: SwimData) {
+    static func save(_ data: VitalityData) {
         do {
             let encoded = try JSONEncoder().encode(data)
             defaults.set(encoded, forKey: storageKey)
@@ -33,11 +33,11 @@ enum SwimStorageService {
         UUID().uuidString
     }
 
-    static func normalize(_ data: SwimData) -> SwimData {
+    static func normalize(_ data: VitalityData) -> VitalityData {
         migrate(data)
     }
 
-    private static func migrate(_ data: SwimData) -> SwimData {
+    private static func migrate(_ data: VitalityData) -> VitalityData {
         var next = data
         next.sessions = next.sessions.sorted { $0.date < $1.date }
         next.dailyRecords = next.dailyRecords.sorted { $0.date < $1.date }

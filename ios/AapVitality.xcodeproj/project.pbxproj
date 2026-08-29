@@ -11,7 +11,7 @@
 		B10000000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000002 /* ContentView.swift */; };
 		B10000000000000000000003 /* SwimModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000003 /* SwimModels.swift */; };
 		B10000000000000000000004 /* SwimStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000004 /* SwimStorageService.swift */; };
-		B10000000000000000000006 /* SwimViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000006 /* SwimViewModel.swift */; };
+		B10000000000000000000006 /* VitalityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000006 /* VitalityViewModel.swift */; };
 		B10000000000000000000007 /* ProgressScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000007 /* ProgressScreen.swift */; };
 		B10000000000000000000008 /* UploadScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000008 /* UploadScreen.swift */; };
 		B10000000000000000000009 /* HistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000009 /* HistoryScreen.swift */; };
@@ -108,7 +108,7 @@
 		F10000000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F10000000000000000000003 /* SwimModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimModels.swift; sourceTree = "<group>"; };
 		F10000000000000000000004 /* SwimStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimStorageService.swift; sourceTree = "<group>"; };
-		F10000000000000000000006 /* SwimViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimViewModel.swift; sourceTree = "<group>"; };
+		F10000000000000000000006 /* VitalityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityViewModel.swift; sourceTree = "<group>"; };
 		F10000000000000000000007 /* ProgressScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressScreen.swift; sourceTree = "<group>"; };
 		F10000000000000000000008 /* UploadScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadScreen.swift; sourceTree = "<group>"; };
 		F10000000000000000000009 /* HistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryScreen.swift; sourceTree = "<group>"; };
@@ -273,7 +273,7 @@
 		G10000000000000000000006 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				F10000000000000000000006 /* SwimViewModel.swift */,
+				F10000000000000000000006 /* VitalityViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -496,7 +496,7 @@
 				B10000000000000000000002 /* ContentView.swift in Sources */,
 				B10000000000000000000003 /* SwimModels.swift in Sources */,
 				B10000000000000000000004 /* SwimStorageService.swift in Sources */,
-				B10000000000000000000006 /* SwimViewModel.swift in Sources */,
+				B10000000000000000000006 /* VitalityViewModel.swift in Sources */,
 				B10000000000000000000007 /* ProgressScreen.swift in Sources */,
 				B10000000000000000000008 /* UploadScreen.swift in Sources */,
 				B10000000000000000000009 /* HistoryScreen.swift in Sources */,

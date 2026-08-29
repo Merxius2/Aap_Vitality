@@ -154,7 +154,7 @@ struct YearMonthMedal: Equatable {
     var hasSessions: Bool
 }
 
-struct SwimProfile: Codable, Equatable {
+struct VitalityProfile: Codable, Equatable {
     var name: String
     var sex: String
     var age: Int
@@ -164,7 +164,7 @@ struct SwimProfile: Codable, Equatable {
     var activeAmbient: String?
     var activeWallpaper: String?
 
-    static let `default` = SwimProfile(
+    static let `default` = VitalityProfile(
         name: "",
         sex: "male",
         age: 30,
@@ -224,14 +224,14 @@ struct SwimProfile: Codable, Equatable {
     }
 }
 
-struct SwimData: Codable, Equatable {
-    var profile: SwimProfile
+struct VitalityData: Codable, Equatable {
+    var profile: VitalityProfile
     var sessions: [SwimSession]
     var monthlyChallengeRerolls: [String: MonthRerollEntry]
     var dailyRecords: [DailyVitalityRecord]
     var goalState: VitalityGoalState
 
-    static let empty = SwimData(
+    static let empty = VitalityData(
         profile: .default,
         sessions: [],
         monthlyChallengeRerolls: [:],
@@ -246,7 +246,7 @@ struct SwimData: Codable, Equatable {
     }
 
     init(
-        profile: SwimProfile,
+        profile: VitalityProfile,
         sessions: [SwimSession],
         monthlyChallengeRerolls: [String: MonthRerollEntry],
         dailyRecords: [DailyVitalityRecord] = [],
@@ -261,7 +261,7 @@ struct SwimData: Codable, Equatable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        profile = try container.decode(SwimProfile.self, forKey: .profile)
+        profile = try container.decode(VitalityProfile.self, forKey: .profile)
         sessions = try container.decodeIfPresent([SwimSession].self, forKey: .sessions) ?? []
         monthlyChallengeRerolls = try container.decodeIfPresent(
             [String: MonthRerollEntry].self,

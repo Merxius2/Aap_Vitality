@@ -98,7 +98,7 @@ enum HealthKitService {
         excluding existingUUIDs: Set<String>,
         since: Date,
         maxResults: Int,
-        profile: SwimProfile,
+        profile: VitalityProfile,
         queryLimit: Int = queryLimit,
         enrichHeartRate: Bool = true
     ) async throws -> (workouts: [HealthKitVitalityWorkout], queriedCount: Int) {

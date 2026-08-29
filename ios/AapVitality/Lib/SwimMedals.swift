@@ -6,7 +6,7 @@ enum SwimMedals {
 
     static func evaluateAllMedals(
         _ records: [DailyVitalityRecord],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         goalState: VitalityGoalState,
         allMedalsUnlocked: Bool = false
     ) -> [EvaluatedMedal] {
@@ -21,7 +21,7 @@ enum SwimMedals {
     static func getNewlyEarnedMedals(
         recordsBefore: [DailyVitalityRecord],
         recordsAfter: [DailyVitalityRecord],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         goalState: VitalityGoalState,
         allMedalsUnlocked: Bool = false
     ) -> [EvaluatedMedal] {
