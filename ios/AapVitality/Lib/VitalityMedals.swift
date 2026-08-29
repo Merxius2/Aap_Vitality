@@ -67,7 +67,7 @@ enum VitalityMedals {
     static func buildMedalContext(
         records: [DailyVitalityRecord],
         goalState: VitalityGoalState,
-        profile: SwimProfile
+        profile: VitalityProfile
     ) -> MedalContext {
         let sorted = records.sorted { $0.date < $1.date }
         let monthKey = VitalityGoals.getMonthKey()
@@ -168,7 +168,7 @@ enum VitalityMedals {
 
     static func evaluateAllMedals(
         _ records: [DailyVitalityRecord],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         goalState: VitalityGoalState,
         allMedalsUnlocked: Bool = false
     ) -> [EvaluatedMedal] {
@@ -194,7 +194,7 @@ enum VitalityMedals {
     static func getNewlyEarnedMedals(
         recordsBefore: [DailyVitalityRecord],
         recordsAfter: [DailyVitalityRecord],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         goalState: VitalityGoalState,
         allMedalsUnlocked: Bool = false
     ) -> [EvaluatedMedal] {
@@ -298,7 +298,7 @@ enum VitalityMedals {
     private static func computeEarnedAtMap(
         records: [DailyVitalityRecord],
         goalState: VitalityGoalState,
-        profile: SwimProfile
+        profile: VitalityProfile
     ) -> [String: String] {
         var map: [String: String] = [:]
         var runningPoints = 0

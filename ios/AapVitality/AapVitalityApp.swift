@@ -2,7 +2,7 @@ import SwiftUI
 
 @main
 struct AapVitalityApp: App {
-    @StateObject private var viewModel = SwimViewModel()
+    @StateObject private var viewModel = VitalityViewModel()
     @StateObject private var preferences = UserPreferencesService()
 
     var body: some Scene {
@@ -15,20 +15,17 @@ struct AapVitalityApp: App {
 }
 
 private struct AppRootView: View {
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
     @EnvironmentObject private var preferences: UserPreferencesService
     @Environment(\.colorScheme) private var systemColorScheme
     @Environment(\.scenePhase) private var scenePhase
 
-    @State private var showLaunchSessionFlow = false
-    @State private var launchFlowPhase: LaunchFlowPhase = .searching
-    @State private var launchFeedback: SessionFeedbackSummary?
-    @State private var isEnhancingLaunchFeedback = false
+    @State private var showLaunchSync = false
     @State private var showMedalCelebration = false
 
     private var canShowMedalCelebration: Bool {
         showMedalCelebration
-            && !showLaunchSessionFlow
+            && !showLaunchSync
             && viewModel.pendingMedalCelebration != nil
     }
 
@@ -58,23 +55,10 @@ private struct AppRootView: View {
             .tint(preferences.themeColors.displayPrimary)
             .preferredColorScheme(preferences.colorScheme)
             .themedBodyFont()
-        .sheet(isPresented: $showLaunchSessionFlow) {
-            switch launchFlowPhase {
-            case .searching:
-                SearchingNewSessionsSheet()
-                    .environmentObject(preferences)
-                    .preferredColorScheme(preferences.colorScheme)
-            case .feedback:
-                if let launchFeedback {
-                    SessionFeedbackSheet(
-                        feedback: launchFeedback,
-                        isLoading: isEnhancingLaunchFeedback
-                    )
-                    .environmentObject(viewModel)
-                    .environmentObject(preferences)
-                    .preferredColorScheme(preferences.colorScheme)
-                }
-            }
+        .sheet(isPresented: $showLaunchSync) {
+            SearchingNewSessionsSheet()
+                .environmentObject(preferences)
+                .preferredColorScheme(preferences.colorScheme)
         }
         .sheet(isPresented: Binding(
             get: { canShowMedalCelebration },
@@ -96,14 +80,14 @@ private struct AppRootView: View {
                 showMedalCelebration = true
             }
         }
-        .onChange(of: showLaunchSessionFlow) { _, isShowing in
+        .onChange(of: showLaunchSync) { _, isShowing in
             if !isShowing, viewModel.pendingMedalCelebration != nil {
                 showMedalCelebration = true
             }
         }
         .task(priority: .utility) {
             try? await Task.sleep(for: .milliseconds(300))
-            await performLaunchSessionSearchIfNeeded()
+            await performLaunchVitalitySyncIfNeeded()
             await viewModel.refreshNotifications(
                 dailyGoalNotificationsEnabled: preferences.dailyGoalNotificationsEnabled
             )
@@ -130,43 +114,13 @@ private struct AppRootView: View {
     }
 
     @MainActor
-    private func performLaunchSessionSearchIfNeeded() async {
-        guard await viewModel.shouldPerformLaunchSessionSearch() else { return }
+    private func performLaunchVitalitySyncIfNeeded() async {
+        guard await viewModel.shouldPerformLaunchVitalitySync() else { return }
 
-        launchFlowPhase = .searching
-        showLaunchSessionFlow = true
-
-        async let importedSession = viewModel.performLaunchSessionSearch()
+        showLaunchSync = true
+        async let importedCount = viewModel.performLaunchVitalitySync()
         try? await Task.sleep(for: .milliseconds(900))
-        guard let importedSession = await importedSession else {
-            showLaunchSessionFlow = false
-            return
-        }
-
-        var feedback = viewModel.buildSessionFeedback(
-            for: importedSession,
-            t: preferences.translations
-        )
-        launchFeedback = feedback
-        launchFlowPhase = .feedback
-
-        guard !viewModel.profile.aiApiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            return
-        }
-
-        isEnhancingLaunchFeedback = true
-        defer { isEnhancingLaunchFeedback = false }
-
-        if let enhanced = await viewModel.enhanceSessionFeedback(feedback, for: importedSession) {
-            feedback = enhanced
-            if launchFlowPhase == .feedback {
-                launchFeedback = feedback
-            }
-        }
+        _ = await importedCount
+        showLaunchSync = false
     }
-}
-
-private enum LaunchFlowPhase {
-    case searching
-    case feedback
 }

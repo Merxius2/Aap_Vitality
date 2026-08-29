@@ -32,7 +32,7 @@ enum VitalityPoints {
     static func workoutPoints(
         durationSec: Int,
         zoneMinutes: HRZoneMinutes,
-        profile: SwimProfile,
+        profile: VitalityProfile,
         mascotId: String
     ) -> Int {
         let minutes = durationSec / 60
@@ -52,7 +52,7 @@ enum VitalityPoints {
         steps: Int,
         sleepMinutes: Int = 0,
         workouts: [VitalityWorkout],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         mascotId: String
     ) -> DailyVitalityRecord {
         let stepResult = stepPoints(for: steps)
@@ -97,7 +97,7 @@ enum VitalityPoints {
     static func mergeDailyRecords(
         _ existing: DailyVitalityRecord?,
         with incoming: DailyVitalityRecord,
-        profile: SwimProfile,
+        profile: VitalityProfile,
         mascotId: String
     ) -> DailyVitalityRecord {
         guard let existing else { return incoming }

@@ -2,7 +2,7 @@ import Foundation
 
 enum VitalityAnalysis {
     static func buildProgressOverviewMessage(
-        profile: SwimProfile,
+        profile: VitalityProfile,
         records: [DailyVitalityRecord],
         goalSnapshot: VitalityGoalSnapshot,
         t: TranslationService,
@@ -65,7 +65,7 @@ enum VitalityAnalysis {
 
     static func buildDailyFeedback(
         record: DailyVitalityRecord,
-        profile: SwimProfile,
+        profile: VitalityProfile,
         t: TranslationService,
         mascotId: String
     ) -> SessionFeedbackSummary {

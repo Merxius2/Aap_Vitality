@@ -3,7 +3,7 @@ import XCTest
 
 final class VitalityGoalsTests: XCTestCase {
     func testMonthlyTargetUsesProfileBaselineWithoutHistory() {
-        let profile = SwimProfile(name: "Test", sex: "male", age: 30, mascotId: nil, mascotSwitchMonthKey: nil, aiApiKey: "", activeAmbient: nil)
+        let profile = VitalityProfile(name: "Test", sex: "male", age: 30, mascotId: nil, mascotSwitchMonthKey: nil, aiApiKey: "", activeAmbient: nil)
         let monthKey = "2026-08"
         let target = VitalityGoals.computeMonthlyTarget(
             profile: profile,
@@ -15,7 +15,7 @@ final class VitalityGoalsTests: XCTestCase {
     }
 
     func testEarlyCompletionIncreasesBoostFactor() {
-        var data = SwimData.empty
+        var data = VitalityData.empty
         data.goalState.monthlyCompletions["2026-07"] = MonthlyGoalCompletion(
             completedAt: "2026-07-18",
             daysToComplete: 18,

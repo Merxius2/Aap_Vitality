@@ -51,7 +51,7 @@ enum SwimFeedback {
     static func buildPersonalFeedback(
         session: SwimSession,
         allSessions: [SwimSession],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         t: TranslationService,
         monthlyChallengeRerolls: [String: MonthRerollEntry] = [:]
     ) -> SessionFeedbackSummary {
@@ -242,7 +242,7 @@ enum SwimFeedback {
     private static func gatherFeedbackContext(
         newSession: SwimSession,
         allSessions: [SwimSession],
-        profile: SwimProfile,
+        profile: VitalityProfile,
         base: AnalyzeBase,
         combined: CombinedStats?
     ) -> FeedbackContext {

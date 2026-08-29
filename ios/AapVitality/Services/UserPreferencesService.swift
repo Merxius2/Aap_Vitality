@@ -40,8 +40,6 @@ final class UserPreferencesService: ObservableObject {
     var locale: Locale {
         switch language {
         case "nl": return Locale(identifier: "nl_NL")
-        case "ru": return Locale(identifier: "ru_RU")
-        case "tr": return Locale(identifier: "tr_TR")
         default: return Locale(identifier: "en_US")
         }
     }
@@ -55,7 +53,10 @@ final class UserPreferencesService: ObservableObject {
         if let langData = UserDefaults.standard.data(forKey: Self.languageKey),
            let json = try? JSONSerialization.jsonObject(with: langData) as? [String: Any],
            let lang = json["language"] as? String {
-            language = lang == "mu" ? TranslationService.defaultLanguage : lang
+            let normalized = lang == "mu" ? TranslationService.defaultLanguage : lang
+            language = TranslationService.supportedLanguages.contains(normalized)
+                ? normalized
+                : TranslationService.defaultLanguage
         }
 
         if let themeData = UserDefaults.standard.data(forKey: Self.themeKey),

@@ -744,7 +744,7 @@ struct ThemedPageBackgroundView: View {
 
 struct ThemedPageBackgroundModifier: ViewModifier {
     @EnvironmentObject private var preferences: UserPreferencesService
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
     @Environment(\.appIsDark) private var appIsDark
     @Environment(\.ambientBackgroundVisible) private var ambientBackgroundVisible
 

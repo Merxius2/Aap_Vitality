@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 final class TranslationService: ObservableObject {
-    static let supportedLanguages = ["en", "nl", "ru", "tr"]
+    static let supportedLanguages = ["en", "nl"]
     static let defaultLanguage = "en"
 
     @Published private(set) var language: String = defaultLanguage
@@ -46,8 +46,6 @@ final class TranslationService: ObservableObject {
     func languageDisplayName(_ code: String) -> String {
         switch code {
         case "nl": return "Nederlands"
-        case "ru": return "Русский"
-        case "tr": return "Türkçe"
         default: return "English"
         }
     }

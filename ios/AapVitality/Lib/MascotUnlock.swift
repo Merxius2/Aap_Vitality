@@ -17,7 +17,7 @@ enum MascotUnlock {
 
     static func unlockStatus(
         mascotId: String,
-        profile: SwimProfile,
+        profile: VitalityProfile,
         dailyRecords: [DailyVitalityRecord],
         goalState: VitalityGoalState,
         monthlyChallengeRerolls: [String: MonthRerollEntry] = [:]
@@ -40,7 +40,7 @@ enum MascotUnlock {
 
     static func isUnlocked(
         mascotId: String,
-        profile: SwimProfile,
+        profile: VitalityProfile,
         dailyRecords: [DailyVitalityRecord],
         goalState: VitalityGoalState,
         monthlyChallengeRerolls: [String: MonthRerollEntry] = [:]
@@ -55,7 +55,7 @@ enum MascotUnlock {
     }
 
     static func resolveMascotId(
-        profile: SwimProfile,
+        profile: VitalityProfile,
         dailyRecords: [DailyVitalityRecord],
         goalState: VitalityGoalState,
         monthlyChallengeRerolls: [String: MonthRerollEntry] = [:]
@@ -79,7 +79,7 @@ enum MascotUnlock {
     }
 
     static func canSwitchMascot(
-        profile: SwimProfile,
+        profile: VitalityProfile,
         dailyRecords: [DailyVitalityRecord],
         goalState: VitalityGoalState,
         monthKey: String = SwimMonthlyChallenges.getMonthKey(),
@@ -111,7 +111,7 @@ enum MascotUnlock {
 
     // Legacy session-based helpers kept for settings previews.
     static func resolveMascotId(
-        profile: SwimProfile,
+        profile: VitalityProfile,
         sessions: [SwimSession],
         monthlyChallengeRerolls: [String: MonthRerollEntry] = [:]
     ) -> String {
@@ -124,7 +124,7 @@ enum MascotUnlock {
     }
 
     static func canSwitchMascot(
-        profile: SwimProfile,
+        profile: VitalityProfile,
         sessions: [SwimSession],
         monthKey: String = SwimMonthlyChallenges.getMonthKey(),
         nextMascotId: String,

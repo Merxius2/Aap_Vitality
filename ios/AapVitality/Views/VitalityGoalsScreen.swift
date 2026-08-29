@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct VitalityGoalsScreen: View {
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
     @EnvironmentObject private var preferences: UserPreferencesService
     @Environment(\.openSettingsTab) private var openSettingsTab
 

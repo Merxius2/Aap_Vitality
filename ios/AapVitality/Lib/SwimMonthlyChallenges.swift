@@ -191,11 +191,11 @@ enum SwimMonthlyChallenges {
     }
 
     static func applyMonthlyChallengeReroll(
-        data: SwimData,
+        data: VitalityData,
         monthKey: String,
         tierIndex: Int,
         mascotId: String
-    ) -> SwimData? {
+    ) -> VitalityData? {
         let gameplay = MascotConstants.gameplay(mascotId)
         guard canRerollMonthlyChallenge(
             sessions: data.sessions,

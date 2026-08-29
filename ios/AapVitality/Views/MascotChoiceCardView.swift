@@ -137,7 +137,7 @@ struct MascotChoiceCardView: View {
 }
 
 struct MascotSettingsSection: View {
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
     @EnvironmentObject private var preferences: UserPreferencesService
     @Environment(\.themeColors) private var themeColors
     @Environment(\.appIsDark) private var appIsDark

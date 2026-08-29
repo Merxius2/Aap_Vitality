@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MedalsScreen: View {
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
     @EnvironmentObject private var preferences: UserPreferencesService
     @Environment(\.openUpload) private var openUpload
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -31,7 +31,7 @@ struct MedalsScreen: View {
                         achievementPathsSection
                     }
 
-                    if viewModel.sessions.isEmpty {
+                    if viewModel.dailyRecords.isEmpty {
                         emptyState
                     }
 

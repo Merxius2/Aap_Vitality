@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SettingsScreen: View {
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
     @EnvironmentObject private var preferences: UserPreferencesService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openUpload) private var openUpload
@@ -268,7 +268,7 @@ struct SettingsScreen: View {
         )
     }
 
-    private func binding(_ keyPath: WritableKeyPath<SwimProfile, String>) -> Binding<String> {
+    private func binding(_ keyPath: WritableKeyPath<VitalityProfile, String>) -> Binding<String> {
         Binding(
             get: { viewModel.profile[keyPath: keyPath] },
             set: { newValue in

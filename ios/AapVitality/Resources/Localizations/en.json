@@ -19,216 +19,12 @@
     "swimCoach": "Vitality Coach",
     "progress": "Progress",
     "upload": "Upload",
-    "miniGames": "Mini games",
     "history": "History",
     "benchmark": "Goals",
     "medals": "Medals",
     "settings": "Settings",
     "home": "Home",
     "goals": "Goals"
-  },
-  "coins": {
-    "label": "Swim coins",
-    "earnedTitle": "Coins earned",
-    "earnedBreakdown": "{session} from session · {medals} from medals",
-    "popupTitle": "Coins earned!",
-    "popupSubtitle": "Here's how your swim paid off",
-    "close": "Close",
-    "continue": "Continue",
-    "sessionSection": "Session rewards",
-    "bonusSection": "Medal & challenge bonuses",
-    "penaltySection": "Coach penalties",
-    "lineBase": "Session logged",
-    "lineDistance": "{distance} swum (+1 per 500 m)",
-    "lineDuration": "{duration} in the pool (+1 per 15 min)",
-    "lineKcal": "{kcal} kcal burned (+1 per 100 kcal)",
-    "lineLongDistance3k": "Long swim bonus (3 km+)",
-    "lineLongDistance5k": "Epic swim bonus (5 km+)",
-    "lineLongDuration": "Endurance bonus (1 hr+)",
-    "linePaceImprovement": "Faster than your avg ({pace} vs {avgPace})",
-    "lineFinsBonus": "Fins' push — big bonus for improving",
-    "lineFinsPenalty": "Fins expected more ({pace} vs {avgPace} avg)",
-    "lineCoachShare": "Flip's easy mode — half coins, but you never lose any",
-    "lineMonthlyShortfall": "Missed {tier} in {month} — your coach's standard",
-    "lineMedal": "{tier} medal: {title}",
-    "lineMonthly": "Monthly challenge upgrade ({from} → {to})",
-    "tipTitle": "Earn more next time",
-    "tipDistance": "+1 coin for every 500 m",
-    "tipDuration": "+1 coin for every 15 minutes",
-    "tipKcal": "+1 coin for every 100 active kcal",
-    "tipLongSwim": "+10 at 3 km, +15 at 5 km, +8 for 1 hr+",
-    "tipPace": "Beat your average pace for up to +20 bonus coins",
-    "alreadyClaimedTitle": "No coins this time",
-    "alreadyClaimedSubtitle": "You already earned coins for this workout. Try a new swim to earn more.",
-    "monthlyRewards": "Monthly medal coin rewards",
-    "monthlyNextUpgrade": "Reach {tier} for +{amount} bonus coins on upgrade",
-    "wheel": {
-      "title": "Wheel of Fortune",
-      "subtitle": "Spend coins for a spin — win swim coins, free spins, or nothing.",
-      "pickBet": "Choose your bet",
-      "spin": "Spin for {bet} coins",
-      "spinFree": "Free spin ({count} left)",
-      "spinning": "Spinning…",
-      "notEnough": "Not enough coins for this bet.",
-      "paidSpinsRemaining": "{remaining}/{limit} paid spins left today",
-      "dailyLimitReached": "No paid spins left today — free spins still work. Come back tomorrow!",
-      "freeSpinReady": "{count} free spin(s) ready",
-      "resultTitle": "You landed on",
-      "wonCoins": "+{amount} coins!",
-      "wonFreeSpin": "Free spin — spin again without paying!",
-      "wonFreeSpinMulti": "{count} free spins — spin again without paying!",
-      "wonNothing": "Lost {amount} coins — better luck next spin!",
-      "segmentCoinMult": "{mult}×",
-      "segmentFreeSpin": "Free",
-      "segmentFreeSpinMulti": "{count}×",
-      "segmentNothing": "Nothing"
-    },
-    "store": {
-      "title": "Swim Coin Store",
-      "subtitle": "Spend swim coins on themes, icon sets, background vibes, flair, and boosts.",
-      "buy": "Unlock",
-      "buyConsumable": "Buy",
-      "owned": "Owned",
-      "ownedCount": "You have {count} ready to use",
-      "bonusSpinOwned": "+{count} extra paid spin(s) per day",
-      "notEnough": "Need {amount} more",
-      "vibesIosNote": "On iPhone and iPad, vibe animations may not play when Reduce Motion is enabled in Settings → Accessibility → Motion. Colors and glow still appear, but movement may be static.",
-      "categories": {
-        "themes": "Themes",
-        "icons": "Icon sets",
-        "vibes": "Background vibes",
-        "flair": "Flair",
-        "boosts": "Boosts"
-      },
-      "items": {
-        "genZ": {
-          "name": "Gen-Z",
-          "desc": "Bold flat colors and sharp contrast."
-        },
-        "classic": {
-          "name": "Classic Playstation",
-          "desc": "Retro flat panels inspired by console UIs."
-        },
-        "olympicPool": {
-          "name": "Olympic Pool",
-          "desc": "Competition tiles, lane blue, and touchpad gold."
-        },
-        "midnightLane": {
-          "name": "Midnight Lane",
-          "desc": "Late-night laps under bioluminescent pool lights."
-        },
-        "retroWave": {
-          "name": "Retro Wave",
-          "desc": "Synthwave neon on a midnight pool deck."
-        },
-        "tropicalOpen": {
-          "name": "Tropical Open Water",
-          "desc": "Turquoise lagoon warmth with coral sunset accents."
-        },
-        "goldLuxe": {
-          "name": "Gold Luxe",
-          "desc": "Champagne canvas with trophy-gold accents — the podium tier."
-        },
-        "platinumElite": {
-          "name": "Platinum Elite",
-          "desc": "Cool silver panels with icy prestige — the ultimate lap."
-        },
-        "goldMedalIcon": {
-          "name": "Gold Medalist",
-          "desc": "Full icon set — home screen, navigation, and page headers."
-        },
-        "neonLaneIcon": {
-          "name": "Neon Lane",
-          "desc": "Synth lane lines across every icon in the app."
-        },
-        "trophySplashIcon": {
-          "name": "Trophy Splash",
-          "desc": "Victory splash icon set for the whole app."
-        },
-        "platinumStarIcon": {
-          "name": "Platinum Star",
-          "desc": "Silver star crest icon set for home screen, tabs, and headers."
-        },
-        "neonLagoon": {
-          "name": "Neon Lagoon",
-          "desc": "Electric cyan and magenta lights with a slowly shifting gradient."
-        },
-        "sunsetLap": {
-          "name": "Sunset Lap",
-          "desc": "Golden-hour warmth that drifts like a late-evening lap."
-        },
-        "bubbleTrail": {
-          "name": "Bubble Trail",
-          "desc": "Rising lane bubbles float over your swim screens."
-        },
-        "auroraLap": {
-          "name": "Aurora Lap",
-          "desc": "Northern-lights greens and violets sweep across the pool."
-        },
-        "deepCurrent": {
-          "name": "Deep Current",
-          "desc": "Dark ocean blues flow like an underwater lane."
-        },
-        "goldenCoins": {
-          "name": "Golden Coins",
-          "desc": "Your coin balance gleams like a trophy case."
-        },
-        "confettiCannon": {
-          "name": "Confetti Cannon",
-          "desc": "Epic confetti bursts when you earn medals."
-        },
-        "medalShimmer": {
-          "name": "Medal Shimmer+",
-          "desc": "Earned medals pulse with extra shine on the shelf."
-        },
-        "bonusSpin": {
-          "name": "Bonus Wheel Spin",
-          "desc": "Permanently add one extra paid wheel spin every day. Each purchase costs more than the last.",
-          "preview": "paid spins"
-        },
-        "challengeReroll": {
-          "name": "Challenge Reroll",
-          "desc": "Swap one monthly challenge for another type. Use it on the Progress page.",
-          "preview": "monthly challenge"
-        }
-      }
-    }
-  },
-  "miniGames": {
-    "title": "Mini games",
-    "subtitle": "Spend or earn swim coins with quick pool-side games.",
-    "coinFlip": {
-      "title": "Coin flip",
-      "desc": "Bet swim coins on heads or tails — double your bet when you win.",
-      "heads": "Fast lane",
-      "tails": "Long swim",
-      "play": "Flip coin",
-      "flipping": "Flipping…",
-      "won": "+{amount} coins!",
-      "lost": "No luck this time."
-    },
-    "pacePick": {
-      "title": "Pace pick",
-      "desc": "Which session had the faster pace? Free to play — build a streak for bigger rewards.",
-      "needSessions": "Log at least two swims with pace data to play.",
-      "streak": "Streak: {count}",
-      "next": "Next round",
-      "free": "Free to play"
-    },
-    "laneTimer": {
-      "title": "Lane timer",
-      "desc": "Tap when the lane turns green. Faster reactions earn more coins.",
-      "wait": "Wait for green…",
-      "go": "Tap now!",
-      "tap": "Tap to start",
-      "start": "Start ({cost} coins)",
-      "again": "Play again",
-      "listening": "Stay ready…",
-      "early": "Too early — wait for green.",
-      "result": "Reaction: {ms} ms",
-      "won": "+{amount} coins!",
-      "noReward": "Too slow this time."
-    }
   },
   "progress": {
     "title": "Vitality",
@@ -355,130 +151,6 @@
       "autumn": "Autumn"
     },
     "items": {
-      "first_splash": {
-        "title": "First splash",
-        "desc": "Log your first swim session."
-      },
-      "ten_sessions": {
-        "title": "Regular swimmer",
-        "desc": "Complete 10 swim sessions."
-      },
-      "twenty_five_sessions": {
-        "title": "Pool regular",
-        "desc": "Complete 25 swim sessions."
-      },
-      "ten_k_lifetime": {
-        "title": "10 km club",
-        "desc": "Swim 10 km total across all sessions."
-      },
-      "fifty_k_lifetime": {
-        "title": "50 km club",
-        "desc": "Swim 50 km total across all sessions."
-      },
-      "hundred_k_lifetime": {
-        "title": "Century swimmer",
-        "desc": "Swim 100 km total across all sessions."
-      },
-      "two_k_session": {
-        "title": "2 km session",
-        "desc": "Swim 2 km in a single session."
-      },
-      "two_five_k_session": {
-        "title": "2.5 km session",
-        "desc": "Swim 2.5 km in a single session."
-      },
-      "three_k_session": {
-        "title": "3 km session",
-        "desc": "Swim 3 km in a single session."
-      },
-      "sub_200_pace": {
-        "title": "Sub 2:00 pace",
-        "desc": "Swim faster than 2:00 per 100m in any session."
-      },
-      "four_sessions_week": {
-        "title": "Four-a-week",
-        "desc": "Log 4 sessions in a single calendar week."
-      },
-      "five_k_week": {
-        "title": "5 km week",
-        "desc": "Swim 5 km in a single calendar week."
-      },
-      "eight_sessions_month": {
-        "title": "Monthly regular",
-        "desc": "Log 8 sessions in one calendar month."
-      },
-      "ten_k_month": {
-        "title": "10 km month",
-        "desc": "Swim 10 km in a single calendar month."
-      },
-      "twenty_k_month": {
-        "title": "20 km month",
-        "desc": "Swim 20 km in a single calendar month."
-      },
-      "ten_k_cal_month": {
-        "title": "Calorie burner",
-        "desc": "Burn 10,000 active calories in one month."
-      },
-      "season_summer": {
-        "title": "Summer swimmer",
-        "desc": "Swim 15 km during a summer season (Jun–Aug)."
-      },
-      "season_winter": {
-        "title": "Winter warrior",
-        "desc": "Swim 10 km during a winter season (Dec–Feb)."
-      },
-      "season_spring": {
-        "title": "Spring splash",
-        "desc": "Swim 10 km during a spring season (Mar–May)."
-      },
-      "season_autumn": {
-        "title": "Autumn lanes",
-        "desc": "Swim 10 km during an autumn season (Sep–Nov)."
-      },
-      "fifty_sessions": {
-        "title": "Half century club",
-        "desc": "Complete 50 swim sessions."
-      },
-      "two_hundred_k": {
-        "title": "200 km legend",
-        "desc": "Swim 200 km total across all sessions."
-      },
-      "lap_legend": {
-        "title": "Lap legend",
-        "desc": "Log 1,000 laps across all sessions."
-      },
-      "calorie_collector": {
-        "title": "Calorie collector",
-        "desc": "Burn 25,000 active calories in total."
-      },
-      "sub_210_pace": {
-        "title": "Sub 2:10 pace",
-        "desc": "Swim faster than 2:10 per 100m in any session."
-      },
-      "marathon_session": {
-        "title": "Pool marathon",
-        "desc": "Swim for 90 minutes or more in one session."
-      },
-      "century_laps": {
-        "title": "Century laps",
-        "desc": "Complete 100 laps in a single session."
-      },
-      "furnace": {
-        "title": "Furnace",
-        "desc": "Burn 800+ active calories in one session."
-      },
-      "pulse_racer": {
-        "title": "Pulse racer",
-        "desc": "Average 155+ bpm for an entire session."
-      },
-      "goal_crusher": {
-        "title": "Goal crusher",
-        "desc": "Meet or beat your distance goal in a session."
-      },
-      "frog_master": {
-        "title": "Frog master",
-        "desc": "Swim 1 km breaststroke in a single session."
-      },
       "hat_trick": {
         "title": "Hat trick",
         "desc": "Earn points 3 days in a row."
@@ -491,29 +163,9 @@
         "title": "Fortnight flow",
         "desc": "Earn points 14 days in a row."
       },
-      "early_bird": {
-        "title": "Early bird",
-        "desc": "Start a swim before 7:00 AM."
-      },
-      "night_owl": {
-        "title": "Night owl",
-        "desc": "Start a swim at 8:00 PM or later."
-      },
       "comeback": {
         "title": "Comeback",
         "desc": "Return after 30+ days away."
-      },
-      "double_dip": {
-        "title": "Double dip",
-        "desc": "Log two swims on the same day."
-      },
-      "holiday_splash": {
-        "title": "Holiday splash",
-        "desc": "Swim between Dec 20 and Jan 5."
-      },
-      "january_jolt": {
-        "title": "January jolt",
-        "desc": "Kick off the year with a swim in January."
       },
       "first_points": {
         "title": "First points",
@@ -794,7 +446,7 @@
     "coachRequirement": "{name} expects at least {tier} this month.",
     "coachCheerFlip": "{name} is over the moon — every medal counts, and this one is yours!",
     "rerollCredits": "{count} reroll credit(s) ready to use",
-    "rerollBuyHint": "Buy more rerolls in the Swim Coin Store for 500 swim coins.",
+    "rerollBuyHint": "You have used your free reroll for this month.",
     "tooltip": {
       "tierEarned": "{tier} — {month}",
       "challengesCompleted": "{count}/3 challenges completed",
@@ -925,9 +577,6 @@
     "mascotPreviewFlip": "Hey {name}, I'm Flip! Every lap counts — I'll be cheering you on the whole way.",
     "mascotPreviewFlo": "Hi {name}, I'm Flo! We're going to make every swim feel amazing. Let's go!",
     "mascotPreviewFins": "{name}, I'm Fins. I expect your best every session — beat your average pace and I'll make it worth your while.",
-    "storeCosmeticsTitle": "Unlocked cosmetics",
-    "storeCosmeticsDesc": "Choose your icon set and background vibe.",
-    "activeAppIcon": "Icon set",
     "iconDefault": "Default",
     "activeAmbient": "Background vibe",
     "ambientDefault": "Default",
@@ -1033,7 +682,6 @@
     "secretUnlockAllMedals": "Unlock all medals",
     "secretPreviewMonthlyMedals": "Preview monthly medals",
     "secretUnlockAllThemes": "Unlock all themes",
-    "secretAdd500Coins": "Add 500 swim coins",
     "ambientTitle": "Background vibe",
     "ambientDesc": "Adds animated color and motion on top of your wallpaper (under the UI).",
     "notificationsTitle": "Notifications",
@@ -1100,7 +748,7 @@
     "uploadSyncBody": "Your last activity was {days} days ago. Sync Apple Health to stay on track."
   },
   "launch": {
-    "searchingNewSessions": "Looking for new sessions…"
+    "searchingNewSessions": "Syncing activity from Apple Health…"
   },
   "goals": {
     "title": "Goals",

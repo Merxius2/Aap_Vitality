@@ -51,7 +51,7 @@ final class SwimStorageServiceTests: XCTestCase {
     }
 
     func testRoundTripsRerollFieldsThroughSaveAndLoad() {
-        var payload = SwimData.empty
+        var payload = VitalityData.empty
         payload.monthlyChallengeRerolls = [
             "2025-07": MonthRerollEntry(overrides: ["2": "streak"], freeUses: 0)
         ]

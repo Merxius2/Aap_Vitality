@@ -2,7 +2,7 @@ import SwiftUI
 import Charts
 
 struct ProgressScreen: View {
-    @EnvironmentObject private var viewModel: SwimViewModel
+    @EnvironmentObject private var viewModel: VitalityViewModel
     @EnvironmentObject private var preferences: UserPreferencesService
     @Environment(\.openSettingsTab) private var openSettingsTab
 
