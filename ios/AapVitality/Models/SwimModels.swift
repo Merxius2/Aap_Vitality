@@ -176,7 +176,7 @@ struct VitalityProfile: Codable, Equatable {
     )
 
     enum CodingKeys: String, CodingKey {
-        case name, sex, age, mascotId, mascotSwitchMonthKey, aiApiKey, activeAmbient, activeWallpaper, activeAppIcon
+        case name, sex, age, mascotId, mascotSwitchMonthKey, aiApiKey, activeAmbient, activeWallpaper
     }
 
     init(

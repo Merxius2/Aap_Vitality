@@ -19,216 +19,12 @@
     "swimCoach": "Vitality Coach",
     "progress": "Voortgang",
     "upload": "Uploaden",
-    "miniGames": "Mini games",
     "history": "Geschiedenis",
     "benchmark": "Doelen",
     "medals": "Medailles",
     "settings": "Instellingen",
     "home": "Start",
     "goals": "Doelen"
-  },
-  "coins": {
-    "label": "Zwem munten",
-    "earnedTitle": "Munten verdiend",
-    "earnedBreakdown": "{session} van sessie · {medals} van medailles",
-    "popupTitle": "Munten verdiend!",
-    "popupSubtitle": "Zo heeft je zwem sessie zich uitbetaald",
-    "close": "Sluiten",
-    "continue": "Doorgaan",
-    "sessionSection": "Sessie beloningen",
-    "bonusSection": "Medaille & challenge bonussen",
-    "penaltySection": "Coach straffen",
-    "lineBase": "Sessie opgeslagen",
-    "lineDistance": "{distance} gezwommen (+1 per 500 m)",
-    "lineDuration": "{duration} in het bad (+1 per 15 min)",
-    "lineKcal": "{kcal} kcal verbrand (+1 per 100 kcal)",
-    "lineLongDistance3k": "Lange zwem bonus (3 km+)",
-    "lineLongDistance5k": "Epische zwem bonus (5 km+)",
-    "lineLongDuration": "Uithoudingsbonus (1 uur+)",
-    "linePaceImprovement": "Sneller dan je gem. ({pace} vs {avgPace})",
-    "lineFinsBonus": "Fins' aanmoediging — grote bonus voor verbetering",
-    "lineFinsPenalty": "Fins verwachtte meer ({pace} vs {avgPace} gem.)",
-    "lineCoachShare": "Flips makkelijke modus — halve munten, maar je verliest er nooit",
-    "lineMonthlyShortfall": "{tier} gemist in {month} — de standaard van je coach",
-    "lineMedal": "{tier} medaille: {title}",
-    "lineMonthly": "Maandelijkse challenge upgrade ({from} → {to})",
-    "tipTitle": "Verdien meer volgende keer",
-    "tipDistance": "+1 munt voor elke 500 m",
-    "tipDuration": "+1 munt voor elke 15 minuten",
-    "tipKcal": "+1 munt voor elke 100 actieve kcal",
-    "tipLongSwim": "+10 bij 3 km, +15 bij 5 km, +8 voor 1 uur+",
-    "tipPace": "Verbeter je gemiddelde tempo voor tot +20 bonus munten",
-    "alreadyClaimedTitle": "Geen munten deze keer",
-    "alreadyClaimedSubtitle": "Je hebt al munten verdiend voor deze workout. Zwem iets nieuws om meer te verdienen.",
-    "monthlyRewards": "Maandelijkse medaille munten",
-    "monthlyNextUpgrade": "Bereik {tier} voor +{amount} bonus munten bij upgrade",
-    "wheel": {
-      "title": "Rad van Fortuin",
-      "subtitle": "Geef munten uit voor een draai — win zwem munten, gratis draaien of niets.",
-      "pickBet": "Kies je inzet",
-      "spin": "Draai voor {bet} munten",
-      "spinFree": "Gratis draai ({count} over)",
-      "spinning": "Draait…",
-      "notEnough": "Niet genoeg munten voor deze inzet.",
-      "paidSpinsRemaining": "{remaining}/{limit} betaalde draaien over vandaag",
-      "dailyLimitReached": "Geen betaalde draaien meer vandaag — gratis draaien werken nog wel. Kom morgen terug!",
-      "freeSpinReady": "{count} gratis draai(en) klaar",
-      "resultTitle": "Je landde op",
-      "wonCoins": "+{amount} munten!",
-      "wonFreeSpin": "Gratis draai — draai opnieuw zonder te betalen!",
-      "wonFreeSpinMulti": "{count} gratis draaien — draai opnieuw zonder te betalen!",
-      "wonNothing": "{amount} munten verloren — volgende keer beter!",
-      "segmentCoinMult": "{mult}×",
-      "segmentFreeSpin": "Gratis",
-      "segmentFreeSpinMulti": "{count}×",
-      "segmentNothing": "Niets"
-    },
-    "store": {
-      "title": "Zwem Munten Winkel",
-      "subtitle": "Geef munten uit aan thema's, icon sets, achtergrond vibes, flair en boosts.",
-      "buy": "Ontgrendelen",
-      "buyConsumable": "Kopen",
-      "owned": "In bezit",
-      "ownedCount": "Je hebt er {count} klaar om te gebruiken",
-      "bonusSpinOwned": "+{count} extra betaalde draai(en) per dag",
-      "notEnough": "Nog {amount} nodig",
-      "vibesIosNote": "Op iPhone en iPad spelen vibe-animaties mogelijk niet af wanneer Verminder beweging aan staat in Instellingen → Toegankelijkheid → Beweging. Kleuren en gloed blijven zichtbaar, maar beweging kan statisch zijn.",
-      "categories": {
-        "themes": "Thema's",
-        "icons": "Icon sets",
-        "vibes": "Achtergrond vibes",
-        "flair": "Flair",
-        "boosts": "Boosts"
-      },
-      "items": {
-        "genZ": {
-          "name": "Gen-Z",
-          "desc": "Gedurfde vlakke kleuren en scherp contrast."
-        },
-        "classic": {
-          "name": "Classic Playstation",
-          "desc": "Retro vlakke panelen geïnspireerd op console UI's."
-        },
-        "olympicPool": {
-          "name": "Olympisch Bad",
-          "desc": "Wedstrijdtiles, baanblauw en touchpad-goud."
-        },
-        "midnightLane": {
-          "name": "Midnight Lane",
-          "desc": "Late laps onder bioluminescente poollichten."
-        },
-        "retroWave": {
-          "name": "Retro Wave",
-          "desc": "Synthwave neon op een middernacht pooldeck."
-        },
-        "tropicalOpen": {
-          "name": "Tropisch Open Water",
-          "desc": "Turquoise lagoon met koraal-zonsondergang."
-        },
-        "goldLuxe": {
-          "name": "Gold Luxe",
-          "desc": "Champagne canvas met trofee-goud — podiumniveau."
-        },
-        "platinumElite": {
-          "name": "Platinum Elite",
-          "desc": "Koel zilver met ijzige prestige — het ultieme niveau."
-        },
-        "goldMedalIcon": {
-          "name": "Gouden Medaille",
-          "desc": "Volledige icon set — startscherm, navigatie en paginakoppen."
-        },
-        "neonLaneIcon": {
-          "name": "Neon Baan",
-          "desc": "Synth baanlijnen op elk icoon in de app."
-        },
-        "trophySplashIcon": {
-          "name": "Trofee Splash",
-          "desc": "Overwinningssplash icon set voor de hele app."
-        },
-        "platinumStarIcon": {
-          "name": "Platinum Ster",
-          "desc": "Zilveren ster icon set voor startscherm, tabs en koppen."
-        },
-        "neonLagoon": {
-          "name": "Neon Lagoon",
-          "desc": "Elektrisch cyaan en magenta met een langzaam verschuivend verloop."
-        },
-        "sunsetLap": {
-          "name": "Sunset Lap",
-          "desc": "Gouden-uur warmte die drijft als een avondtraining."
-        },
-        "bubbleTrail": {
-          "name": "Bubble Trail",
-          "desc": "Stijgende lane-bubbels drijven over je zwemschermen."
-        },
-        "auroraLap": {
-          "name": "Aurora Lap",
-          "desc": "Noorderlicht-groen en violet vegen over het bad."
-        },
-        "deepCurrent": {
-          "name": "Deep Current",
-          "desc": "Donker oceaanblauw stroomt als een onderwaterbaan."
-        },
-        "goldenCoins": {
-          "name": "Gouden Munten",
-          "desc": "Je muntensaldo glanst als een trofeeënkast."
-        },
-        "confettiCannon": {
-          "name": "Confetti Kanon",
-          "desc": "Epische confetti bij nieuwe medailles."
-        },
-        "medalShimmer": {
-          "name": "Medaille Shimmer+",
-          "desc": "Verdiende medailles pulseren extra op het schap."
-        },
-        "bonusSpin": {
-          "name": "Bonus Wheel Spin",
-          "desc": "Voeg permanent één extra betaalde draai per dag toe. Koop opnieuw om te stapelen.",
-          "preview": "betaalde draaien"
-        },
-        "challengeReroll": {
-          "name": "Uitdaging Opnieuw",
-          "desc": "Wissel één maanduitdaging voor een ander type. Gebruik op de Voortgang-pagina.",
-          "preview": "maanduitdaging"
-        }
-      }
-    }
-  },
-  "miniGames": {
-    "title": "Mini games",
-    "subtitle": "Spendeer of verdien zwem munten met snelle poolside games.",
-    "coinFlip": {
-      "title": "Munt opgooien",
-      "desc": "Zet zwem munten in op kop of munt — verdubbel je inzet bij winst.",
-      "heads": "Snelle baan",
-      "tails": "Lange swim",
-      "play": "Gooi munt",
-      "flipping": "Opgooien…",
-      "won": "+{amount} munten!",
-      "lost": "Geen geluk deze keer."
-    },
-    "pacePick": {
-      "title": "Tempo kiezen",
-      "desc": "Welke sessie had het snellere tempo? Gratis — bouw een streak voor grotere beloningen.",
-      "needSessions": "Log minstens twee zwemmen met tempodata om te spelen.",
-      "streak": "Streak: {count}",
-      "next": "Volgende ronde",
-      "free": "Gratis spelen"
-    },
-    "laneTimer": {
-      "title": "Baantimer",
-      "desc": "Tik wanneer de baan groen wordt. Snellere reacties leveren meer munten op.",
-      "wait": "Wacht op groen…",
-      "go": "Tik nu!",
-      "tap": "Tik om te starten",
-      "start": "Start ({cost} munten)",
-      "again": "Opnieuw spelen",
-      "listening": "Blijf klaar…",
-      "early": "Te vroeg — wacht op groen.",
-      "result": "Reactie: {ms} ms",
-      "won": "+{amount} munten!",
-      "noReward": "Te traag deze keer."
-    }
   },
   "progress": {
     "title": "Vitality",
@@ -341,10 +137,7 @@
     },
     "categories": {
       "milestone": "Mijlpalen",
-      "distance": "Sessierecords",
-      "weekly": "Weekdoelen",
       "monthly": "Maandtotalen",
-      "seasonal": "Seizoensuitdagingen",
       "streak": "Reeksen",
       "special": "Speciaal",
       "steps": "Stappen",
@@ -358,130 +151,6 @@
       "autumn": "Herfst"
     },
     "items": {
-      "first_splash": {
-        "title": "Eerste duik",
-        "desc": "Log je eerste zwemsessie."
-      },
-      "ten_sessions": {
-        "title": "Regelmatige zwemmer",
-        "desc": "Voltooi 10 zwemsessies."
-      },
-      "twenty_five_sessions": {
-        "title": "Badmeester",
-        "desc": "Voltooi 25 zwemsessies."
-      },
-      "ten_k_lifetime": {
-        "title": "10 km club",
-        "desc": "Zwem in totaal 10 km over alle sessies."
-      },
-      "fifty_k_lifetime": {
-        "title": "50 km club",
-        "desc": "Zwem in totaal 50 km over alle sessies."
-      },
-      "hundred_k_lifetime": {
-        "title": "Eeuwzwemmer",
-        "desc": "Zwem in totaal 100 km over alle sessies."
-      },
-      "two_k_session": {
-        "title": "2 km sessie",
-        "desc": "Zwem 2 km in één sessie."
-      },
-      "two_five_k_session": {
-        "title": "2,5 km sessie",
-        "desc": "Zwem 2,5 km in één sessie."
-      },
-      "three_k_session": {
-        "title": "3 km sessie",
-        "desc": "Zwem 3 km in één sessie."
-      },
-      "sub_200_pace": {
-        "title": "Onder 2:00 tempo",
-        "desc": "Zwem sneller dan 2:00 per 100m in een sessie."
-      },
-      "four_sessions_week": {
-        "title": "Vier per week",
-        "desc": "Log 4 sessies in één kalenderweek."
-      },
-      "five_k_week": {
-        "title": "5 km week",
-        "desc": "Zwem 5 km in één kalenderweek."
-      },
-      "eight_sessions_month": {
-        "title": "Maandelijks regelmatig",
-        "desc": "Log 8 sessies in één kalendermaand."
-      },
-      "ten_k_month": {
-        "title": "10 km maand",
-        "desc": "Zwem 10 km in één kalendermaand."
-      },
-      "twenty_k_month": {
-        "title": "20 km maand",
-        "desc": "Zwem 20 km in één kalendermaand."
-      },
-      "ten_k_cal_month": {
-        "title": "Calorieënverbrander",
-        "desc": "Verbrand 10.000 actieve calorieën in één maand."
-      },
-      "season_summer": {
-        "title": "Zomerzwemmer",
-        "desc": "Zwem 15 km in een zomerseizoen (jun–aug)."
-      },
-      "season_winter": {
-        "title": "Winterkrijger",
-        "desc": "Zwem 10 km in een winterseizoen (dec–feb)."
-      },
-      "season_spring": {
-        "title": "Lentesplash",
-        "desc": "Zwem 10 km in een lentesizoen (mrt–mei)."
-      },
-      "season_autumn": {
-        "title": "Herfstbanen",
-        "desc": "Zwem 10 km in een herfstseizoen (sep–nov)."
-      },
-      "fifty_sessions": {
-        "title": "Half eeuw club",
-        "desc": "Voltooi 50 zwemsessies."
-      },
-      "two_hundred_k": {
-        "title": "200 km legende",
-        "desc": "Zwem in totaal 200 km over alle sessies."
-      },
-      "lap_legend": {
-        "title": "Banenlegende",
-        "desc": "Log 1.000 banen over alle sessies."
-      },
-      "calorie_collector": {
-        "title": "Calorieënverzamelaar",
-        "desc": "Verbrand in totaal 25.000 actieve calorieën."
-      },
-      "sub_210_pace": {
-        "title": "Onder 2:10 tempo",
-        "desc": "Zwem sneller dan 2:10 per 100m in een sessie."
-      },
-      "marathon_session": {
-        "title": "Badmarathon",
-        "desc": "Zwem 90 minuten of langer in één sessie."
-      },
-      "century_laps": {
-        "title": "Eeuw banen",
-        "desc": "Voltooi 100 banen in één sessie."
-      },
-      "furnace": {
-        "title": "Vuuroven",
-        "desc": "Verbrand 800+ actieve calorieën in één sessie."
-      },
-      "pulse_racer": {
-        "title": "Polsslag racer",
-        "desc": "Gemiddeld 155+ spm gedurende een hele sessie."
-      },
-      "goal_crusher": {
-        "title": "Doelvergruizer",
-        "desc": "Behaal of overtreff je afstandsdoel in een sessie."
-      },
-      "frog_master": {
-        "title": "Kikvorsmeester",
-        "desc": "Zwem 1 km schoolslag in één sessie."
-      },
       "hat_trick": {
         "title": "Hattrick",
         "desc": "Verdien punten 3 dagen achter elkaar."
@@ -494,29 +163,9 @@
         "title": "Twee weken flow",
         "desc": "Verdien punten 14 dagen achter elkaar."
       },
-      "early_bird": {
-        "title": "Vroege vogel",
-        "desc": "Start een zwemtraining vóór 7:00 uur."
-      },
-      "night_owl": {
-        "title": "Nachtuil",
-        "desc": "Start een zwemtraining om 20:00 uur of later."
-      },
       "comeback": {
         "title": "Comeback kid",
         "desc": "Keer terug na 30+ dagen pauze."
-      },
-      "double_dip": {
-        "title": "Dubbel dip",
-        "desc": "Log twee zwemmen op dezelfde dag."
-      },
-      "holiday_splash": {
-        "title": "Feestduik",
-        "desc": "Zwem tussen 20 dec en 5 jan."
-      },
-      "january_jolt": {
-        "title": "Januari start",
-        "desc": "Begin het jaar met een zwem in januari."
       },
       "first_points": {
         "title": "Eerste punten",
@@ -928,9 +577,6 @@
     "mascotPreviewFlip": "Hoi {name}, ik ben Flip! Elke baan telt — ik moedig je de hele weg aan.",
     "mascotPreviewFlo": "Hoi {name}, ik ben Flo! We maken van elke zwemtraining iets geweldigs. Kom op!",
     "mascotPreviewFins": "{name}, ik ben Fins. Ik verwacht elke sessie je beste inzet — versla je gemiddelde tempo en ik maak het de moeite waard.",
-    "storeCosmeticsTitle": "Ontgrendelde cosmetics",
-    "storeCosmeticsDesc": "Kies je icon set en achtergrond vibe.",
-    "activeAppIcon": "Icon set",
     "iconDefault": "Standaard",
     "activeAmbient": "Achtergrond vibe",
     "ambientDefault": "Standaard",
@@ -1036,7 +682,6 @@
     "secretUnlockAllMedals": "Alle medailles ontgrendelen",
     "secretPreviewMonthlyMedals": "Maandelijkse medailles preview",
     "secretUnlockAllThemes": "Alle thema's ontgrendelen",
-    "secretAdd500Coins": "500 zwem munten toevoegen",
     "ambientTitle": "Achtergrond vibe",
     "ambientDesc": "Voegt animatie en kleur toe bovenop je wallpaper (onder de UI).",
     "notificationsTitle": "Meldingen",
