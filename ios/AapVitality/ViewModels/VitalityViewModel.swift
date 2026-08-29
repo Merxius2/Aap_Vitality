@@ -21,6 +21,14 @@ final class VitalityViewModel: ObservableObject {
     private var progressCacheMonthKey: String?
     private var cachedProgressOverviewMessage: String?
     private var progressOverviewCacheKey: String?
+    private var derivedSnapshotCacheKey: String?
+    private var cachedMascotId: String?
+    private var cachedVitalityGoalSnapshot: VitalityGoalSnapshot?
+    private var cachedVitalityLevelSnapshot: VitalityLevelSnapshot?
+    private var cachedVitalityStreakSnapshot: VitalityStreakSnapshot?
+    private var cachedAchievementPathProgress: [AchievementPathProgress]?
+    private var cachedWorkoutTypeBadges: [WorkoutTypeBadge]?
+    private var lastNotificationFingerprint: String?
 
     var sessions: [SwimSession] { data.sessions }
     var dailyRecords: [DailyVitalityRecord] { data.dailyRecords }
@@ -29,29 +37,18 @@ final class VitalityViewModel: ObservableObject {
     var monthlyChallengeRerolls: [String: MonthRerollEntry] { data.monthlyChallengeRerolls }
 
     var vitalityGoalSnapshot: VitalityGoalSnapshot {
-        VitalityGoals.goalSnapshot(
-            records: dailyRecords,
-            profile: profile,
-            goalState: goalState,
-            intensity: MascotConstants.gameplay(mascotId).challengeIntensity
-        )
+        ensureDerivedSnapshotCache()
+        return cachedVitalityGoalSnapshot!
     }
 
     var todayVitalityRecord: DailyVitalityRecord? {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        let today = formatter.string(from: Date())
+        let today = VitalityGoals.todayDateKey()
         return dailyRecords.first { $0.date == today }
     }
 
     var mascotId: String {
-        MascotUnlock.resolveMascotId(
-            profile: profile,
-            dailyRecords: dailyRecords,
-            goalState: goalState,
-            monthlyChallengeRerolls: monthlyChallengeRerolls
-        )
+        ensureDerivedSnapshotCache()
+        return cachedMascotId!
     }
 
     var evaluatedMedals: [EvaluatedMedal] {
@@ -71,19 +68,52 @@ final class VitalityViewModel: ObservableObject {
     }
 
     var vitalityLevelSnapshot: VitalityLevelSnapshot {
-        VitalityLevels.snapshot(records: dailyRecords)
+        ensureDerivedSnapshotCache()
+        return cachedVitalityLevelSnapshot!
     }
 
     var vitalityStreakSnapshot: VitalityStreakSnapshot {
-        VitalityStreak.snapshot(goalState: goalState, records: dailyRecords)
+        ensureDerivedSnapshotCache()
+        return cachedVitalityStreakSnapshot!
     }
 
     var achievementPathProgress: [AchievementPathProgress] {
-        VitalityPaths.progress(for: evaluatedMedals)
+        ensureDerivedSnapshotCache()
+        return cachedAchievementPathProgress!
     }
 
     var workoutTypeBadges: [WorkoutTypeBadge] {
-        VitalityWorkoutBadges.earnedBadges(from: dailyRecords)
+        ensureDerivedSnapshotCache()
+        return cachedWorkoutTypeBadges!
+    }
+
+    var currentMonthlyChallenges: MonthlyChallengeState {
+        ensureProgressSessionCache()
+        return cachedCurrentMonthlyChallenges ?? MonthlyChallengeState(
+            monthKey: SwimMonthlyChallenges.getMonthKey(),
+            challenges: [],
+            completedCount: 0,
+            tier: nil,
+            earnedAt: nil
+        )
+    }
+
+    func progressOverviewMessage(t: TranslationService) -> String {
+        ensureProgressSessionCache()
+        let cacheKey = progressLocalizedCacheKey(language: currentLanguageCode())
+        if let cached = cachedProgressOverviewMessage, progressOverviewCacheKey == cacheKey {
+            return cached
+        }
+        let message = VitalityAnalysis.buildProgressOverviewMessage(
+            profile: profile,
+            records: dailyRecords,
+            goalSnapshot: vitalityGoalSnapshot,
+            t: t,
+            mascotId: mascotId
+        )
+        cachedProgressOverviewMessage = message
+        progressOverviewCacheKey = cacheKey
+        return message
     }
 
     var monthlyChallengeHistory: [MonthlyChallengeState] {
@@ -333,7 +363,7 @@ final class VitalityViewModel: ObservableObject {
             healthKitSyncMessage = error.localizedDescription
         }
 
-        await refreshNotifications(
+        await refreshNotificationsIfNeeded(
             dailyGoalNotificationsEnabled: UserDefaults.standard.string(
                 forKey: UserPreferencesService.dailyGoalNotificationsKey
             ) != "false"
@@ -370,7 +400,14 @@ final class VitalityViewModel: ObservableObject {
         _ = await performLaunchVitalitySync()
     }
 
-    func refreshNotifications(dailyGoalNotificationsEnabled: Bool) async {
+    func refreshNotificationsIfNeeded(
+        dailyGoalNotificationsEnabled: Bool,
+        force: Bool = false
+    ) async {
+        let fingerprint = notificationFingerprint(dailyGoalNotificationsEnabled: dailyGoalNotificationsEnabled)
+        guard force || fingerprint != lastNotificationFingerprint else { return }
+        lastNotificationFingerprint = fingerprint
+
         let intensity = MascotConstants.gameplay(mascotId).challengeIntensity
         await SwimNotifications.refreshAllReminders(
             sessions: sessions,
@@ -385,7 +422,7 @@ final class VitalityViewModel: ObservableObject {
     }
 
     func refreshLaunchNotifications(dailyGoalNotificationsEnabled: Bool = true) async {
-        await refreshNotifications(dailyGoalNotificationsEnabled: dailyGoalNotificationsEnabled)
+        await refreshNotificationsIfNeeded(dailyGoalNotificationsEnabled: dailyGoalNotificationsEnabled)
     }
 
     private func currentLanguageCode() -> String {
@@ -540,13 +577,91 @@ final class VitalityViewModel: ObservableObject {
         return healthKitLookbackDate(months: 3)
     }
 
-    private func ensureProgressSessionCache() {
-        let monthKey = SwimMonthlyChallenges.getMonthKey()
-        if cachedCurrentMonthlyChallenges != nil, progressCacheMonthKey == monthKey {
+    private func ensureDerivedSnapshotCache() {
+        let cacheKey = makeDerivedSnapshotCacheKey()
+        if derivedSnapshotCacheKey == cacheKey,
+           cachedMascotId != nil,
+           cachedVitalityGoalSnapshot != nil,
+           cachedVitalityLevelSnapshot != nil,
+           cachedVitalityStreakSnapshot != nil,
+           cachedAchievementPathProgress != nil,
+           cachedWorkoutTypeBadges != nil {
             return
         }
 
+        let resolvedMascotId = MascotUnlock.resolveMascotId(
+            profile: profile,
+            dailyRecords: dailyRecords,
+            goalState: goalState,
+            monthlyChallengeRerolls: monthlyChallengeRerolls
+        )
+        let intensity = MascotConstants.gameplay(resolvedMascotId).challengeIntensity
+
+        cachedMascotId = resolvedMascotId
+        cachedVitalityGoalSnapshot = VitalityGoals.goalSnapshot(
+            records: dailyRecords,
+            profile: profile,
+            goalState: goalState,
+            intensity: intensity
+        )
+        cachedVitalityLevelSnapshot = VitalityLevels.snapshot(records: dailyRecords)
+        cachedVitalityStreakSnapshot = VitalityStreak.snapshot(goalState: goalState, records: dailyRecords)
+        cachedAchievementPathProgress = VitalityPaths.progress(for: evaluatedMedals)
+        cachedWorkoutTypeBadges = VitalityWorkoutBadges.earnedBadges(from: dailyRecords)
+        derivedSnapshotCacheKey = cacheKey
+    }
+
+    private func makeDerivedSnapshotCacheKey() -> String {
+        let todayKey = VitalityGoals.todayDateKey()
+        let todayPoints = dailyRecords.first { $0.date == todayKey }?.totalPoints ?? 0
+        let lastDate = dailyRecords.last?.date ?? ""
+        return [
+            String(dailyRecords.count),
+            lastDate,
+            String(todayPoints),
+            profile.mascotId ?? "",
+            profile.name,
+            String(goalState.streakShieldsAvailable),
+            String(goalState.shieldUsedDates.count),
+            String(goalState.monthlyCompletions.count),
+            String(cheats.allMedalsUnlocked),
+            SwimMonthlyChallenges.getMonthKey(),
+        ].joined(separator: "|")
+    }
+
+    private func notificationFingerprint(dailyGoalNotificationsEnabled: Bool) -> String {
+        let todayKey = VitalityGoals.todayDateKey()
         let intensity = MascotConstants.gameplay(mascotId).challengeIntensity
+        let status = SwimNotifications.dailyGoalStatus(
+            records: dailyRecords,
+            profile: profile,
+            goalState: goalState,
+            intensity: intensity,
+            dateKey: todayKey
+        )
+        return [
+            todayKey,
+            String(status.earned),
+            String(status.target),
+            dailyGoalNotificationsEnabled ? "1" : "0",
+            currentLanguageCode(),
+            SwimMonthlyChallenges.getMonthKey(),
+            String(dailyRecords.count),
+            profile.mascotId ?? "",
+        ].joined(separator: "|")
+    }
+
+    private func ensureProgressSessionCache() {
+        let monthKey = SwimMonthlyChallenges.getMonthKey()
+        let snapshotKey = makeDerivedSnapshotCacheKey()
+        if cachedCurrentMonthlyChallenges != nil,
+           progressCacheMonthKey == monthKey,
+           derivedSnapshotCacheKey == snapshotKey {
+            return
+        }
+
+        ensureDerivedSnapshotCache()
+        let intensity = MascotConstants.gameplay(cachedMascotId ?? "flip").challengeIntensity
         cachedCurrentMonthlyChallenges = VitalityGoals.evaluatePointChallenges(
             records: dailyRecords,
             profile: profile,
@@ -576,6 +691,14 @@ final class VitalityViewModel: ObservableObject {
         medalCacheMonthKey = nil
         cachedCurrentMonthlyChallenges = nil
         progressCacheMonthKey = nil
+        derivedSnapshotCacheKey = nil
+        cachedMascotId = nil
+        cachedVitalityGoalSnapshot = nil
+        cachedVitalityLevelSnapshot = nil
+        cachedVitalityStreakSnapshot = nil
+        cachedAchievementPathProgress = nil
+        cachedWorkoutTypeBadges = nil
+        lastNotificationFingerprint = nil
         invalidateProgressLocalizedCaches()
     }
 

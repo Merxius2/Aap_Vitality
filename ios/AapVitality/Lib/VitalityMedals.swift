@@ -69,6 +69,14 @@ enum VitalityMedals {
         goalState: VitalityGoalState,
         profile: VitalityProfile
     ) -> MedalContext {
+        buildMedalEvaluationData(records: records, goalState: goalState, profile: profile).context
+    }
+
+    private static func buildMedalEvaluationData(
+        records: [DailyVitalityRecord],
+        goalState: VitalityGoalState,
+        profile: VitalityProfile
+    ) -> (context: MedalContext, earnedAtMap: [String: String]) {
         let sorted = records.sorted { $0.date < $1.date }
         let monthKey = VitalityGoals.getMonthKey()
         let yearKey = VitalityGoals.getYearKey()
@@ -88,9 +96,17 @@ enum VitalityMedals {
         var doubleWorkout = false
         var daysWith7h = 0
         var daysWith8h = 0
+        var earnedAtMap: [String: String] = [:]
+        var runningPoints = 0
+        var activeDays = 0
+        var workouts = 0
 
         var byMonth: [String: Int] = [:]
         for record in sorted {
+            runningPoints += record.totalPoints
+            if record.totalPoints > 0 { activeDays += 1 }
+            workouts += record.workouts.count
+
             maxSteps = max(maxSteps, record.steps)
             if record.steps >= 5000 { daysWith5k += 1 }
             if record.steps >= 10000 { daysWith10k += 1 }
@@ -105,6 +121,22 @@ enum VitalityMedals {
                 maxWorkoutMinutes = max(maxWorkoutMinutes, workout.durationSec / 60)
                 maxZone5 = max(maxZone5, workout.zoneMinutes?.zone5 ?? 0)
             }
+
+            if earnedAtMap["first_points"] == nil, runningPoints >= 1 { earnedAtMap["first_points"] = record.date }
+            if earnedAtMap["five_k_steps"] == nil, record.steps >= 5000 { earnedAtMap["five_k_steps"] = record.date }
+            if earnedAtMap["ten_k_steps"] == nil, record.steps >= 10000 { earnedAtMap["ten_k_steps"] = record.date }
+            if earnedAtMap["twenty_k_steps"] == nil, record.steps >= 20000 { earnedAtMap["twenty_k_steps"] = record.date }
+            if earnedAtMap["ten_active_days"] == nil, activeDays >= 10 { earnedAtMap["ten_active_days"] = record.date }
+            if earnedAtMap["fifty_active_days"] == nil, activeDays >= 50 { earnedAtMap["fifty_active_days"] = record.date }
+            if earnedAtMap["first_workout"] == nil, !record.workouts.isEmpty { earnedAtMap["first_workout"] = record.date }
+            if earnedAtMap["ten_workouts"] == nil, workouts >= 10 { earnedAtMap["ten_workouts"] = record.date }
+            if earnedAtMap["thirty_workouts"] == nil, workouts >= 30 { earnedAtMap["thirty_workouts"] = record.date }
+            if earnedAtMap["walk_and_work"] == nil, record.stepPoints > 0 && record.workoutPoints > 0 {
+                earnedAtMap["walk_and_work"] = record.date
+            }
+            if earnedAtMap["double_day"] == nil, record.workouts.count >= 2 { earnedAtMap["double_day"] = record.date }
+            if earnedAtMap["sleep_7h"] == nil, record.sleepMinutes >= 420 { earnedAtMap["sleep_7h"] = record.date }
+            if earnedAtMap["sleep_8h"] == nil, record.sleepMinutes >= 480 { earnedAtMap["sleep_8h"] = record.date }
         }
 
         for (month, points) in byMonth {
@@ -115,8 +147,9 @@ enum VitalityMedals {
 
         for (month, completion) in goalState.monthlyCompletions {
             monthlyHits.insert(month)
-            if completion.daysToComplete <= VitalityGoals.earlyCompletionDays {
-                // counted separately
+            if earnedAtMap["monthly_goal_hit"] == nil { earnedAtMap["monthly_goal_hit"] = completion.completedAt }
+            if completion.daysToComplete <= VitalityGoals.earlyCompletionDays, earnedAtMap["early_finisher"] == nil {
+                earnedAtMap["early_finisher"] = completion.completedAt
             }
         }
 
@@ -130,7 +163,7 @@ enum VitalityMedals {
 
         let sleepStreakDates = sorted.filter { $0.sleepMinutes >= 420 }.map(\.date)
 
-        return MedalContext(
+        let context = MedalContext(
             records: sorted,
             totalPoints: sorted.reduce(0) { $0 + $1.totalPoints },
             activeDays: sorted.filter { $0.totalPoints > 0 }.count,
@@ -164,6 +197,7 @@ enum VitalityMedals {
             daysWith8hSleep: daysWith8h,
             maxConsecutiveSleepDays: VitalityStreak.maxConsecutiveDays(from: sleepStreakDates)
         )
+        return (context, earnedAtMap)
     }
 
     static func evaluateAllMedals(
@@ -172,8 +206,13 @@ enum VitalityMedals {
         goalState: VitalityGoalState,
         allMedalsUnlocked: Bool = false
     ) -> [EvaluatedMedal] {
-        let ctx = buildMedalContext(records: records, goalState: goalState, profile: profile)
-        let earnedAtMap = computeEarnedAtMap(records: records, goalState: goalState, profile: profile)
+        let evaluationData = buildMedalEvaluationData(
+            records: records,
+            goalState: goalState,
+            profile: profile
+        )
+        let ctx = evaluationData.context
+        let earnedAtMap = evaluationData.earnedAtMap
 
         return medals.map { medal in
             let evaluation = evaluateMedal(medal, ctx: ctx)
@@ -293,46 +332,6 @@ enum VitalityMedals {
         default:
             return nil
         }
-    }
-
-    private static func computeEarnedAtMap(
-        records: [DailyVitalityRecord],
-        goalState: VitalityGoalState,
-        profile: VitalityProfile
-    ) -> [String: String] {
-        var map: [String: String] = [:]
-        var runningPoints = 0
-        var activeDays = 0
-        var workouts = 0
-
-        for record in records.sorted(by: { $0.date < $1.date }) {
-            runningPoints += record.totalPoints
-            if record.totalPoints > 0 { activeDays += 1 }
-            workouts += record.workouts.count
-
-            if map["first_points"] == nil, runningPoints >= 1 { map["first_points"] = record.date }
-            if map["five_k_steps"] == nil, record.steps >= 5000 { map["five_k_steps"] = record.date }
-            if map["ten_k_steps"] == nil, record.steps >= 10000 { map["ten_k_steps"] = record.date }
-            if map["twenty_k_steps"] == nil, record.steps >= 20000 { map["twenty_k_steps"] = record.date }
-            if map["ten_active_days"] == nil, activeDays >= 10 { map["ten_active_days"] = record.date }
-            if map["fifty_active_days"] == nil, activeDays >= 50 { map["fifty_active_days"] = record.date }
-            if map["first_workout"] == nil, !record.workouts.isEmpty { map["first_workout"] = record.date }
-            if map["ten_workouts"] == nil, workouts >= 10 { map["ten_workouts"] = record.date }
-            if map["thirty_workouts"] == nil, workouts >= 30 { map["thirty_workouts"] = record.date }
-            if map["walk_and_work"] == nil, record.stepPoints > 0 && record.workoutPoints > 0 { map["walk_and_work"] = record.date }
-            if map["double_day"] == nil, record.workouts.count >= 2 { map["double_day"] = record.date }
-            if map["sleep_7h"] == nil, record.sleepMinutes >= 420 { map["sleep_7h"] = record.date }
-            if map["sleep_8h"] == nil, record.sleepMinutes >= 480 { map["sleep_8h"] = record.date }
-        }
-
-        for (month, completion) in goalState.monthlyCompletions {
-            if map["monthly_goal_hit"] == nil { map["monthly_goal_hit"] = completion.completedAt }
-            if completion.daysToComplete <= VitalityGoals.earlyCompletionDays, map["early_finisher"] == nil {
-                map["early_finisher"] = completion.completedAt
-            }
-        }
-
-        return map
     }
 
     private static func detectComeback(_ records: [DailyVitalityRecord]) -> Bool {
