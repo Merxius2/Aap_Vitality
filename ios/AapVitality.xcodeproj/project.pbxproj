@@ -24,6 +24,8 @@
 		B10000000000000000000021 /* MascotConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000022 /* MascotConstants.swift */; };
 		B10000000000000000000022 /* MascotUnlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000023 /* MascotUnlock.swift */; };
 		B10000000000000000000093 /* MascotMemory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000093 /* MascotMemory.swift */; };
+		B10000000000000000000094 /* BodyProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000094 /* BodyProgress.swift */; };
+		B10000000000000000000095 /* BodyProgressViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000095 /* BodyProgressViews.swift */; };
 		B10000000000000000000023 /* SwimRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000024 /* SwimRecords.swift */; };
 		B10000000000000000000024 /* SwimMonthlyChallenges.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000025 /* SwimMonthlyChallenges.swift */; };
 		B10000000000000000000025 /* SwimMedals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000026 /* SwimMedals.swift */; };
@@ -95,6 +97,7 @@
 		B20000000000000000000088 /* VitalityFeaturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000088 /* VitalityFeaturesTests.swift */; };
 		B20000000000000000000092 /* VitalityHRZonesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000092 /* VitalityHRZonesTests.swift */; };
 		B20000000000000000000093 /* MascotMemoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000093 /* MascotMemoryTests.swift */; };
+		B20000000000000000000096 /* BodyProgressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000096 /* BodyProgressTests.swift */; };
 		C5B5E60A300CCB2B0092F38E /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F20000000000000000000019 /* XCTest.framework */; };
 /* End PBXBuildFile section */
 
@@ -127,6 +130,8 @@
 		F10000000000000000000022 /* MascotConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MascotConstants.swift; sourceTree = "<group>"; };
 		F10000000000000000000023 /* MascotUnlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MascotUnlock.swift; sourceTree = "<group>"; };
 		F10000000000000000000093 /* MascotMemory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MascotMemory.swift; sourceTree = "<group>"; };
+		F10000000000000000000094 /* BodyProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyProgress.swift; sourceTree = "<group>"; };
+		F10000000000000000000095 /* BodyProgressViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyProgressViews.swift; sourceTree = "<group>"; };
 		F10000000000000000000024 /* SwimRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimRecords.swift; sourceTree = "<group>"; };
 		F10000000000000000000025 /* SwimMonthlyChallenges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimMonthlyChallenges.swift; sourceTree = "<group>"; };
 		F10000000000000000000026 /* SwimMedals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimMedals.swift; sourceTree = "<group>"; };
@@ -200,6 +205,7 @@
 		F20000000000000000000088 /* VitalityFeaturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityFeaturesTests.swift; sourceTree = "<group>"; };
 		F20000000000000000000092 /* VitalityHRZonesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalityHRZonesTests.swift; sourceTree = "<group>"; };
 		F20000000000000000000093 /* MascotMemoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MascotMemoryTests.swift; sourceTree = "<group>"; };
+		F20000000000000000000096 /* BodyProgressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyProgressTests.swift; sourceTree = "<group>"; };
 		P10000000000000000000001 /* AapVitality.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AapVitality.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		P10000000000000000000002 /* AapVitalityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AapVitalityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -317,6 +323,7 @@
 				F10000000000000000000085 /* VitalityGoalsScreen.swift */,
 				F10000000000000000000090 /* VitalityScoringGuideView.swift */,
 				F10000000000000000000091 /* StepMilestoneProgressBar.swift */,
+				F10000000000000000000095 /* BodyProgressViews.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -332,6 +339,7 @@
 				F10000000000000000000022 /* MascotConstants.swift */,
 				F10000000000000000000023 /* MascotUnlock.swift */,
 				F10000000000000000000093 /* MascotMemory.swift */,
+				F10000000000000000000094 /* BodyProgress.swift */,
 				F10000000000000000000024 /* SwimRecords.swift */,
 				F10000000000000000000025 /* SwimMonthlyChallenges.swift */,
 				F10000000000000000000026 /* SwimMedals.swift */,
@@ -405,6 +413,7 @@
 				F20000000000000000000088 /* VitalityFeaturesTests.swift */,
 				F20000000000000000000092 /* VitalityHRZonesTests.swift */,
 				F20000000000000000000093 /* MascotMemoryTests.swift */,
+				F20000000000000000000096 /* BodyProgressTests.swift */,
 				F20000000000000000000019 /* XCTest.framework */,
 			);
 			path = AapVitalityTests;
@@ -525,6 +534,8 @@
 				B10000000000000000000021 /* MascotConstants.swift in Sources */,
 				B10000000000000000000022 /* MascotUnlock.swift in Sources */,
 				B10000000000000000000093 /* MascotMemory.swift in Sources */,
+				B10000000000000000000094 /* BodyProgress.swift in Sources */,
+				B10000000000000000000095 /* BodyProgressViews.swift in Sources */,
 				B10000000000000000000023 /* SwimRecords.swift in Sources */,
 				B10000000000000000000024 /* SwimMonthlyChallenges.swift in Sources */,
 				B10000000000000000000025 /* SwimMedals.swift in Sources */,
@@ -595,6 +606,7 @@
 				B20000000000000000000088 /* VitalityFeaturesTests.swift in Sources */,
 				B20000000000000000000092 /* VitalityHRZonesTests.swift in Sources */,
 				B20000000000000000000093 /* MascotMemoryTests.swift in Sources */,
+				B20000000000000000000096 /* BodyProgressTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

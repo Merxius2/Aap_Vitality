@@ -75,6 +75,15 @@ struct SettingsScreen: View {
                 Text(preferences.t("settings.age") + ": \(viewModel.profile.age)")
             }
             .themedListRowBackground()
+            Toggle(isOn: bodyProgressBinding) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(preferences.t("settings.bodyProgressTitle"))
+                    Text(preferences.t("settings.bodyProgressDesc"))
+                        .themeFont(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .themedListRowBackground()
         }
     }
 
@@ -278,6 +287,15 @@ struct SettingsScreen: View {
             get: { viewModel.profile.age },
             set: { newValue in
                 viewModel.updateProfile { $0.age = newValue }
+            }
+        )
+    }
+
+    private var bodyProgressBinding: Binding<Bool> {
+        Binding(
+            get: { viewModel.profile.bodyProgressEnabled },
+            set: { newValue in
+                viewModel.updateProfile { $0.bodyProgressEnabled = newValue }
             }
         )
     }

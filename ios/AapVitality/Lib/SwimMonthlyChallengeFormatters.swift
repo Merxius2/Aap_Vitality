@@ -16,6 +16,10 @@ enum SwimMonthlyChallengeFormatters {
             return "\(value) \(t.t("common.kcal"))"
         case "monthly_points_bronze", "monthly_points_silver", "monthly_points_gold":
             return "\(value) \(t.t("vitality.points"))"
+        case "body_weigh_ins_bronze", "body_weigh_ins_silver":
+            return String(value)
+        case "body_trend_gold":
+            return value == 1 ? t.t("progress.body.trendComplete") : t.t("progress.body.trendIncomplete")
         default:
             return String(value)
         }
@@ -39,6 +43,12 @@ enum SwimMonthlyChallengeFormatters {
             return t.t("monthlyChallenges.targets.monthlyPointsSilver", params: ["points": String(target)])
         case "monthly_points_gold":
             return t.t("monthlyChallenges.targets.monthlyPointsGold", params: ["points": String(target)])
+        case "body_weigh_ins_bronze":
+            return t.t("monthlyChallenges.targets.bodyWeighInsBronze", params: ["count": String(target)])
+        case "body_weigh_ins_silver":
+            return t.t("monthlyChallenges.targets.bodyWeighInsSilver", params: ["count": String(target)])
+        case "body_trend_gold":
+            return t.t("monthlyChallenges.targets.bodyTrendGold")
         default:
             return String(target)
         }

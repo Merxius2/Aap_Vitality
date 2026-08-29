@@ -97,6 +97,36 @@
       "weekStep5k": "{count} weeks running with a 5k step day.",
       "dayStep10k": "{count} days in a row at 10k+ steps!",
       "weeklyGoal": "{count} weeks in a row hitting your weekly goal!"
+    },
+    "body": {
+      "title": "Body progress",
+      "subtitle": "Weight, BMI, body fat, and muscle % from Apple Health — separate from activity points.",
+      "empty": "No body measurements synced yet.",
+      "emptyHint": "Log weight in Apple Health (or use a smart scale), then sync again.",
+      "weight": "Weight",
+      "bmi": "BMI",
+      "bodyFat": "Body fat",
+      "leanMass": "Fat-free mass",
+      "muscle": "Muscle",
+      "muscleShare": "{percent}% of body weight is lean mass",
+      "weightValue": "{value} kg",
+      "trendTitle": "12-week weight trend",
+      "weightAxis": "kg",
+      "trendDown": "Down {change} over 8 weeks",
+      "trendUp": "Up {change} over 8 weeks",
+      "muscleTrendUp": "Muscle +{change}% over 8 weeks",
+      "leanMassTrendUp": "Fat-free mass +{change} over 8 weeks",
+      "disclaimer": "Fat-free mass comes from Apple Health (lean body mass), like your scale's reading. Muscle % is lean mass ÷ weight. Not medical advice.",
+      "challengesTitle": "Body progress challenges",
+      "challengesSubtitle": "Consistency and positive trends — not daily weigh-ins for points.",
+      "trendComplete": "Trend met",
+      "trendIncomplete": "In progress",
+      "memoryWeightTrend": "Down {change} over 8 weeks while staying active — great combo!",
+      "memoryBodyFatTrend": "Body fat down {change}% over 8 weeks — solid progress.",
+      "memoryMuscleTrend": "Muscle mass up {change}% over 8 weeks — strength building!",
+      "memoryLeanMassTrend": "Fat-free mass up {change} over 8 weeks — great progress!",
+      "memoryWeighIns": "{count} weigh-ins logged this month — consistency wins.",
+      "memoryWeighInsFlip": "{count} weigh-ins this month — love that you're checking in!"
     }
   },
   "records": {
@@ -153,7 +183,8 @@
       "goals": "Goals",
       "streak": "Streaks",
       "monthly": "Monthly totals",
-      "special": "Special"
+      "special": "Special",
+      "body": "Body progress"
     },
     "seasons": {
       "summer": "Summer",
@@ -281,6 +312,22 @@
       "sleep_streak_3": {
         "title": "Sleep streak",
         "desc": "Log 7+ hours of sleep 3 nights in a row."
+      },
+      "body_first_log": {
+        "title": "First weigh-in",
+        "desc": "Sync your first body measurement from Apple Health."
+      },
+      "body_log_streak_4": {
+        "title": "Consistent tracker",
+        "desc": "Log 4 or more weigh-ins in a single month."
+      },
+      "body_weight_trend_8w": {
+        "title": "Trend setter",
+        "desc": "Lose 0.5 kg, drop 0.5% body fat, or gain 0.5% muscle over 8 weeks."
+      },
+      "body_active_balance": {
+        "title": "Active balance",
+        "desc": "Hit 2 weekly activity goals while weight holds steady or trends down."
       }
     }
   },
@@ -435,7 +482,10 @@
       "active_weeks": "Active weeks",
       "monthly_points_bronze": "Bronze pace (50%)",
       "monthly_points_silver": "Silver pace (75%)",
-      "monthly_points_gold": "Gold pace (100%)"
+      "monthly_points_gold": "Gold pace (100%)",
+      "body_weigh_ins_bronze": "Bronze consistency (2 weigh-ins)",
+      "body_weigh_ins_silver": "Silver consistency (4 weigh-ins)",
+      "body_trend_gold": "Gold trend (8 weeks)"
     },
     "targets": {
       "sessions": "Swim {count} sessions this month",
@@ -445,7 +495,10 @@
       "activeWeeks": "Swim in {weeks} different weeks",
       "monthlyPointsBronze": "Reach {points} points (50% of monthly goal)",
       "monthlyPointsSilver": "Reach {points} points (75% of monthly goal)",
-      "monthlyPointsGold": "Reach {points} points (100% of monthly goal)"
+      "monthlyPointsGold": "Reach {points} points (100% of monthly goal)",
+      "bodyWeighInsBronze": "Log {count} weigh-ins this month",
+      "bodyWeighInsSilver": "Log {count} weigh-ins this month",
+      "bodyTrendGold": "Lose 0.5 kg, drop 0.5% body fat, or gain 0.5% muscle over 8 weeks"
     },
     "celebrationTitle": "Monthly medal earned!",
     "celebrationUpgradeTitle": "Monthly medal upgraded!",
@@ -596,6 +649,8 @@
     "sexMale": "Male",
     "sexFemale": "Female",
     "age": "Age",
+    "bodyProgressTitle": "Body progress track",
+    "bodyProgressDesc": "Sync weight, BMI, body fat, and muscle % from Apple Health for trends and challenges.",
     "exportTitle": "Export data",
     "exportDesc": "Copy this string to back up or share all sessions and graphs.",
     "exportButton": "Generate export string",
@@ -878,6 +933,7 @@
       "goals": "Goals path",
       "consistency": "Consistency path",
       "recovery": "Recovery path",
+      "body": "Body progress path",
       "next": "Next: {medal}",
       "complete": "Path complete!"
     },

@@ -32,6 +32,10 @@ enum VitalityMedals {
         MedalDefinition(id: "sleep_7h", category: "special", tier: "bronze", season: nil),
         MedalDefinition(id: "sleep_8h", category: "special", tier: "silver", season: nil),
         MedalDefinition(id: "sleep_streak_3", category: "special", tier: "gold", season: nil),
+        MedalDefinition(id: "body_first_log", category: "body", tier: "bronze", season: nil),
+        MedalDefinition(id: "body_log_streak_4", category: "body", tier: "silver", season: nil),
+        MedalDefinition(id: "body_weight_trend_8w", category: "body", tier: "gold", season: nil),
+        MedalDefinition(id: "body_active_balance", category: "body", tier: "gold", season: nil),
     ]
 
     struct MedalContext {
@@ -62,12 +66,17 @@ enum VitalityMedals {
         var daysWith7hSleep: Int
         var daysWith8hSleep: Int
         var maxConsecutiveSleepDays: Int
+        var bodyMetricsCount: Int
+        var maxMonthlyBodyLogs: Int
+        var hasBodyWeightTrend: Bool
+        var hasActiveBodyBalance: Bool
     }
 
     static func buildMedalContext(
         records: [DailyVitalityRecord],
         goalState: VitalityGoalState,
-        profile: VitalityProfile
+        profile: VitalityProfile,
+        bodyMetricsEntries: [BodyMetricsEntry] = []
     ) -> MedalContext {
         let sorted = records.sorted { $0.date < $1.date }
         let monthKey = VitalityGoals.getMonthKey()
@@ -129,6 +138,13 @@ enum VitalityMedals {
             ?? VitalityGoals.computeYearlyTarget(profile: profile, records: sorted, yearKey: yearKey, goalState: goalState)
 
         let sleepStreakDates = sorted.filter { $0.sleepMinutes >= 420 }.map(\.date)
+        let bodyMetricsCount = bodyMetricsEntries.count
+        let monthlyBodyLogs = BodyProgress.weighIns(in: monthKey, entries: bodyMetricsEntries)
+        var maxMonthlyBodyLogs = monthlyBodyLogs
+        for (month, _) in byMonth {
+            let count = BodyProgress.weighIns(in: month, entries: bodyMetricsEntries)
+            maxMonthlyBodyLogs = max(maxMonthlyBodyLogs, count)
+        }
 
         return MedalContext(
             records: sorted,
@@ -162,7 +178,15 @@ enum VitalityMedals {
             yearlyTarget: yearlyTarget,
             daysWith7hSleep: daysWith7h,
             daysWith8hSleep: daysWith8h,
-            maxConsecutiveSleepDays: VitalityStreak.maxConsecutiveDays(from: sleepStreakDates)
+            maxConsecutiveSleepDays: VitalityStreak.maxConsecutiveDays(from: sleepStreakDates),
+            bodyMetricsCount: bodyMetricsCount,
+            maxMonthlyBodyLogs: maxMonthlyBodyLogs,
+            hasBodyWeightTrend: profile.bodyProgressEnabled && BodyProgress.hasPositiveTrend(entries: bodyMetricsEntries),
+            hasActiveBodyBalance: profile.bodyProgressEnabled && BodyProgress.activeBalanceWeeks(
+                entries: bodyMetricsEntries,
+                records: sorted,
+                goalState: goalState
+            ) >= 2
         )
     }
 
@@ -170,10 +194,21 @@ enum VitalityMedals {
         _ records: [DailyVitalityRecord],
         profile: VitalityProfile,
         goalState: VitalityGoalState,
+        bodyMetricsEntries: [BodyMetricsEntry] = [],
         allMedalsUnlocked: Bool = false
     ) -> [EvaluatedMedal] {
-        let ctx = buildMedalContext(records: records, goalState: goalState, profile: profile)
-        let earnedAtMap = computeEarnedAtMap(records: records, goalState: goalState, profile: profile)
+        let ctx = buildMedalContext(
+            records: records,
+            goalState: goalState,
+            profile: profile,
+            bodyMetricsEntries: bodyMetricsEntries
+        )
+        let earnedAtMap = computeEarnedAtMap(
+            records: records,
+            goalState: goalState,
+            profile: profile,
+            bodyMetricsEntries: bodyMetricsEntries
+        )
 
         return medals.map { medal in
             let evaluation = evaluateMedal(medal, ctx: ctx)
@@ -196,11 +231,24 @@ enum VitalityMedals {
         recordsAfter: [DailyVitalityRecord],
         profile: VitalityProfile,
         goalState: VitalityGoalState,
+        bodyMetricsBefore: [BodyMetricsEntry] = [],
+        bodyMetricsAfter: [BodyMetricsEntry] = [],
         allMedalsUnlocked: Bool = false
     ) -> [EvaluatedMedal] {
-        let beforeIds = Set(evaluateAllMedals(recordsBefore, profile: profile, goalState: goalState, allMedalsUnlocked: allMedalsUnlocked)
-            .filter(\.earned).map(\.id))
-        return evaluateAllMedals(recordsAfter, profile: profile, goalState: goalState, allMedalsUnlocked: allMedalsUnlocked)
+        let beforeIds = Set(evaluateAllMedals(
+            recordsBefore,
+            profile: profile,
+            goalState: goalState,
+            bodyMetricsEntries: bodyMetricsBefore,
+            allMedalsUnlocked: allMedalsUnlocked
+        ).filter(\.earned).map(\.id))
+        return evaluateAllMedals(
+            recordsAfter,
+            profile: profile,
+            goalState: goalState,
+            bodyMetricsEntries: bodyMetricsAfter,
+            allMedalsUnlocked: allMedalsUnlocked
+        )
             .filter { $0.earned && !beforeIds.contains($0.id) }
     }
 
@@ -275,6 +323,14 @@ enum VitalityMedals {
             return MedalEvaluation(earned: ctx.daysWith8hSleep >= 1, periods: [])
         case "sleep_streak_3":
             return MedalEvaluation(earned: ctx.maxConsecutiveSleepDays >= 3, periods: [])
+        case "body_first_log":
+            return MedalEvaluation(earned: ctx.bodyMetricsCount >= 1, periods: [])
+        case "body_log_streak_4":
+            return MedalEvaluation(earned: ctx.maxMonthlyBodyLogs >= 4, periods: [])
+        case "body_weight_trend_8w":
+            return MedalEvaluation(earned: ctx.hasBodyWeightTrend, periods: [])
+        case "body_active_balance":
+            return MedalEvaluation(earned: ctx.hasActiveBodyBalance, periods: [])
         default:
             return MedalEvaluation(earned: false, periods: [])
         }
@@ -298,7 +354,8 @@ enum VitalityMedals {
     private static func computeEarnedAtMap(
         records: [DailyVitalityRecord],
         goalState: VitalityGoalState,
-        profile: VitalityProfile
+        profile: VitalityProfile,
+        bodyMetricsEntries: [BodyMetricsEntry] = []
     ) -> [String: String] {
         var map: [String: String] = [:]
         var runningPoints = 0
@@ -323,6 +380,33 @@ enum VitalityMedals {
             if map["double_day"] == nil, record.workouts.count >= 2 { map["double_day"] = record.date }
             if map["sleep_7h"] == nil, record.sleepMinutes >= 420 { map["sleep_7h"] = record.date }
             if map["sleep_8h"] == nil, record.sleepMinutes >= 480 { map["sleep_8h"] = record.date }
+        }
+
+        if profile.bodyProgressEnabled {
+            for entry in bodyMetricsEntries.sorted(by: { $0.date < $1.date }) {
+                if map["body_first_log"] == nil { map["body_first_log"] = entry.date }
+            }
+            if BodyProgress.hasPositiveTrend(entries: bodyMetricsEntries),
+               let date = bodyMetricsEntries.max(by: { $0.date < $1.date })?.date {
+                map["body_weight_trend_8w"] = date
+            }
+            if BodyProgress.activeBalanceWeeks(
+                entries: bodyMetricsEntries,
+                records: records,
+                goalState: goalState
+            ) >= 2,
+               let date = bodyMetricsEntries.max(by: { $0.date < $1.date })?.date {
+                map["body_active_balance"] = date
+            }
+            var logsByMonth: [String: Int] = [:]
+            for entry in bodyMetricsEntries {
+                let month = String(entry.date.prefix(7))
+                logsByMonth[month, default: 0] += 1
+            }
+            if let month = logsByMonth.first(where: { $0.value >= 4 })?.key,
+               let date = bodyMetricsEntries.filter({ $0.date.hasPrefix(month) }).max(by: { $0.date < $1.date })?.date {
+                map["body_log_streak_4"] = date
+            }
         }
 
         for (month, completion) in goalState.monthlyCompletions {

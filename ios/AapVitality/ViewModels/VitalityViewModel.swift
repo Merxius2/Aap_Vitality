@@ -18,6 +18,7 @@ final class VitalityViewModel: ObservableObject {
     private var cachedMonthlyChallengeHistory: [MonthlyChallengeState]?
     private var medalCacheMonthKey: String?
     private var cachedCurrentMonthlyChallenges: MonthlyChallengeState?
+    private var cachedCurrentBodyProgressChallenges: MonthlyChallengeState?
     private var progressCacheMonthKey: String?
     private var cachedProgressOverviewMessage: String?
     private var progressOverviewCacheKey: String?
@@ -26,6 +27,7 @@ final class VitalityViewModel: ObservableObject {
     var dailyRecords: [DailyVitalityRecord] { data.dailyRecords }
     var goalState: VitalityGoalState { data.goalState }
     var profile: VitalityProfile { data.profile }
+    var bodyMetricsEntries: [BodyMetricsEntry] { data.bodyMetricsEntries }
     var monthlyChallengeRerolls: [String: MonthRerollEntry] { data.monthlyChallengeRerolls }
 
     var vitalityGoalSnapshot: VitalityGoalSnapshot {
@@ -63,6 +65,7 @@ final class VitalityViewModel: ObservableObject {
             dailyRecords,
             profile: profile,
             goalState: goalState,
+            bodyMetricsEntries: bodyMetricsEntries,
             allMedalsUnlocked: cheats.allMedalsUnlocked
         )
         cachedEvaluatedMedals = medals
@@ -97,6 +100,21 @@ final class VitalityViewModel: ObservableObject {
         )
     }
 
+    var currentBodyProgressChallenges: MonthlyChallengeState {
+        ensureProgressSessionCache()
+        return cachedCurrentBodyProgressChallenges ?? MonthlyChallengeState(
+            monthKey: SwimMonthlyChallenges.getMonthKey(),
+            challenges: [],
+            completedCount: 0,
+            tier: nil,
+            earnedAt: nil
+        )
+    }
+
+    var bodyProgressSnapshot: BodyProgressSnapshot {
+        BodyProgress.snapshot(entries: bodyMetricsEntries)
+    }
+
     func progressOverviewMessage(t: TranslationService) -> String {
         ensureProgressSessionCache()
         let cacheKey = progressLocalizedCacheKey(language: currentLanguageCode())
@@ -108,6 +126,7 @@ final class VitalityViewModel: ObservableObject {
             records: dailyRecords,
             goalSnapshot: vitalityGoalSnapshot,
             goalState: goalState,
+            bodyMetricsEntries: bodyMetricsEntries,
             t: t,
             mascotId: mascotId
         )
@@ -277,12 +296,19 @@ final class VitalityViewModel: ObservableObject {
         pendingMedalCelebration = nil
     }
 
-    func queueNewMedals(recordsBefore: [DailyVitalityRecord], recordsAfter: [DailyVitalityRecord]) {
+    func queueNewMedals(
+        recordsBefore: [DailyVitalityRecord],
+        recordsAfter: [DailyVitalityRecord],
+        bodyMetricsBefore: [BodyMetricsEntry] = [],
+        bodyMetricsAfter: [BodyMetricsEntry] = []
+    ) {
         let newlyEarned = SwimMedals.getNewlyEarnedMedals(
             recordsBefore: recordsBefore,
             recordsAfter: recordsAfter,
             profile: profile,
             goalState: goalState,
+            bodyMetricsBefore: bodyMetricsBefore,
+            bodyMetricsAfter: bodyMetricsAfter,
             allMedalsUnlocked: cheats.allMedalsUnlocked
         )
         guard !newlyEarned.isEmpty else { return }
@@ -442,6 +468,7 @@ final class VitalityViewModel: ObservableObject {
             dailyRecords.flatMap(\.workouts).compactMap(\.healthKitWorkoutUUID)
         )
         let recordsBefore = dailyRecords
+        let bodyMetricsBefore = bodyMetricsEntries
 
         async let stepsTask = HealthKitService.fetchDailySteps(since: since)
         async let sleepTask = HealthKitService.fetchDailySleep(since: since)
@@ -456,6 +483,26 @@ final class VitalityViewModel: ObservableObject {
         let stepsByDate = try await stepsTask
         let sleepByDate = try await sleepTask
         let fetchResult = try await workoutsTask
+
+        let bodyMassByDate: [String: Double]
+        let bodyFatByDate: [String: Double]
+        let leanBodyMassByDate: [String: Double]
+        let latestHeight: Double?
+        if profile.bodyProgressEnabled {
+            async let bodyMassTask = HealthKitService.fetchDailyBodyMass(since: since)
+            async let bodyFatTask = HealthKitService.fetchDailyBodyFat(since: since)
+            async let leanMassTask = HealthKitService.fetchDailyLeanBodyMass(since: since)
+            async let heightTask = HealthKitService.fetchLatestHeightCm()
+            bodyMassByDate = try await bodyMassTask
+            bodyFatByDate = try await bodyFatTask
+            leanBodyMassByDate = try await leanMassTask
+            latestHeight = try await heightTask
+        } else {
+            bodyMassByDate = [:]
+            bodyFatByDate = [:]
+            leanBodyMassByDate = [:]
+            latestHeight = nil
+        }
 
         var recordsByDate = Dictionary(uniqueKeysWithValues: dailyRecords.map { ($0.date, $0) })
         var importedCount = 0
@@ -517,7 +564,26 @@ final class VitalityViewModel: ObservableObject {
         }
 
         let nextRecords = recordsByDate.values.sorted { $0.date < $1.date }
-        if nextRecords != dailyRecords {
+        var dataChanged = nextRecords != dailyRecords
+
+        if profile.bodyProgressEnabled {
+            if let latestHeight, latestHeight > 0 {
+                data.profile.heightCm = latestHeight
+            }
+            let nextBodyMetrics = BodyProgress.mergeEntries(
+                existing: bodyMetricsEntries,
+                weightByDate: bodyMassByDate,
+                bodyFatByDate: bodyFatByDate,
+                leanBodyMassByDate: leanBodyMassByDate,
+                heightCm: data.profile.heightCm
+            )
+            if nextBodyMetrics != bodyMetricsEntries {
+                data.bodyMetricsEntries = nextBodyMetrics
+                dataChanged = true
+            }
+        }
+
+        if dataChanged {
             data.dailyRecords = nextRecords
             _ = VitalityStreak.reconcile(goalState: &data.goalState, records: nextRecords)
             VitalityGoals.ensureGoals(
@@ -530,7 +596,12 @@ final class VitalityViewModel: ObservableObject {
             )
             invalidateDerivedCaches()
             persist(immediate: true)
-            queueNewMedals(recordsBefore: recordsBefore, recordsAfter: nextRecords)
+            queueNewMedals(
+                recordsBefore: recordsBefore,
+                recordsAfter: nextRecords,
+                bodyMetricsBefore: bodyMetricsBefore,
+                bodyMetricsAfter: data.bodyMetricsEntries
+            )
         }
 
         let hasMoreAvailable = fetchResult.workouts.count >= maxImports
@@ -584,6 +655,16 @@ final class VitalityViewModel: ObservableObject {
             monthKey: monthKey,
             intensity: intensity
         )
+        if profile.bodyProgressEnabled {
+            cachedCurrentBodyProgressChallenges = BodyProgress.evaluateChallenges(
+                entries: bodyMetricsEntries,
+                records: dailyRecords,
+                goalState: goalState,
+                monthKey: monthKey
+            )
+        } else {
+            cachedCurrentBodyProgressChallenges = nil
+        }
         progressCacheMonthKey = monthKey
         invalidateProgressLocalizedCaches()
     }
@@ -592,7 +673,8 @@ final class VitalityViewModel: ObservableObject {
         let name = profile.name
         let monthKey = progressCacheMonthKey ?? SwimMonthlyChallenges.getMonthKey()
         let recordCount = dailyRecords.count
-        return "\(language)|\(name)|\(monthKey)|\(recordCount)"
+        let bodyCount = bodyMetricsEntries.count
+        return "\(language)|\(name)|\(monthKey)|\(recordCount)|\(bodyCount)|\(profile.bodyProgressEnabled)"
     }
 
     private func invalidateProgressLocalizedCaches() {
@@ -605,6 +687,7 @@ final class VitalityViewModel: ObservableObject {
         cachedMonthlyChallengeHistory = nil
         medalCacheMonthKey = nil
         cachedCurrentMonthlyChallenges = nil
+        cachedCurrentBodyProgressChallenges = nil
         progressCacheMonthKey = nil
         invalidateProgressLocalizedCaches()
     }

@@ -154,6 +154,55 @@ struct YearMonthMedal: Equatable {
     var hasSessions: Bool
 }
 
+struct BodyMetricsEntry: Codable, Identifiable, Equatable {
+    var id: String
+    var date: String
+    var weightKg: Double
+    var heightCm: Double?
+    var bodyFatPercent: Double?
+    var leanBodyMassKg: Double?
+    var musclePercent: Double?
+
+    var bmi: Double? {
+        guard let heightCm, heightCm > 0 else { return nil }
+        let meters = heightCm / 100
+        return weightKg / (meters * meters)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id, date, weightKg, heightCm, bodyFatPercent, leanBodyMassKg, musclePercent
+    }
+
+    init(
+        id: String,
+        date: String,
+        weightKg: Double,
+        heightCm: Double?,
+        bodyFatPercent: Double?,
+        leanBodyMassKg: Double? = nil,
+        musclePercent: Double? = nil
+    ) {
+        self.id = id
+        self.date = date
+        self.weightKg = weightKg
+        self.heightCm = heightCm
+        self.bodyFatPercent = bodyFatPercent
+        self.leanBodyMassKg = leanBodyMassKg
+        self.musclePercent = musclePercent
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        date = try container.decode(String.self, forKey: .date)
+        weightKg = try container.decode(Double.self, forKey: .weightKg)
+        heightCm = try container.decodeIfPresent(Double.self, forKey: .heightCm)
+        bodyFatPercent = try container.decodeIfPresent(Double.self, forKey: .bodyFatPercent)
+        leanBodyMassKg = try container.decodeIfPresent(Double.self, forKey: .leanBodyMassKg)
+        musclePercent = try container.decodeIfPresent(Double.self, forKey: .musclePercent)
+    }
+}
+
 struct VitalityProfile: Codable, Equatable {
     var name: String
     var sex: String
@@ -163,6 +212,8 @@ struct VitalityProfile: Codable, Equatable {
     var aiApiKey: String
     var activeAmbient: String?
     var activeWallpaper: String?
+    var bodyProgressEnabled: Bool
+    var heightCm: Double?
 
     static let `default` = VitalityProfile(
         name: "",
@@ -172,11 +223,14 @@ struct VitalityProfile: Codable, Equatable {
         mascotSwitchMonthKey: nil,
         aiApiKey: "",
         activeAmbient: nil,
-        activeWallpaper: nil
+        activeWallpaper: nil,
+        bodyProgressEnabled: false,
+        heightCm: nil
     )
 
     enum CodingKeys: String, CodingKey {
         case name, sex, age, mascotId, mascotSwitchMonthKey, aiApiKey, activeAmbient, activeWallpaper
+        case bodyProgressEnabled, heightCm
     }
 
     init(
@@ -187,7 +241,9 @@ struct VitalityProfile: Codable, Equatable {
         mascotSwitchMonthKey: String?,
         aiApiKey: String,
         activeAmbient: String?,
-        activeWallpaper: String? = nil
+        activeWallpaper: String? = nil,
+        bodyProgressEnabled: Bool = false,
+        heightCm: Double? = nil
     ) {
         self.name = name
         self.sex = sex
@@ -197,6 +253,8 @@ struct VitalityProfile: Codable, Equatable {
         self.aiApiKey = aiApiKey
         self.activeAmbient = activeAmbient
         self.activeWallpaper = activeWallpaper
+        self.bodyProgressEnabled = bodyProgressEnabled
+        self.heightCm = heightCm
     }
 
     init(from decoder: Decoder) throws {
@@ -209,6 +267,8 @@ struct VitalityProfile: Codable, Equatable {
         aiApiKey = try container.decodeIfPresent(String.self, forKey: .aiApiKey) ?? ""
         activeAmbient = try container.decodeIfPresent(String.self, forKey: .activeAmbient)
         activeWallpaper = try container.decodeIfPresent(String.self, forKey: .activeWallpaper)
+        bodyProgressEnabled = try container.decodeIfPresent(Bool.self, forKey: .bodyProgressEnabled) ?? false
+        heightCm = try container.decodeIfPresent(Double.self, forKey: .heightCm)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -221,6 +281,8 @@ struct VitalityProfile: Codable, Equatable {
         try container.encode(aiApiKey, forKey: .aiApiKey)
         try container.encodeIfPresent(activeAmbient, forKey: .activeAmbient)
         try container.encodeIfPresent(activeWallpaper, forKey: .activeWallpaper)
+        try container.encode(bodyProgressEnabled, forKey: .bodyProgressEnabled)
+        try container.encodeIfPresent(heightCm, forKey: .heightCm)
     }
 
     func displayName(fallback: String) -> String {
@@ -235,17 +297,19 @@ struct VitalityData: Codable, Equatable {
     var monthlyChallengeRerolls: [String: MonthRerollEntry]
     var dailyRecords: [DailyVitalityRecord]
     var goalState: VitalityGoalState
+    var bodyMetricsEntries: [BodyMetricsEntry]
 
     static let empty = VitalityData(
         profile: .default,
         sessions: [],
         monthlyChallengeRerolls: [:],
         dailyRecords: [],
-        goalState: .empty
+        goalState: .empty,
+        bodyMetricsEntries: []
     )
 
     enum CodingKeys: String, CodingKey {
-        case profile, sessions, monthlyChallengeRerolls, dailyRecords, goalState
+        case profile, sessions, monthlyChallengeRerolls, dailyRecords, goalState, bodyMetricsEntries
         case totalCoins, coinsSpent, spentCoinClaims, wheelSpins
         case challengeRerollCredits, bonusWheelSpinCredits, storeUnlocks, monthlySettlements
     }
@@ -255,13 +319,15 @@ struct VitalityData: Codable, Equatable {
         sessions: [SwimSession],
         monthlyChallengeRerolls: [String: MonthRerollEntry],
         dailyRecords: [DailyVitalityRecord] = [],
-        goalState: VitalityGoalState = .empty
+        goalState: VitalityGoalState = .empty,
+        bodyMetricsEntries: [BodyMetricsEntry] = []
     ) {
         self.profile = profile
         self.sessions = sessions
         self.monthlyChallengeRerolls = monthlyChallengeRerolls
         self.dailyRecords = dailyRecords
         self.goalState = goalState
+        self.bodyMetricsEntries = bodyMetricsEntries
     }
 
     init(from decoder: Decoder) throws {
@@ -274,6 +340,7 @@ struct VitalityData: Codable, Equatable {
         ) ?? [:]
         dailyRecords = try container.decodeIfPresent([DailyVitalityRecord].self, forKey: .dailyRecords) ?? []
         goalState = try container.decodeIfPresent(VitalityGoalState.self, forKey: .goalState) ?? .empty
+        bodyMetricsEntries = try container.decodeIfPresent([BodyMetricsEntry].self, forKey: .bodyMetricsEntries) ?? []
     }
 
     func encode(to encoder: Encoder) throws {
@@ -283,6 +350,7 @@ struct VitalityData: Codable, Equatable {
         try container.encode(monthlyChallengeRerolls, forKey: .monthlyChallengeRerolls)
         try container.encode(dailyRecords, forKey: .dailyRecords)
         try container.encode(goalState, forKey: .goalState)
+        try container.encode(bodyMetricsEntries, forKey: .bodyMetricsEntries)
     }
 }
 

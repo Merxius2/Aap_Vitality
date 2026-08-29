@@ -41,6 +41,7 @@ enum SwimStorageService {
         var next = data
         next.sessions = next.sessions.sorted { $0.date < $1.date }
         next.dailyRecords = next.dailyRecords.sorted { $0.date < $1.date }
+        next.bodyMetricsEntries = next.bodyMetricsEntries.sorted { $0.date < $1.date }
         next.profile.activeAmbient = sanitizeAmbient(next.profile.activeAmbient)
         next.profile.activeWallpaper = sanitizeWallpaper(next.profile.activeWallpaper)
         next.monthlyChallengeRerolls = SwimMonthlyChallenges.normalizeMonthlyChallengeRerolls(

@@ -8,12 +8,14 @@ enum SwimMedals {
         _ records: [DailyVitalityRecord],
         profile: VitalityProfile,
         goalState: VitalityGoalState,
+        bodyMetricsEntries: [BodyMetricsEntry] = [],
         allMedalsUnlocked: Bool = false
     ) -> [EvaluatedMedal] {
         VitalityMedals.evaluateAllMedals(
             records,
             profile: profile,
             goalState: goalState,
+            bodyMetricsEntries: bodyMetricsEntries,
             allMedalsUnlocked: allMedalsUnlocked
         )
     }
@@ -23,6 +25,8 @@ enum SwimMedals {
         recordsAfter: [DailyVitalityRecord],
         profile: VitalityProfile,
         goalState: VitalityGoalState,
+        bodyMetricsBefore: [BodyMetricsEntry] = [],
+        bodyMetricsAfter: [BodyMetricsEntry] = [],
         allMedalsUnlocked: Bool = false
     ) -> [EvaluatedMedal] {
         VitalityMedals.getNewlyEarnedMedals(
@@ -30,6 +34,8 @@ enum SwimMedals {
             recordsAfter: recordsAfter,
             profile: profile,
             goalState: goalState,
+            bodyMetricsBefore: bodyMetricsBefore,
+            bodyMetricsAfter: bodyMetricsAfter,
             allMedalsUnlocked: allMedalsUnlocked
         )
     }

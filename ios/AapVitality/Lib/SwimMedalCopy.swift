@@ -1,7 +1,7 @@
 import Foundation
 
 enum SwimMedalCopy {
-    static let categories = ["milestone", "steps", "workout", "goals", "streak", "monthly", "special"]
+    static let categories = ["milestone", "steps", "workout", "goals", "streak", "monthly", "special", "body"]
 
     static func categoryLabel(_ category: String, t: TranslationService) -> String {
         t.t("medals.categories.\(category)")
