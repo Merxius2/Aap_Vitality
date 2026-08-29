@@ -160,11 +160,42 @@ struct BodyMetricsEntry: Codable, Identifiable, Equatable {
     var weightKg: Double
     var heightCm: Double?
     var bodyFatPercent: Double?
+    var musclePercent: Double?
 
     var bmi: Double? {
         guard let heightCm, heightCm > 0 else { return nil }
         let meters = heightCm / 100
         return weightKg / (meters * meters)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id, date, weightKg, heightCm, bodyFatPercent, musclePercent
+    }
+
+    init(
+        id: String,
+        date: String,
+        weightKg: Double,
+        heightCm: Double?,
+        bodyFatPercent: Double?,
+        musclePercent: Double? = nil
+    ) {
+        self.id = id
+        self.date = date
+        self.weightKg = weightKg
+        self.heightCm = heightCm
+        self.bodyFatPercent = bodyFatPercent
+        self.musclePercent = musclePercent
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        date = try container.decode(String.self, forKey: .date)
+        weightKg = try container.decode(Double.self, forKey: .weightKg)
+        heightCm = try container.decodeIfPresent(Double.self, forKey: .heightCm)
+        bodyFatPercent = try container.decodeIfPresent(Double.self, forKey: .bodyFatPercent)
+        musclePercent = try container.decodeIfPresent(Double.self, forKey: .musclePercent)
     }
 }
 

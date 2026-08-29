@@ -100,24 +100,27 @@
     },
     "body": {
       "title": "Body progress",
-      "subtitle": "Weight, BMI, and body fat trends from Apple Health — separate from activity points.",
+      "subtitle": "Weight, BMI, body fat, and muscle % from Apple Health — separate from activity points.",
       "empty": "No body measurements synced yet.",
       "emptyHint": "Log weight in Apple Health (or use a smart scale), then sync again.",
       "weight": "Weight",
       "bmi": "BMI",
       "bodyFat": "Body fat",
+      "muscle": "Muscle",
       "weightValue": "{value} kg",
       "trendTitle": "12-week weight trend",
       "weightAxis": "kg",
       "trendDown": "Down {change} over 8 weeks",
       "trendUp": "Up {change} over 8 weeks",
-      "disclaimer": "Trends use weekly averages. Not medical advice — talk to a professional for health decisions.",
+      "muscleTrendUp": "Muscle +{change}% over 8 weeks",
+      "disclaimer": "Muscle % is estimated from lean body mass when your scale syncs it to Apple Health. Trends use weekly averages. Not medical advice.",
       "challengesTitle": "Body progress challenges",
       "challengesSubtitle": "Consistency and positive trends — not daily weigh-ins for points.",
       "trendComplete": "Trend met",
       "trendIncomplete": "In progress",
       "memoryWeightTrend": "Down {change} over 8 weeks while staying active — great combo!",
       "memoryBodyFatTrend": "Body fat down {change}% over 8 weeks — solid progress.",
+      "memoryMuscleTrend": "Muscle mass up {change}% over 8 weeks — strength building!",
       "memoryWeighIns": "{count} weigh-ins logged this month — consistency wins.",
       "memoryWeighInsFlip": "{count} weigh-ins this month — love that you're checking in!"
     }
@@ -316,7 +319,7 @@
       },
       "body_weight_trend_8w": {
         "title": "Trend setter",
-        "desc": "Lose 0.5 kg or 0.5% body fat over 8 weeks."
+        "desc": "Lose 0.5 kg, drop 0.5% body fat, or gain 0.5% muscle over 8 weeks."
       },
       "body_active_balance": {
         "title": "Active balance",
@@ -491,7 +494,7 @@
       "monthlyPointsGold": "Reach {points} points (100% of monthly goal)",
       "bodyWeighInsBronze": "Log {count} weigh-ins this month",
       "bodyWeighInsSilver": "Log {count} weigh-ins this month",
-      "bodyTrendGold": "Lose 0.5 kg or 0.5% body fat over 8 weeks"
+      "bodyTrendGold": "Lose 0.5 kg, drop 0.5% body fat, or gain 0.5% muscle over 8 weeks"
     },
     "celebrationTitle": "Monthly medal earned!",
     "celebrationUpgradeTitle": "Monthly medal upgraded!",
@@ -643,7 +646,7 @@
     "sexFemale": "Female",
     "age": "Age",
     "bodyProgressTitle": "Body progress track",
-    "bodyProgressDesc": "Sync weight, BMI, and body fat from Apple Health for trends and challenges.",
+    "bodyProgressDesc": "Sync weight, BMI, body fat, and muscle % from Apple Health for trends and challenges.",
     "exportTitle": "Export data",
     "exportDesc": "Copy this string to back up or share all sessions and graphs.",
     "exportButton": "Generate export string",

@@ -486,17 +486,21 @@ final class VitalityViewModel: ObservableObject {
 
         let bodyMassByDate: [String: Double]
         let bodyFatByDate: [String: Double]
+        let leanBodyMassByDate: [String: Double]
         let latestHeight: Double?
         if profile.bodyProgressEnabled {
             async let bodyMassTask = HealthKitService.fetchDailyBodyMass(since: since)
             async let bodyFatTask = HealthKitService.fetchDailyBodyFat(since: since)
+            async let leanMassTask = HealthKitService.fetchDailyLeanBodyMass(since: since)
             async let heightTask = HealthKitService.fetchLatestHeightCm()
             bodyMassByDate = try await bodyMassTask
             bodyFatByDate = try await bodyFatTask
+            leanBodyMassByDate = try await leanMassTask
             latestHeight = try await heightTask
         } else {
             bodyMassByDate = [:]
             bodyFatByDate = [:]
+            leanBodyMassByDate = [:]
             latestHeight = nil
         }
 
@@ -570,6 +574,7 @@ final class VitalityViewModel: ObservableObject {
                 existing: bodyMetricsEntries,
                 weightByDate: bodyMassByDate,
                 bodyFatByDate: bodyFatByDate,
+                leanBodyMassByDate: leanBodyMassByDate,
                 heightCm: data.profile.heightCm
             )
             if nextBodyMetrics != bodyMetricsEntries {

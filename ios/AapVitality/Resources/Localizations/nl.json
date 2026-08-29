@@ -100,24 +100,27 @@
     },
     "body": {
       "title": "Lichaamsvoortgang",
-      "subtitle": "Gewicht, BMI en vetpercentage uit Apple Gezondheid — los van activiteitspunten.",
+      "subtitle": "Gewicht, BMI, vetpercentage en spiermassa % uit Apple Gezondheid — los van activiteitspunten.",
       "empty": "Nog geen lichaamsmetingen gesynchroniseerd.",
       "emptyHint": "Log gewicht in Apple Gezondheid (of via een slimme weegschaal) en synchroniseer opnieuw.",
       "weight": "Gewicht",
       "bmi": "BMI",
       "bodyFat": "Vetpercentage",
+      "muscle": "Spier",
       "weightValue": "{value} kg",
       "trendTitle": "12-weken gewichtstrend",
       "weightAxis": "kg",
       "trendDown": "{change} minder over 8 weken",
       "trendUp": "{change} meer over 8 weken",
-      "disclaimer": "Trends gebruiken weekgemiddelden. Geen medisch advies — raadpleeg een professional voor gezondheidsbeslissingen.",
+      "muscleTrendUp": "Spier +{change}% over 8 weken",
+      "disclaimer": "Spier-% wordt geschat uit vetvrije massa wanneer je weegschaal dit naar Apple Gezondheid stuurt. Trends gebruiken weekgemiddelden. Geen medisch advies.",
       "challengesTitle": "Lichaamsvoortgang-uitdagingen",
       "challengesSubtitle": "Consistentie en positieve trends — geen dagelijkse weging voor punten.",
       "trendComplete": "Trend behaald",
       "trendIncomplete": "Bezig",
       "memoryWeightTrend": "{change} minder over 8 weken én actief gebleven — mooie combo!",
       "memoryBodyFatTrend": "Vetpercentage {change}% lager over 8 weken — sterke voortgang.",
+      "memoryMuscleTrend": "Spiermassa +{change}% over 8 weken — je wordt sterker!",
       "memoryWeighIns": "{count} wegingen deze maand — consistentie telt.",
       "memoryWeighInsFlip": "{count} wegingen deze maand — fijn dat je blijft meten!"
     }
@@ -316,7 +319,7 @@
       },
       "body_weight_trend_8w": {
         "title": "Trendsetter",
-        "desc": "Verlies 0,5 kg of 0,5% vetpercentage over 8 weken."
+        "desc": "Verlies 0,5 kg, daal 0,5% vet of win 0,5% spier over 8 weken."
       },
       "body_active_balance": {
         "title": "Actief evenwicht",
@@ -491,7 +494,7 @@
       "monthlyPointsGold": "Behaal {points} punten (100% van maanddoel)",
       "bodyWeighInsBronze": "Log {count} wegingen deze maand",
       "bodyWeighInsSilver": "Log {count} wegingen deze maand",
-      "bodyTrendGold": "Verlies 0,5 kg of 0,5% vetpercentage over 8 weken"
+      "bodyTrendGold": "Verlies 0,5 kg, daal 0,5% vet of win 0,5% spier over 8 weken"
     },
     "celebrationTitle": "Maandmedaille verdiend!",
     "celebrationUpgradeTitle": "Maandmedaille geüpgraded!",
@@ -643,7 +646,7 @@
     "sexFemale": "Vrouw",
     "age": "Leeftijd",
     "bodyProgressTitle": "Lichaamsvoortgang",
-    "bodyProgressDesc": "Synchroniseer gewicht, BMI en vetpercentage uit Apple Gezondheid voor trends en uitdagingen.",
+    "bodyProgressDesc": "Synchroniseer gewicht, BMI, vetpercentage en spiermassa % uit Apple Gezondheid voor trends en uitdagingen.",
     "exportTitle": "Gegevens exporteren",
     "exportDesc": "Kopieer deze string om alle sessies en grafieken te backuppen of te delen.",
     "exportButton": "Exportstring genereren",

@@ -2,6 +2,19 @@ import XCTest
 @testable import AapVitality
 
 final class BodyProgressTests: XCTestCase {
+    func testMergeEntriesComputesMusclePercentFromLeanMass() {
+        let merged = BodyProgress.mergeEntries(
+            existing: [],
+            weightByDate: ["2026-08-27": 80],
+            bodyFatByDate: [:],
+            leanBodyMassByDate: ["2026-08-27": 60],
+            heightCm: 180
+        )
+
+        XCTAssertEqual(merged.count, 1)
+        XCTAssertEqual(merged[0].musclePercent, 75, accuracy: 0.01)
+    }
+
     func testMergeEntriesKeepsLatestWeightPerDay() {
         let merged = BodyProgress.mergeEntries(
             existing: [],
@@ -12,6 +25,7 @@ final class BodyProgressTests: XCTestCase {
             bodyFatByDate: [
                 "2026-08-27": 22.5,
             ],
+            leanBodyMassByDate: [:],
             heightCm: 180
         )
 
@@ -32,6 +46,28 @@ final class BodyProgressTests: XCTestCase {
             referenceDate: date(from: "2026-08-05")
         )
         XCTAssertNil(change)
+    }
+
+    func testPositiveTrendDetectsMuscleGain() {
+        let entries = [
+            BodyMetricsEntry(
+                id: "2026-07-01",
+                date: "2026-07-01",
+                weightKg: 80,
+                heightCm: 180,
+                bodyFatPercent: nil,
+                musclePercent: 70
+            ),
+            BodyMetricsEntry(
+                id: "2026-08-29",
+                date: "2026-08-29",
+                weightKg: 80,
+                heightCm: 180,
+                bodyFatPercent: nil,
+                musclePercent: 71
+            ),
+        ]
+        XCTAssertTrue(BodyProgress.hasPositiveTrend(entries: entries, referenceDate: date(from: "2026-08-29")))
     }
 
     func testPositiveTrendDetectsWeightLoss() {

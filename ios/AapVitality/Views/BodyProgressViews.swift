@@ -42,24 +42,34 @@ struct BodyProgressTrendCard: View {
     }
 
     private func summaryRow(snapshot: BodyProgressSnapshot) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            metricBlock(
-                title: preferences.t("progress.body.weight"),
-                value: snapshot.latestWeightKg.map {
-                    BodyProgress.formatWeight($0, t: preferences.translations)
-                } ?? "—"
-            )
-            if let bmi = snapshot.latestBMI {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .top, spacing: 12) {
                 metricBlock(
-                    title: preferences.t("progress.body.bmi"),
-                    value: BodyProgress.formatBMI(bmi)
+                    title: preferences.t("progress.body.weight"),
+                    value: snapshot.latestWeightKg.map {
+                        BodyProgress.formatWeight($0, t: preferences.translations)
+                    } ?? "—"
                 )
+                if let bmi = snapshot.latestBMI {
+                    metricBlock(
+                        title: preferences.t("progress.body.bmi"),
+                        value: BodyProgress.formatBMI(bmi)
+                    )
+                }
             }
-            if let bodyFat = snapshot.latestBodyFatPercent {
-                metricBlock(
-                    title: preferences.t("progress.body.bodyFat"),
-                    value: "\(String(format: "%.1f", bodyFat))%"
-                )
+            HStack(alignment: .top, spacing: 12) {
+                if let bodyFat = snapshot.latestBodyFatPercent {
+                    metricBlock(
+                        title: preferences.t("progress.body.bodyFat"),
+                        value: "\(String(format: "%.1f", bodyFat))%"
+                    )
+                }
+                if let muscle = snapshot.latestMusclePercent {
+                    metricBlock(
+                        title: preferences.t("progress.body.muscle"),
+                        value: "\(String(format: "%.1f", muscle))%"
+                    )
+                }
             }
         }
     }
@@ -109,6 +119,13 @@ struct BodyProgressTrendCard: View {
                 ]))
                 .themeFont(.caption)
                 .foregroundStyle(change <= 0 ? .green : .secondary)
+            }
+            if let change = snapshot.muscleChange8WeeksPercent {
+                Text(preferences.t("progress.body.muscleTrendUp", params: [
+                    "change": String(format: "%.1f", change)
+                ]))
+                .themeFont(.caption)
+                .foregroundStyle(change >= BodyProgress.muscleTrendTargetPercent ? .green : .secondary)
             }
         }
     }
