@@ -114,7 +114,7 @@ struct AmbientPresetRenderer: View {
         return AmbientGradientSpec(colors: gradient.colors, duration: 5, vertical: gradient.vertical)
     }
 
-    private var blobBlur: CGFloat { isPreview ? 22 : 40 }
+    private var blobBlur: CGFloat { isPreview ? 22 : 32 }
 
     @ViewBuilder
     private func blobView(
@@ -127,16 +127,21 @@ struct AmbientPresetRenderer: View {
         let height = size.height * blob.heightRatio
         let x = blob.xRatio.map { $0 * size.width } ?? (blob.rightRatio.map { size.width - $0 * size.width - width } ?? 0)
         let y = blob.yRatio.map { $0 * size.height } ?? (blob.bottomRatio.map { size.height - $0 * size.height - height } ?? 0)
-        let driftDuration = isPreview ? 10.0 : 28.0
+        let driftDuration = isPreview ? 10.0 : 24.0
         let driftPhase = preset.driftBlobs
             ? (elapsed.truncatingRemainder(dividingBy: driftDuration)) / driftDuration
             : 0
+        let orbitRadiusX: CGFloat = isPreview ? 14 : 38
+        let orbitRadiusY: CGFloat = isPreview ? 11 : 30
         let driftOffset = preset.driftBlobs
             ? CGSize(
-                width: sin(driftPhase * .pi * 2 + CGFloat(index)) * (isPreview ? 6 : 12),
-                height: cos(driftPhase * .pi * 2 + CGFloat(index)) * (isPreview ? 5 : 10)
+                width: cos(driftPhase * .pi * 2 + CGFloat(index) * 1.25) * orbitRadiusX,
+                height: sin(driftPhase * .pi * 2 + CGFloat(index) * 0.85) * orbitRadiusY
             )
             : .zero
+        let breathe = preset.driftBlobs
+            ? 1.0 + sin(elapsed * 0.45 + Double(index) * 0.8) * 0.10
+            : 1.0
 
         Circle()
             .fill(
@@ -148,6 +153,7 @@ struct AmbientPresetRenderer: View {
                 )
             )
             .frame(width: width, height: height)
+            .scaleEffect(breathe)
             .offset(x: x + driftOffset.width, y: y + driftOffset.height)
             .blur(radius: blobBlur)
     }
@@ -251,6 +257,64 @@ struct AmbientLeafOverlayView: View {
     }
 }
 
+struct AmbientGlowOverlayView: View {
+    let activeAmbient: String?
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.appAnimationsPaused) private var animationsPaused
+
+    private var showsGlow: Bool {
+        guard let activeAmbient,
+              AmbientCatalog.isValid(activeAmbient),
+              let preset = AmbientPresets.preset(for: activeAmbient) else {
+            return false
+        }
+        return preset.driftBlobs && !preset.bubbles && !preset.leaves
+    }
+
+    var body: some View {
+        if showsGlow {
+            GeometryReader { proxy in
+                let motionEnabled = !reduceMotion && !animationsPaused
+
+                Group {
+                    if motionEnabled {
+                        TimelineView(BatteryEfficientAnimation.timelineSchedule) { timeline in
+                            glowLayer(
+                                in: proxy.size,
+                                elapsed: timeline.date.timeIntervalSinceReferenceDate
+                            )
+                        }
+                    } else {
+                        glowLayer(in: proxy.size, elapsed: 0)
+                    }
+                }
+            }
+            .ignoresSafeArea()
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+        }
+    }
+
+    @ViewBuilder
+    private func glowLayer(in size: CGSize, elapsed: TimeInterval) -> some View {
+        ZStack {
+            ForEach(AmbientPresets.glowPositions.indices, id: \.self) { index in
+                let glow = AmbientPresets.glowPositions[index]
+                DriftingGlowMote(
+                    size: glow.size,
+                    startYRatio: glow.startYRatio,
+                    containerSize: size,
+                    delay: glow.delay,
+                    duration: glow.duration,
+                    elapsed: elapsed,
+                    opacity: glow.opacity
+                )
+            }
+        }
+    }
+}
+
 struct AmbientBubbleOverlayView: View {
     let activeAmbient: String?
 
@@ -320,18 +384,21 @@ private struct AnimatedAmbientGradient: View {
         let cycle = max(spec.duration, 0.1)
         let progress = (elapsed.truncatingRemainder(dividingBy: cycle)) / cycle
         let wave = sin(progress * .pi * 2)
-        let scale: CGFloat = spec.vertical ? 1.05 : 1.06
-        let offsetX = spec.vertical ? 0 : CGFloat(wave) * width * 0.10
+        let ripple = sin(progress * .pi * 4 + 0.5) * 0.4
+        let scale: CGFloat = spec.vertical ? 1.08 : 1.10
+        let offsetX = spec.vertical
+            ? CGFloat(ripple) * width * 0.06
+            : CGFloat(wave) * width * 0.16
         let offsetY = spec.vertical
-            ? CGFloat(wave) * height * 0.08
-            : CGFloat(wave) * height * 0.06
+            ? CGFloat(wave) * height * 0.16
+            : CGFloat(wave + ripple) * height * 0.10
 
         gradientLayer
             .frame(
-                width: width * (spec.vertical ? 1.0 : 1.6),
-                height: height * (spec.vertical ? 2.2 : 1.6)
+                width: width * (spec.vertical ? 1.15 : 1.75),
+                height: height * (spec.vertical ? 2.4 : 1.75)
             )
-            .scaleEffect(spec.vertical ? 1.0 : (1 + (scale - 1) * abs(CGFloat(wave))))
+            .scaleEffect(spec.vertical ? (1 + (scale - 1) * abs(CGFloat(wave))) : (1 + (scale - 1) * abs(CGFloat(wave))))
             .offset(x: offsetX, y: offsetY)
             .position(x: width * 0.5, y: height * 0.5)
             .frame(width: width, height: height)
@@ -434,6 +501,37 @@ private struct LeafShape: Shape {
             control: CGPoint(x: rect.minX, y: rect.minY)
         )
         return path
+    }
+}
+
+private struct DriftingGlowMote: View {
+    let size: CGFloat
+    let startYRatio: CGFloat
+    let containerSize: CGSize
+    let delay: Double
+    let duration: Double
+    let elapsed: TimeInterval
+    let opacity: Double
+
+    var body: some View {
+        let cycle = max(duration, 0.1)
+        let shifted = elapsed - delay
+        let progress = shifted < 0
+            ? 0.0
+            : (shifted.truncatingRemainder(dividingBy: cycle)) / cycle
+        let x = containerSize.width * (-0.08 + progress * 1.16)
+        let sway = sin(progress * .pi * 3) * containerSize.height * 0.018
+        let y = containerSize.height * startYRatio + sway
+        let fade = progress < 0.08
+            ? progress / 0.08
+            : max(0, 1 - (progress - 0.88) / 0.12)
+
+        Circle()
+            .fill(Color.white.opacity(opacity))
+            .frame(width: size, height: size)
+            .blur(radius: size * 0.35)
+            .position(x: x, y: y)
+            .opacity(fade)
     }
 }
 
