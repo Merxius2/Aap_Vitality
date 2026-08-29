@@ -86,7 +86,18 @@
     "overviewMonthlyComplete": "Monthly goal reached — your coach is proud!",
     "overviewMonthlyNear": "You're close to this month's goal — one more strong week could do it.",
     "overviewMonthlyBehind": "{name}, the month is slipping — let's pick up steps and a workout.",
-    "overviewWeeklyComplete": "Weekly goal complete!"
+    "overviewWeeklyComplete": "Weekly goal complete!",
+    "overviewStretchTarget": "Stretch target: {target} points this month ({current} so far).",
+    "overviewFlipMoving": "Nice — {steps} steps already today!",
+    "overviewFlipPoints": "Every point counts — {points} on the board so far.",
+    "overviewFlipMonthlyProgress": "You're already at {percent}% of your monthly goal — solid progress.",
+    "overviewFlipWeeklyProgress": "Halfway through the weekly goal at {percent}% — keep it up!",
+    "memory": {
+      "weekStep10k": "{count} weeks in a row with a 10k step day!",
+      "weekStep5k": "{count} weeks running with a 5k step day.",
+      "dayStep10k": "{count} days in a row at 10k+ steps!",
+      "weeklyGoal": "{count} weeks in a row hitting your weekly goal!"
+    }
   },
   "records": {
     "title": "Personal records",

@@ -86,7 +86,18 @@
     "overviewMonthlyComplete": "Maandelijks doel behaald — je coach is trots!",
     "overviewMonthlyNear": "Je bent dicht bij je maanddoel — nog één sterke week!",
     "overviewMonthlyBehind": "{name}, deze maand loopt achter — tijd voor stappen en een workout.",
-    "overviewWeeklyComplete": "Weekdoel behaald!"
+    "overviewWeeklyComplete": "Weekdoel behaald!",
+    "overviewStretchTarget": "Stretchdoel: {target} punten deze maand ({current} tot nu toe).",
+    "overviewFlipMoving": "Mooi — al {steps} stappen vandaag!",
+    "overviewFlipPoints": "Elk punt telt — {points} punten tot nu toe.",
+    "overviewFlipMonthlyProgress": "Je staat al op {percent}% van je maanddoel — mooie voortgang.",
+    "overviewFlipWeeklyProgress": "Halverwege het weekdoel met {percent}% — ga zo door!",
+    "memory": {
+      "weekStep10k": "{count} weken op rij met een 10k-stappendag!",
+      "weekStep5k": "{count} weken op rij met een 5k-stappendag.",
+      "dayStep10k": "{count} dagen op rij met 10k+ stappen!",
+      "weeklyGoal": "{count} weken op rij je weekdoel gehaald!"
+    }
   },
   "records": {
     "title": "Persoonlijke records",

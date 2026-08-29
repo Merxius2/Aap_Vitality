@@ -13,10 +13,10 @@ struct ProgressScreen: View {
                     if viewModel.dailyRecords.isEmpty {
                         emptyState
                     } else {
+                        dailyPointsHeaderCard
                         overviewCard
                         levelAndStreakCard
                         MonthlyChallengesCardView()
-                        todayVitalityCard
                         workoutBadgesCard
                         goalSnapshotCard
                         recentPointsChart
@@ -224,27 +224,37 @@ struct ProgressScreen: View {
         }
     }
 
-    private var todayVitalityCard: some View {
+    private var dailyPointsHeaderCard: some View {
         let record = viewModel.todayVitalityRecord ?? viewModel.dailyRecords.max(by: { $0.date < $1.date })
         guard let record else { return AnyView(EmptyView()) }
 
         return AnyView(
             Card {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text(preferences.t("vitality.todayTitle"))
-                        .themeFont(.headline, weight: .semibold)
-                    Text(SwimFormatters.formatDateShort(record.date))
-                        .themeFont(.caption)
-                        .foregroundStyle(.secondary)
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                        metricBlock(preferences.t("vitality.highlight.steps"), value: "\(record.steps)", color: .green)
-                        metricBlock(preferences.t("vitality.highlight.points"), value: "\(record.totalPoints)", color: Color("BrandBlue"))
-                        metricBlock(preferences.t("vitality.stepPoints"), value: "\(record.stepPoints)", color: .teal)
-                        metricBlock(preferences.t("vitality.workoutPoints"), value: "\(record.workoutPoints)", color: .orange)
-                        if record.sleepMinutes > 0 {
-                            metricBlock(preferences.t("vitality.sleepPoints"), value: "\(record.sleepPoints)", color: .purple)
+                VStack(alignment: .leading, spacing: 16) {
+                    HStack(alignment: .firstTextBaseline) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(preferences.t("vitality.todayTitle"))
+                                .themeFont(.caption, weight: .bold)
+                                .foregroundStyle(.secondary)
+                                .textCase(.uppercase)
+                            Text(SwimFormatters.formatDateShort(record.date))
+                                .themeFont(.subheadline, weight: .semibold)
+                        }
+                        Spacer()
+                        VStack(alignment: .trailing, spacing: 2) {
+                            Text("\(record.totalPoints)")
+                                .themeFont(size: 44, weight: .bold)
+                                .foregroundStyle(Color("BrandBlue"))
+                                .minimumScaleFactor(0.7)
+                                .lineLimit(1)
+                            Text(preferences.t("vitality.points"))
+                                .themeFont(.caption, weight: .semibold)
+                                .foregroundStyle(.secondary)
                         }
                     }
+
+                    pointsBreakdownRow(record: record)
+
                     StepMilestoneProgressBar(
                         steps: record.steps,
                         title: preferences.t("vitality.stepsGoalTitle"),
@@ -255,6 +265,7 @@ struct ProgressScreen: View {
                             preferences.t("vitality.stepsGoalPoints", params: ["points": String(points)])
                         }
                     )
+
                     if record.sleepMinutes > 0 {
                         sleepTierRow(record: record)
                     }
@@ -262,6 +273,61 @@ struct ProgressScreen: View {
                 }
             }
         )
+    }
+
+    private func pointsBreakdownRow(record: DailyVitalityRecord) -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                stepsBreakdownPill(steps: record.steps)
+                breakdownPill(
+                    title: preferences.t("vitality.stepPoints"),
+                    value: record.stepPoints,
+                    color: .teal
+                )
+                breakdownPill(
+                    title: preferences.t("vitality.workoutPoints"),
+                    value: record.workoutPoints,
+                    color: .orange
+                )
+                if record.sleepPoints > 0 {
+                    breakdownPill(
+                        title: preferences.t("vitality.sleepPoints"),
+                        value: record.sleepPoints,
+                        color: .purple
+                    )
+                }
+            }
+        }
+    }
+
+    private func stepsBreakdownPill(steps: Int) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(preferences.t("vitality.highlight.steps"))
+                .themeFont(.caption2)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+            Text(steps.formatted(.number.grouping(.automatic)))
+                .themeFont(.subheadline, weight: .bold)
+                .foregroundStyle(.green)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .background(Color.green.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+    }
+
+    private func breakdownPill(title: String, value: Int, color: Color) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+                .themeFont(.caption2)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+            Text("+\(value)")
+                .themeFont(.subheadline, weight: .bold)
+                .foregroundStyle(color)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .background(color.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 
     private func sleepTierRow(record: DailyVitalityRecord) -> some View {
@@ -311,6 +377,9 @@ struct ProgressScreen: View {
 
     private var goalSnapshotCard: some View {
         let snapshot = viewModel.vitalityGoalSnapshot
+        let stretchTarget = viewModel.mascotId == "fins"
+            ? Int((Double(snapshot.monthlyTarget) * 1.15).rounded())
+            : nil
         return Card {
             VStack(alignment: .leading, spacing: 12) {
                 Text(preferences.t("goals.snapshotTitle"))
@@ -319,6 +388,14 @@ struct ProgressScreen: View {
                     goalPill(preferences.t("goals.weekly"), percent: snapshot.weeklyPercent)
                     goalPill(preferences.t("goals.monthly"), percent: snapshot.monthlyPercent)
                     goalPill(preferences.t("goals.yearly"), percent: snapshot.yearlyPercent)
+                }
+                if let stretchTarget, snapshot.monthlyPercent < 100 {
+                    Text(preferences.t("progress.overviewStretchTarget", params: [
+                        "target": String(stretchTarget),
+                        "current": String(snapshot.monthlyEarned)
+                    ]))
+                    .themeFont(.caption)
+                    .foregroundStyle(.secondary)
                 }
             }
         }
@@ -355,17 +432,5 @@ struct ProgressScreen: View {
                 .frame(height: 180)
             }
         }
-    }
-
-    private func metricBlock(_ title: String, value: String, color: Color) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title.uppercased())
-                .themeFont(.caption2)
-                .foregroundStyle(.secondary)
-            Text(value)
-                .themeFont(.subheadline, weight: .bold)
-                .foregroundStyle(color)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

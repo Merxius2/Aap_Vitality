@@ -107,6 +107,7 @@ final class VitalityViewModel: ObservableObject {
             profile: profile,
             records: dailyRecords,
             goalSnapshot: vitalityGoalSnapshot,
+            goalState: goalState,
             t: t,
             mascotId: mascotId
         )
