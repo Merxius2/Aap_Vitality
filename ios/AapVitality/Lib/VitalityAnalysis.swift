@@ -6,6 +6,7 @@ enum VitalityAnalysis {
         records: [DailyVitalityRecord],
         goalSnapshot: VitalityGoalSnapshot,
         goalState: VitalityGoalState,
+        bodyMetricsEntries: [BodyMetricsEntry] = [],
         t: TranslationService,
         mascotId: String
     ) -> String {
@@ -25,6 +26,15 @@ enum VitalityAnalysis {
             mascotId: mascotId
         ) {
             parts.append(MascotMemory.message(for: memoryWin, t: t))
+        }
+
+        if profile.bodyProgressEnabled,
+           let bodyMessage = BodyProgress.coachMessage(
+               snapshot: BodyProgress.snapshot(entries: bodyMetricsEntries),
+               mascotId: mascotId,
+               t: t
+           ) {
+            parts.append(bodyMessage)
         }
 
         if let today {

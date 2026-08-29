@@ -97,6 +97,29 @@
       "weekStep5k": "{count} weken op rij met een 5k-stappendag.",
       "dayStep10k": "{count} dagen op rij met 10k+ stappen!",
       "weeklyGoal": "{count} weken op rij je weekdoel gehaald!"
+    },
+    "body": {
+      "title": "Lichaamsvoortgang",
+      "subtitle": "Gewicht, BMI en vetpercentage uit Apple Gezondheid — los van activiteitspunten.",
+      "empty": "Nog geen lichaamsmetingen gesynchroniseerd.",
+      "emptyHint": "Log gewicht in Apple Gezondheid (of via een slimme weegschaal) en synchroniseer opnieuw.",
+      "weight": "Gewicht",
+      "bmi": "BMI",
+      "bodyFat": "Vetpercentage",
+      "weightValue": "{value} kg",
+      "trendTitle": "12-weken gewichtstrend",
+      "weightAxis": "kg",
+      "trendDown": "{change} minder over 8 weken",
+      "trendUp": "{change} meer over 8 weken",
+      "disclaimer": "Trends gebruiken weekgemiddelden. Geen medisch advies — raadpleeg een professional voor gezondheidsbeslissingen.",
+      "challengesTitle": "Lichaamsvoortgang-uitdagingen",
+      "challengesSubtitle": "Consistentie en positieve trends — geen dagelijkse weging voor punten.",
+      "trendComplete": "Trend behaald",
+      "trendIncomplete": "Bezig",
+      "memoryWeightTrend": "{change} minder over 8 weken én actief gebleven — mooie combo!",
+      "memoryBodyFatTrend": "Vetpercentage {change}% lager over 8 weken — sterke voortgang.",
+      "memoryWeighIns": "{count} wegingen deze maand — consistentie telt.",
+      "memoryWeighInsFlip": "{count} wegingen deze maand — fijn dat je blijft meten!"
     }
   },
   "records": {
@@ -153,7 +176,8 @@
       "special": "Speciaal",
       "steps": "Stappen",
       "workout": "Workouts",
-      "goals": "Doelen"
+      "goals": "Doelen",
+      "body": "Lichaamsvoortgang"
     },
     "seasons": {
       "summer": "Zomer",
@@ -281,6 +305,22 @@
       "sleep_streak_3": {
         "title": "Slaapreeks",
         "desc": "Log 3 nachten op rij 7+ uur slaap."
+      },
+      "body_first_log": {
+        "title": "Eerste weging",
+        "desc": "Synchroniseer je eerste lichaamsmeting uit Apple Gezondheid."
+      },
+      "body_log_streak_4": {
+        "title": "Consistente tracker",
+        "desc": "Log 4 of meer wegingen in één maand."
+      },
+      "body_weight_trend_8w": {
+        "title": "Trendsetter",
+        "desc": "Verlies 0,5 kg of 0,5% vetpercentage over 8 weken."
+      },
+      "body_active_balance": {
+        "title": "Actief evenwicht",
+        "desc": "Haal 2 weekdoelen terwijl je gewicht stabiel blijft of daalt."
       }
     }
   },
@@ -435,7 +475,10 @@
       "active_weeks": "Actieve weken",
       "monthly_points_bronze": "Brons tempo (50%)",
       "monthly_points_silver": "Zilver tempo (75%)",
-      "monthly_points_gold": "Goud tempo (100%)"
+      "monthly_points_gold": "Goud tempo (100%)",
+      "body_weigh_ins_bronze": "Brons consistentie (2 wegingen)",
+      "body_weigh_ins_silver": "Zilver consistentie (4 wegingen)",
+      "body_trend_gold": "Goud trend (8 weken)"
     },
     "targets": {
       "sessions": "Zwem {count} sessies deze maand",
@@ -445,7 +488,10 @@
       "activeWeeks": "Zwem in {weeks} verschillende weken",
       "monthlyPointsBronze": "Behaal {points} punten (50% van maanddoel)",
       "monthlyPointsSilver": "Behaal {points} punten (75% van maanddoel)",
-      "monthlyPointsGold": "Behaal {points} punten (100% van maanddoel)"
+      "monthlyPointsGold": "Behaal {points} punten (100% van maanddoel)",
+      "bodyWeighInsBronze": "Log {count} wegingen deze maand",
+      "bodyWeighInsSilver": "Log {count} wegingen deze maand",
+      "bodyTrendGold": "Verlies 0,5 kg of 0,5% vetpercentage over 8 weken"
     },
     "celebrationTitle": "Maandmedaille verdiend!",
     "celebrationUpgradeTitle": "Maandmedaille geüpgraded!",
@@ -596,6 +642,8 @@
     "sexMale": "Man",
     "sexFemale": "Vrouw",
     "age": "Leeftijd",
+    "bodyProgressTitle": "Lichaamsvoortgang",
+    "bodyProgressDesc": "Synchroniseer gewicht, BMI en vetpercentage uit Apple Gezondheid voor trends en uitdagingen.",
     "exportTitle": "Gegevens exporteren",
     "exportDesc": "Kopieer deze string om alle sessies en grafieken te backuppen of te delen.",
     "exportButton": "Exportstring genereren",
@@ -878,6 +926,7 @@
       "goals": "Doelenpad",
       "consistency": "Consistentiepad",
       "recovery": "Herstelpad",
+      "body": "Lichaamsvoortgang-pad",
       "next": "Volgende: {medal}",
       "complete": "Pad voltooid!"
     },

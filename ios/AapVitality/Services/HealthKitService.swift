@@ -48,6 +48,15 @@ enum HealthKitService {
         if let sleep = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) {
             types.insert(sleep)
         }
+        if let bodyMass = HKQuantityType.quantityType(forIdentifier: .bodyMass) {
+            types.insert(bodyMass)
+        }
+        if let height = HKQuantityType.quantityType(forIdentifier: .height) {
+            types.insert(height)
+        }
+        if let bodyFat = HKQuantityType.quantityType(forIdentifier: .bodyFatPercentage) {
+            types.insert(bodyFat)
+        }
         return types
     }()
 
@@ -206,6 +215,87 @@ enum HealthKitService {
                     guard minutes > 0 else { continue }
                     let day = dateKeyFormatter.string(from: sample.endDate)
                     result[day, default: 0] += minutes
+                }
+                continuation.resume(returning: result)
+            }
+            store.execute(query)
+        }
+    }
+
+    static func fetchDailyBodyMass(since: Date) async throws -> [String: Double] {
+        guard isAvailable else { throw HealthKitServiceError.unavailable }
+        guard let bodyMassType = HKQuantityType.quantityType(forIdentifier: .bodyMass) else { return [:] }
+        return try await fetchLatestDailyQuantity(
+            type: bodyMassType,
+            unit: .gramUnit(with: .kilo),
+            since: since,
+            scalePercentTo100: false
+        )
+    }
+
+    static func fetchDailyBodyFat(since: Date) async throws -> [String: Double] {
+        guard isAvailable else { throw HealthKitServiceError.unavailable }
+        guard let bodyFatType = HKQuantityType.quantityType(forIdentifier: .bodyFatPercentage) else { return [:] }
+        return try await fetchLatestDailyQuantity(
+            type: bodyFatType,
+            unit: .percent(),
+            since: since,
+            scalePercentTo100: true
+        )
+    }
+
+    static func fetchLatestHeightCm() async throws -> Double? {
+        guard isAvailable else { throw HealthKitServiceError.unavailable }
+        guard let heightType = HKQuantityType.quantityType(forIdentifier: .height) else { return nil }
+
+        return try await withCheckedThrowingContinuation { continuation in
+            let sort = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+            let query = HKSampleQuery(
+                sampleType: heightType,
+                predicate: nil,
+                limit: 1,
+                sortDescriptors: [sort]
+            ) { _, samples, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                guard let sample = (samples as? [HKQuantitySample])?.first else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+                let meters = sample.quantity.doubleValue(for: .meter())
+                continuation.resume(returning: meters * 100)
+            }
+            store.execute(query)
+        }
+    }
+
+    private static func fetchLatestDailyQuantity(
+        type: HKQuantityType,
+        unit: HKUnit,
+        since: Date,
+        scalePercentTo100: Bool
+    ) async throws -> [String: Double] {
+        try await withCheckedThrowingContinuation { continuation in
+            let predicate = HKQuery.predicateForSamples(withStart: since, end: Date(), options: .strictStartDate)
+            let sort = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: true)
+            let query = HKSampleQuery(
+                sampleType: type,
+                predicate: predicate,
+                limit: HKObjectQueryNoLimit,
+                sortDescriptors: [sort]
+            ) { _, samples, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                var result: [String: Double] = [:]
+                for sample in (samples as? [HKQuantitySample]) ?? [] {
+                    let day = dateKeyFormatter.string(from: sample.endDate)
+                    let raw = sample.quantity.doubleValue(for: unit)
+                    let value = scalePercentTo100 ? raw * 100 : raw
+                    result[day] = value
                 }
                 continuation.resume(returning: result)
             }

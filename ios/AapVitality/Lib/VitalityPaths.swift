@@ -33,6 +33,11 @@ enum VitalityPaths {
             titleKey: "vitality.paths.recovery",
             medalIds: ["sleep_7h", "sleep_8h", "sleep_streak_3", "comeback", "walk_and_work"]
         ),
+        PathDefinition(
+            id: "body_path",
+            titleKey: "vitality.paths.body",
+            medalIds: ["body_first_log", "body_log_streak_4", "body_weight_trend_8w", "body_active_balance"]
+        ),
     ]
 
     static func progress(for medals: [EvaluatedMedal]) -> [AchievementPathProgress] {
