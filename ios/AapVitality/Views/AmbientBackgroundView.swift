@@ -578,6 +578,17 @@ enum AmbientPresets {
         (0.56, 21, 8.0, 16, Color(hex: "#34D399")),
     ]
 
+    static let glowPositions: [(startYRatio: CGFloat, size: CGFloat, delay: Double, duration: Double, opacity: Double)] = [
+        (0.20, 10, 0, 18, 0.35),
+        (0.35, 14, 3.0, 20, 0.28),
+        (0.50, 8, 1.5, 16, 0.32),
+        (0.65, 12, 5.0, 22, 0.25),
+        (0.28, 9, 7.0, 17, 0.30),
+        (0.78, 11, 2.5, 19, 0.27),
+        (0.42, 13, 9.0, 21, 0.24),
+        (0.58, 10, 4.5, 18, 0.29),
+    ]
+
     static func preset(for id: String) -> AmbientPreset? {
         switch id {
         case "ambient:neon-lagoon":
@@ -805,6 +816,7 @@ struct AppBackdropView: View {
                     .id(activeAmbient ?? "none")
                 AmbientBubbleOverlayView(activeAmbient: activeAmbient)
                 AmbientLeafOverlayView(activeAmbient: activeAmbient)
+                AmbientGlowOverlayView(activeAmbient: activeAmbient)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
