@@ -3,9 +3,11 @@ import Foundation
 struct BodyProgressSnapshot: Equatable {
     var latestWeightKg: Double?
     var latestBodyFatPercent: Double?
+    var latestMusclePercent: Double?
     var latestBMI: Double?
     var weightChange8WeeksKg: Double?
     var bodyFatChange8WeeksPercent: Double?
+    var muscleChange8WeeksPercent: Double?
     var weighInsThisMonth: Int
     var weeklyTrend: [BodyProgressWeeklyPoint]
 }
@@ -16,6 +18,7 @@ struct BodyProgressWeeklyPoint: Equatable, Identifiable {
     var label: String
     var averageWeightKg: Double
     var averageBodyFatPercent: Double?
+    var averageMusclePercent: Double?
 }
 
 enum BodyProgress {
@@ -23,6 +26,7 @@ enum BodyProgress {
     static let minimumTrendSpanDays = 14
     static let weightTrendTargetKg = 0.5
     static let bodyFatTrendTargetPercent = 0.5
+    static let muscleTrendTargetPercent = 0.5
 
     static func bmi(weightKg: Double, heightCm: Double) -> Double {
         let meters = heightCm / 100
@@ -30,26 +34,41 @@ enum BodyProgress {
         return weightKg / (meters * meters)
     }
 
+    static func musclePercent(leanBodyMassKg: Double, weightKg: Double) -> Double? {
+        guard weightKg > 0, leanBodyMassKg > 0 else { return nil }
+        return min(100, max(0, (leanBodyMassKg / weightKg) * 100))
+    }
+
     static func mergeEntries(
         existing: [BodyMetricsEntry],
         weightByDate: [String: Double],
         bodyFatByDate: [String: Double],
+        leanBodyMassByDate: [String: Double],
         heightCm: Double?
     ) -> [BodyMetricsEntry] {
         var byDate = Dictionary(uniqueKeysWithValues: existing.map { ($0.date, $0) })
-        let allDates = Set(weightByDate.keys).union(bodyFatByDate.keys).union(byDate.keys)
+        let allDates = Set(weightByDate.keys)
+            .union(bodyFatByDate.keys)
+            .union(leanBodyMassByDate.keys)
+            .union(byDate.keys)
 
         for date in allDates {
             let previous = byDate[date]
             guard let weight = weightByDate[date] ?? previous?.weightKg, weight > 0 else { continue }
             let bodyFat = bodyFatByDate[date] ?? previous?.bodyFatPercent
             let height = heightCm ?? previous?.heightCm
+            let muscle = resolvedMusclePercent(
+                weightKg: weight,
+                leanBodyMassKg: leanBodyMassByDate[date],
+                previous: previous?.musclePercent
+            )
             byDate[date] = BodyMetricsEntry(
                 id: date,
                 date: date,
                 weightKg: weight,
                 heightCm: height,
-                bodyFatPercent: bodyFat
+                bodyFatPercent: bodyFat,
+                musclePercent: muscle
             )
         }
 
@@ -88,13 +107,25 @@ enum BodyProgress {
         overDays: Int = trendWindowDays,
         referenceDate: Date = Date()
     ) -> Double? {
-        let window = entriesInWindow(entries, overDays: overDays, referenceDate: referenceDate)
-            .filter { $0.bodyFatPercent != nil }
-        guard let first = window.first, let last = window.last,
-              let firstFat = first.bodyFatPercent, let lastFat = last.bodyFatPercent,
-              first.date != last.date else { return nil }
-        guard daySpan(from: first.date, to: last.date) >= minimumTrendSpanDays else { return nil }
-        return lastFat - firstFat
+        metricChange(
+            entries: entries,
+            overDays: overDays,
+            referenceDate: referenceDate,
+            value: { $0.bodyFatPercent }
+        )
+    }
+
+    static func muscleChangePercent(
+        entries: [BodyMetricsEntry],
+        overDays: Int = trendWindowDays,
+        referenceDate: Date = Date()
+    ) -> Double? {
+        metricChange(
+            entries: entries,
+            overDays: overDays,
+            referenceDate: referenceDate,
+            value: { $0.musclePercent }
+        )
     }
 
     static func hasPositiveTrend(
@@ -109,6 +140,10 @@ enum BodyProgress {
            bodyFatChange <= -bodyFatTrendTargetPercent {
             return true
         }
+        if let muscleChange = muscleChangePercent(entries: entries, referenceDate: referenceDate),
+           muscleChange >= muscleTrendTargetPercent {
+            return true
+        }
         return false
     }
 
@@ -119,7 +154,8 @@ enum BodyProgress {
         referenceDate: Date = Date()
     ) -> Int {
         let weightChange = weightChangeKg(entries: entries, referenceDate: referenceDate) ?? 0
-        guard weightChange <= 0 else { return 0 }
+        let muscleChange = muscleChangePercent(entries: entries, referenceDate: referenceDate) ?? 0
+        guard weightChange <= 0 || muscleChange >= muscleTrendTargetPercent else { return 0 }
 
         let calendar = Calendar.current
         var count = 0
@@ -154,12 +190,15 @@ enum BodyProgress {
                 let avgWeight = weekEntries.reduce(0.0) { $0 + $1.weightKg } / Double(weekEntries.count)
                 let fatEntries = weekEntries.compactMap(\.bodyFatPercent)
                 let avgFat = fatEntries.isEmpty ? nil : fatEntries.reduce(0, +) / Double(fatEntries.count)
+                let muscleEntries = weekEntries.compactMap(\.musclePercent)
+                let avgMuscle = muscleEntries.isEmpty ? nil : muscleEntries.reduce(0, +) / Double(muscleEntries.count)
                 points.append(
                     BodyProgressWeeklyPoint(
                         weekKey: weekKey,
                         label: weekLabel(for: cursor),
                         averageWeightKg: avgWeight,
-                        averageBodyFatPercent: avgFat
+                        averageBodyFatPercent: avgFat,
+                        averageMusclePercent: avgMuscle
                     )
                 )
             }
@@ -179,9 +218,11 @@ enum BodyProgress {
         return BodyProgressSnapshot(
             latestWeightKg: latest?.weightKg,
             latestBodyFatPercent: latest?.bodyFatPercent,
+            latestMusclePercent: latest?.musclePercent,
             latestBMI: latest?.bmi,
             weightChange8WeeksKg: weightChangeKg(entries: entries, referenceDate: referenceDate),
             bodyFatChange8WeeksPercent: bodyFatChangePercent(entries: entries, referenceDate: referenceDate),
+            muscleChange8WeeksPercent: muscleChangePercent(entries: entries, referenceDate: referenceDate),
             weighInsThisMonth: weighIns(in: monthKey, entries: entries),
             weeklyTrend: weeklyTrendPoints(entries: entries, referenceDate: referenceDate)
         )
@@ -196,12 +237,6 @@ enum BodyProgress {
     ) -> MonthlyChallengeState {
         let weighIns = weighIns(in: monthKey, entries: entries)
         let trendMet = hasPositiveTrend(entries: entries, referenceDate: referenceDate)
-        let activeWeeks = activeBalanceWeeks(
-            entries: entries,
-            records: records,
-            goalState: goalState,
-            referenceDate: referenceDate
-        )
 
         let challenges = [
             MonthlyChallenge(
@@ -266,6 +301,11 @@ enum BodyProgress {
                 "change": String(format: "%.1f", abs(change))
             ])
         }
+        if let change = snapshot.muscleChange8WeeksPercent, change >= muscleTrendTargetPercent {
+            return t.t("progress.body.memoryMuscleTrend", params: [
+                "change": String(format: "%.1f", change)
+            ])
+        }
         if snapshot.weighInsThisMonth >= 4 {
             return t.t("progress.body.memoryWeighIns", params: [
                 "count": String(snapshot.weighInsThisMonth)
@@ -285,6 +325,33 @@ enum BodyProgress {
 
     static func formatBMI(_ bmi: Double) -> String {
         String(format: "%.1f", bmi)
+    }
+
+    private static func resolvedMusclePercent(
+        weightKg: Double,
+        leanBodyMassKg: Double?,
+        previous: Double?
+    ) -> Double? {
+        if let leanBodyMassKg, let computed = musclePercent(leanBodyMassKg: leanBodyMassKg, weightKg: weightKg) {
+            return computed
+        }
+        return previous
+    }
+
+    private static func metricChange(
+        entries: [BodyMetricsEntry],
+        overDays: Int,
+        referenceDate: Date,
+        value: (BodyMetricsEntry) -> Double?
+    ) -> Double? {
+        let window = entriesInWindow(entries, overDays: overDays, referenceDate: referenceDate)
+            .compactMap { entry -> (String, Double)? in
+                guard let metric = value(entry) else { return nil }
+                return (entry.date, metric)
+            }
+        guard let first = window.first, let last = window.last, first.0 != last.0 else { return nil }
+        guard daySpan(from: first.0, to: last.0) >= minimumTrendSpanDays else { return nil }
+        return last.1 - first.1
     }
 
     private static func weekStart(for date: Date, calendar: Calendar) -> Date {

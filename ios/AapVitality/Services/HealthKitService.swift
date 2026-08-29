@@ -57,6 +57,9 @@ enum HealthKitService {
         if let bodyFat = HKQuantityType.quantityType(forIdentifier: .bodyFatPercentage) {
             types.insert(bodyFat)
         }
+        if let leanMass = HKQuantityType.quantityType(forIdentifier: .leanBodyMass) {
+            types.insert(leanMass)
+        }
         return types
     }()
 
@@ -241,6 +244,17 @@ enum HealthKitService {
             unit: .percent(),
             since: since,
             scalePercentTo100: true
+        )
+    }
+
+    static func fetchDailyLeanBodyMass(since: Date) async throws -> [String: Double] {
+        guard isAvailable else { throw HealthKitServiceError.unavailable }
+        guard let leanType = HKQuantityType.quantityType(forIdentifier: .leanBodyMass) else { return [:] }
+        return try await fetchLatestDailyQuantity(
+            type: leanType,
+            unit: .gramUnit(with: .kilo),
+            since: since,
+            scalePercentTo100: false
         )
     }
 
