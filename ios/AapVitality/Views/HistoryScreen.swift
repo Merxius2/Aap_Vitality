@@ -64,6 +64,7 @@ struct HistoryScreen: View {
                 }
                 .padding()
             }
+            .tabBarScrollInset()
             .toolbar(.hidden, for: .navigationBar)
             .confirmationDialog(
                 preferences.t("history.deleteConfirm"),

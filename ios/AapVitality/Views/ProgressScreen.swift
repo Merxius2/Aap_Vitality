@@ -25,6 +25,7 @@ struct ProgressScreen: View {
                 .padding()
                 .frame(maxWidth: .infinity)
             }
+            .tabBarScrollInset()
             .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
             .toolbar(.hidden, for: .navigationBar)
             .themedPageBackground()

@@ -8,6 +8,7 @@ enum VitalityPoints {
     static let minWorkoutMinutes = 30
     static let baseWorkoutPoints = 20
     static let pointsPerFiveExtraMinutes = 2
+    static let zoneBonusPerMinute = [1, 2, 4, 6, 8]
 
     static func stepPoints(for steps: Int) -> (points: Int, tiersReached: [Int]) {
         var points = 0

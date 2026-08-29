@@ -15,18 +15,18 @@ struct VitalityGoalsScreen: View {
                         profileRequiredCard
                     } else {
                         goalCard(
-                            title: preferences.t("goals.monthly"),
-                            earned: snapshot.monthlyEarned,
-                            target: snapshot.monthlyTarget,
-                            percent: snapshot.monthlyPercent,
-                            color: Color("BrandBlue")
-                        )
-                        goalCard(
                             title: preferences.t("goals.weekly"),
                             earned: snapshot.weeklyEarned,
                             target: snapshot.weeklyTarget,
                             percent: snapshot.weeklyPercent,
                             color: .teal
+                        )
+                        goalCard(
+                            title: preferences.t("goals.monthly"),
+                            earned: snapshot.monthlyEarned,
+                            target: snapshot.monthlyTarget,
+                            percent: snapshot.monthlyPercent,
+                            color: Color("BrandBlue")
                         )
                         goalCard(
                             title: preferences.t("goals.yearly"),
@@ -49,20 +49,12 @@ struct VitalityGoalsScreen: View {
                             }
                         }
 
-                        Card {
-                            VStack(alignment: .leading, spacing: 10) {
-                                Text(preferences.t("goals.scoringTitle"))
-                                    .themeFont(.headline, weight: .semibold)
-                                Label(preferences.t("goals.scoringSteps"), systemImage: "figure.walk")
-                                Label(preferences.t("goals.scoringWorkouts"), systemImage: "heart.fill")
-                                Label(preferences.t("goals.scoringZones"), systemImage: "waveform.path.ecg")
-                            }
-                            .themeFont(.subheadline)
-                        }
+                        VitalityScoringGuideView()
                     }
                 }
                 .padding()
             }
+            .tabBarScrollInset()
             .toolbar(.hidden, for: .navigationBar)
             .themedPageBackground()
         }

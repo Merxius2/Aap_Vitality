@@ -59,6 +59,10 @@ enum VitalityHRZones {
     }
 
     static func zoneBonusPoints(_ zones: HRZoneMinutes) -> Int {
-        zones.zone1 * 1 + zones.zone2 * 2 + zones.zone3 * 4 + zones.zone4 * 6 + zones.zone5 * 8
+        zones.zone1 * VitalityPoints.zoneBonusPerMinute[0]
+            + zones.zone2 * VitalityPoints.zoneBonusPerMinute[1]
+            + zones.zone3 * VitalityPoints.zoneBonusPerMinute[2]
+            + zones.zone4 * VitalityPoints.zoneBonusPerMinute[3]
+            + zones.zone5 * VitalityPoints.zoneBonusPerMinute[4]
     }
 }

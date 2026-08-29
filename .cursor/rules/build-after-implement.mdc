@@ -17,6 +17,12 @@ xcodebuild -scheme AapVitality -destination 'generic/platform=iOS' build
 
 Request unrestricted permissions when needed so Xcode/simulator services work.
 
+## CLI scope
+
+- **Build only** — do not terminate, install, launch, or run the app on a simulator/device via CLI unless the user explicitly asks.
+- Do not use `simctl terminate`, `simctl install`, `simctl launch`, or `xcodebuild` with a run/test action by default.
+- The user runs and tests in Xcode or the Simulator themselves.
+
 ## When to run
 
 - After implementing or fixing Swift/iOS code

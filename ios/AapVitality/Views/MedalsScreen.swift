@@ -36,6 +36,7 @@ struct MedalsScreen: View {
                 }
                 .padding()
             }
+            .tabBarScrollInset()
             .toolbar(.hidden, for: .navigationBar)
             .themedPageBackground()
         }

@@ -18,15 +18,17 @@ struct SettingsScreen: View {
         )
     }
 
-    private var tabBarScrollInset: CGFloat {
-        guard embedded else { return 0 }
-        return TabBarLayout.totalHeight(for: profile.tabBar) + TabBarLayout.bottomPadding + 24
+    private var canAccessSecretSettings: Bool {
+        viewModel.profile.name.trimmingCharacters(in: .whitespacesAndNewlines) == "Aap"
     }
 
     var body: some View {
         NavigationStack {
             Form {
                 profileSection
+                if canAccessSecretSettings {
+                    secretSettingsSection
+                }
                 mascotSection
                 languageSection
                 themeSection
@@ -36,7 +38,7 @@ struct SettingsScreen: View {
                 uploadSection
                 ambientSection
             }
-            .safeAreaPadding(.bottom, tabBarScrollInset)
+            .tabBarScrollInset(enabled: embedded)
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -47,8 +49,10 @@ struct SettingsScreen: View {
                 }
             }
             .toolbar(embedded ? .hidden : .automatic, for: .navigationBar)
-            .onTapGesture(count: 3) {
-                showSecretSettings = true
+            .onChange(of: viewModel.profile.name) { _, newValue in
+                if newValue.trimmingCharacters(in: .whitespacesAndNewlines) == "Aap" {
+                    showSecretSettings = true
+                }
             }
             .sheet(isPresented: $showSecretSettings) {
                 SecretSettingsSheet()
@@ -69,6 +73,15 @@ struct SettingsScreen: View {
             .themedListRowBackground()
             Stepper(value: ageBinding, in: 10...99) {
                 Text(preferences.t("settings.age") + ": \(viewModel.profile.age)")
+            }
+            .themedListRowBackground()
+        }
+    }
+
+    private var secretSettingsSection: some View {
+        Section {
+            Button(preferences.t("settings.secretTitle")) {
+                showSecretSettings = true
             }
             .themedListRowBackground()
         }

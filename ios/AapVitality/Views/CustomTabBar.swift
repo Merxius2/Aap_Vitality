@@ -399,3 +399,28 @@ private struct ClassicFABShadow: ViewModifier {
         }
     }
 }
+
+struct TabBarScrollInsetModifier: ViewModifier {
+    @EnvironmentObject private var preferences: UserPreferencesService
+    @Environment(\.appIsDark) private var appIsDark
+    var enabled: Bool = true
+
+    private var inset: CGFloat {
+        guard enabled else { return 0 }
+        let profile = ThemeVisualProfiles.profile(
+            code: preferences.themeCode,
+            isDark: appIsDark
+        )
+        return TabBarLayout.totalHeight(for: profile.tabBar) + TabBarLayout.bottomPadding + 24
+    }
+
+    func body(content: Content) -> some View {
+        content.safeAreaPadding(.bottom, inset)
+    }
+}
+
+extension View {
+    func tabBarScrollInset(enabled: Bool = true) -> some View {
+        modifier(TabBarScrollInsetModifier(enabled: enabled))
+    }
+}
