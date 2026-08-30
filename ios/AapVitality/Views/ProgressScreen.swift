@@ -20,9 +20,7 @@ struct ProgressScreen: View {
                         }
                         overviewCard
                         levelAndStreakCard
-                        MonthlyChallengesCardView()
                         workoutBadgesCard
-                        goalSnapshotCard
                         recentPointsChart
                     }
                 }
@@ -234,6 +232,11 @@ struct ProgressScreen: View {
     private var dailyPointsHeaderCard: some View {
         let record = viewModel.todayVitalityRecord ?? viewModel.dailyRecords.max(by: { $0.date < $1.date })
         guard let record else { return AnyView(EmptyView()) }
+        let dailyPointsTarget = VitalityGoals.computeDailyTarget(
+            weeklyTarget: viewModel.vitalityGoalSnapshot.weeklyTarget,
+            profile: viewModel.profile,
+            intensity: MascotConstants.gameplay(viewModel.mascotId).challengeIntensity
+        )
 
         return AnyView(
             Card {
@@ -273,9 +276,27 @@ struct ProgressScreen: View {
                         }
                     )
 
-                    if record.sleepMinutes > 0 {
-                        sleepTierRow(record: record)
-                    }
+                    SleepMilestoneProgressBar(
+                        minutes: record.sleepMinutes,
+                        title: preferences.t("vitality.sleepGoalTitle"),
+                        hoursLabel: { hours in
+                            preferences.t("vitality.sleepGoalHours", params: ["hours": String(hours)])
+                        },
+                        pointsLabel: { points in
+                            preferences.t("vitality.stepsGoalPoints", params: ["points": String(points)])
+                        },
+                        durationText: sleepDurationText(record.sleepMinutes)
+                    )
+
+                    DailyPointsProgressBar(
+                        points: record.totalPoints,
+                        dailyTarget: dailyPointsTarget,
+                        title: preferences.t("vitality.pointsGoalTitle"),
+                        halfwayLabel: preferences.t("vitality.pointsGoalHalfway"),
+                        goalLabel: preferences.t("vitality.pointsGoalTarget"),
+                        stretchLabel: preferences.t("vitality.pointsGoalStretch")
+                    )
+
                     dailyBadgesRow(record: record)
                 }
             }
@@ -337,26 +358,16 @@ struct ProgressScreen: View {
         .background(color.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 
-    private func sleepTierRow(record: DailyVitalityRecord) -> some View {
-        HStack(spacing: 8) {
-            let hours7 = record.sleepMinutes >= 420
-            let hours8 = record.sleepMinutes >= 480
-            Text("7h")
-                .themeFont(.caption2, weight: .semibold)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(hours7 ? Color.purple.opacity(0.18) : Color.secondary.opacity(0.12), in: Capsule())
-                .foregroundStyle(hours7 ? .purple : .secondary)
-            Text("8h")
-                .themeFont(.caption2, weight: .semibold)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(hours8 ? Color.purple.opacity(0.18) : Color.secondary.opacity(0.12), in: Capsule())
-                .foregroundStyle(hours8 ? .purple : .secondary)
-            Text(preferences.t("vitality.sleepMinutes", params: ["minutes": String(record.sleepMinutes)]))
-                .themeFont(.caption2)
-                .foregroundStyle(.secondary)
+    private func sleepDurationText(_ minutes: Int) -> String {
+        let hours = minutes / 60
+        let remainder = minutes % 60
+        if remainder == 0 {
+            return preferences.t("vitality.sleepDurationH", params: ["hours": String(hours)])
         }
+        return preferences.t("vitality.sleepDurationHm", params: [
+            "hours": String(hours),
+            "minutes": String(remainder)
+        ])
     }
 
     @ViewBuilder
@@ -382,53 +393,29 @@ struct ProgressScreen: View {
         }
     }
 
-    private var goalSnapshotCard: some View {
-        let snapshot = viewModel.vitalityGoalSnapshot
-        let stretchTarget = viewModel.mascotId == "fins"
-            ? Int((Double(snapshot.monthlyTarget) * 1.15).rounded())
-            : nil
-        return Card {
-            VStack(alignment: .leading, spacing: 12) {
-                Text(preferences.t("goals.snapshotTitle"))
-                    .themeFont(.headline, weight: .semibold)
-                HStack {
-                    goalPill(preferences.t("goals.weekly"), percent: snapshot.weeklyPercent)
-                    goalPill(preferences.t("goals.monthly"), percent: snapshot.monthlyPercent)
-                    goalPill(preferences.t("goals.yearly"), percent: snapshot.yearlyPercent)
-                }
-                if let stretchTarget, snapshot.monthlyPercent < 100 {
-                    Text(preferences.t("progress.overviewStretchTarget", params: [
-                        "target": String(stretchTarget),
-                        "current": String(snapshot.monthlyEarned)
-                    ]))
-                    .themeFont(.caption)
-                    .foregroundStyle(.secondary)
-                }
-            }
-        }
-    }
-
-    private func goalPill(_ title: String, percent: Int) -> some View {
-        VStack(spacing: 4) {
-            Text(title)
-                .themeFont(.caption2)
-                .foregroundStyle(.secondary)
-            Text("\(percent)%")
-                .themeFont(.headline, weight: .bold)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 8)
-        .background(Color("BrandBlue").opacity(0.08), in: RoundedRectangle(cornerRadius: 10))
-    }
-
     private var recentPointsChart: some View {
-        let records = viewModel.dailyRecords.suffix(14)
+        let records = Array(viewModel.dailyRecords.suffix(14))
+        let average: Double = records.isEmpty
+            ? 0
+            : Double(records.reduce(0) { $0 + $1.totalPoints }) / Double(records.count)
         return Card {
             VStack(alignment: .leading, spacing: 12) {
                 Text(preferences.t("vitality.recentPoints"))
                     .themeFont(.headline, weight: .semibold)
                 Chart {
-                    ForEach(Array(records), id: \.id) { record in
+                    if !records.isEmpty {
+                        RuleMark(y: .value("Average", average))
+                            .foregroundStyle(Color.orange.opacity(0.85))
+                            .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [5, 4]))
+                            .annotation(position: .top, alignment: .trailing) {
+                                Text(preferences.t("vitality.recentPointsAverage", params: [
+                                    "points": String(Int(average.rounded()))
+                                ]))
+                                .themeFont(.caption2, weight: .semibold)
+                                .foregroundStyle(.orange)
+                            }
+                    }
+                    ForEach(records, id: \.id) { record in
                         BarMark(
                             x: .value("Date", SwimFormatters.formatDateShort(record.date)),
                             y: .value("Points", record.totalPoints)

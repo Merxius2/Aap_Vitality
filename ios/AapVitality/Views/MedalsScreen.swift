@@ -3,35 +3,63 @@ import SwiftUI
 struct MedalsScreen: View {
     @EnvironmentObject private var viewModel: VitalityViewModel
     @EnvironmentObject private var preferences: UserPreferencesService
-    @Environment(\.openUpload) private var openUpload
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
+    var body: some View {
+        MedalsScreenBody(
+            medals: viewModel.evaluatedMedals,
+            paths: viewModel.achievementPathProgress,
+            hasRecords: !viewModel.dailyRecords.isEmpty,
+            language: preferences.language,
+            useWideGrid: horizontalSizeClass == .regular
+        )
+        .equatable()
+    }
+}
+
+private struct MedalsScreenBody: View, Equatable {
+    @EnvironmentObject private var viewModel: VitalityViewModel
+    @EnvironmentObject private var preferences: UserPreferencesService
+    @Environment(\.openUpload) private var openUpload
+
+    let medals: [EvaluatedMedal]
+    let paths: [AchievementPathProgress]
+    let hasRecords: Bool
+    let language: String
+    let useWideGrid: Bool
+
+    static func == (lhs: MedalsScreenBody, rhs: MedalsScreenBody) -> Bool {
+        lhs.medals == rhs.medals
+            && lhs.paths == rhs.paths
+            && lhs.hasRecords == rhs.hasRecords
+            && lhs.language == rhs.language
+            && lhs.useWideGrid == rhs.useWideGrid
+    }
+
     private var medalGridColumns: [GridItem] {
-        horizontalSizeClass == .regular
+        useWideGrid
             ? [GridItem(.flexible()), GridItem(.flexible())]
             : [GridItem(.flexible())]
     }
 
     var body: some View {
-        let medals = viewModel.evaluatedMedals
-
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    statsCard(medals: medals)
+                LazyVStack(alignment: .leading, spacing: 16) {
+                    statsCard
 
-                    if !viewModel.dailyRecords.isEmpty {
+                    if hasRecords {
                         achievementPathsSection
                     }
 
-                    if viewModel.dailyRecords.isEmpty {
+                    if !hasRecords {
                         emptyState
                     }
 
                     MonthlyChallengeHistoryView()
 
                     ForEach(SwimMedalCopy.categories, id: \.self) { category in
-                        categorySection(category, medals: medals)
+                        categorySection(category)
                     }
                 }
                 .padding()
@@ -42,7 +70,7 @@ struct MedalsScreen: View {
         }
     }
 
-    private func statsCard(medals: [EvaluatedMedal]) -> some View {
+    private var statsCard: some View {
         let stats = SwimMedals.getMedalStats(medals)
         return Card {
             HStack {
@@ -90,7 +118,7 @@ struct MedalsScreen: View {
                 .foregroundStyle(.secondary)
                 .textCase(.uppercase)
 
-            ForEach(viewModel.achievementPathProgress) { path in
+            ForEach(paths) { path in
                 Card {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
@@ -121,29 +149,29 @@ struct MedalsScreen: View {
     }
 
     @ViewBuilder
-    private func categorySection(_ category: String, medals: [EvaluatedMedal]) -> some View {
+    private func categorySection(_ category: String) -> some View {
         let categoryMedals = medals.filter { $0.category == category }
         if !categoryMedals.isEmpty {
             let earnedInCategory = categoryMedals.filter(\.earned).count
 
             VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Text(SwimMedalCopy.categoryLabel(category, t: preferences.translations))
-                    .themeFont(.caption, weight: .bold)
-                    .foregroundStyle(.secondary)
-                    .textCase(.uppercase)
-                Spacer()
-                Text("\(earnedInCategory)/\(categoryMedals.count)")
-                    .themeFont(.caption2)
-                    .foregroundStyle(.secondary)
-            }
+                HStack {
+                    Text(SwimMedalCopy.categoryLabel(category, t: preferences.translations))
+                        .themeFont(.caption, weight: .bold)
+                        .foregroundStyle(.secondary)
+                        .textCase(.uppercase)
+                    Spacer()
+                    Text("\(earnedInCategory)/\(categoryMedals.count)")
+                        .themeFont(.caption2)
+                        .foregroundStyle(.secondary)
+                }
 
-            LazyVGrid(columns: medalGridColumns, spacing: 12) {
-                ForEach(categoryMedals) { medal in
-                    MedalCardView(medal: medal, shimmerPlus: false)
+                LazyVGrid(columns: medalGridColumns, spacing: 12) {
+                    ForEach(categoryMedals) { medal in
+                        MedalCardView(medal: medal, shimmerPlus: false)
+                    }
                 }
             }
-        }
         }
     }
 }

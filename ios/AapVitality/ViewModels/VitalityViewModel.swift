@@ -22,6 +22,8 @@ final class VitalityViewModel: ObservableObject {
     private var medalCacheMonthKey: String?
     private var cachedCurrentMonthlyChallenges: MonthlyChallengeState?
     private var cachedCurrentBodyProgressChallenges: MonthlyChallengeState?
+    private var cachedGoalSnapshot: VitalityGoalSnapshot?
+    private var cachedAchievementPathProgress: [AchievementPathProgress]?
     private var progressCacheMonthKey: String?
     private var cachedProgressOverviewMessage: String?
     private var progressOverviewCacheKey: String?
@@ -34,19 +36,25 @@ final class VitalityViewModel: ObservableObject {
     var monthlyChallengeRerolls: [String: MonthRerollEntry] { data.monthlyChallengeRerolls }
 
     var vitalityGoalSnapshot: VitalityGoalSnapshot {
-        VitalityGoals.goalSnapshot(
+        if let cached = cachedGoalSnapshot {
+            return cached
+        }
+        ensureProgressSessionCache()
+        let snapshot = VitalityGoals.goalSnapshot(
             records: dailyRecords,
             profile: profile,
             goalState: goalState,
-            intensity: MascotConstants.gameplay(mascotId).challengeIntensity
+            intensity: MascotConstants.gameplay(mascotId).challengeIntensity,
+            rerolls: monthlyChallengeRerolls,
+            bodyMetricsEntries: bodyMetricsEntries,
+            monthChallengeBonus: cachedCurrentMonthlyChallenges?.bonusPoints
         )
+        cachedGoalSnapshot = snapshot
+        return snapshot
     }
 
     var todayVitalityRecord: DailyVitalityRecord? {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        let today = formatter.string(from: Date())
+        let today = VitalityGoals.todayDateKey()
         return dailyRecords.first { $0.date == today }
     }
 
@@ -85,7 +93,12 @@ final class VitalityViewModel: ObservableObject {
     }
 
     var achievementPathProgress: [AchievementPathProgress] {
-        VitalityPaths.progress(for: evaluatedMedals)
+        if let cached = cachedAchievementPathProgress {
+            return cached
+        }
+        let paths = VitalityPaths.progress(for: evaluatedMedals)
+        cachedAchievementPathProgress = paths
+        return paths
     }
 
     var workoutTypeBadges: [WorkoutTypeBadge] {
@@ -150,7 +163,10 @@ final class VitalityViewModel: ObservableObject {
                 profile: profile,
                 goalState: goalState,
                 monthKey: monthKey,
-                intensity: intensity
+                intensity: intensity,
+                rerolls: monthlyChallengeRerolls,
+                bodyMetricsEntries: bodyMetricsEntries,
+                bodyProgressEnabled: profile.bodyProgressEnabled
             )
             return state.tier == nil ? nil : state
         }
@@ -158,6 +174,14 @@ final class VitalityViewModel: ObservableObject {
         return history
     }
 
+
+    func warmDerivedCaches() {
+        ensureProgressSessionCache()
+        _ = evaluatedMedals
+        _ = achievementPathProgress
+        _ = monthlyChallengeHistory
+        _ = vitalityGoalSnapshot
+    }
 
     init() {
         load()
@@ -271,7 +295,7 @@ final class VitalityViewModel: ObservableObject {
 
     @discardableResult
     func rerollMonthlyChallenge(monthKey: String, tierIndex: Int) -> Bool {
-        guard let next = SwimMonthlyChallenges.applyMonthlyChallengeReroll(
+        guard let next = VitalityGoals.applyMonthlyChallengeReroll(
             data: data,
             monthKey: monthKey,
             tierIndex: tierIndex,
@@ -582,7 +606,8 @@ final class VitalityViewModel: ObservableObject {
         )
         VitalityGoals.recordMonthlyCompletionIfNeeded(
             data: &data,
-            monthKey: VitalityGoals.getMonthKey()
+            monthKey: VitalityGoals.getMonthKey(),
+            intensity: MascotConstants.gameplay(mascotId).challengeIntensity
         )
         invalidateDerivedCaches()
         persist(immediate: true)
@@ -760,7 +785,8 @@ final class VitalityViewModel: ObservableObject {
             )
             VitalityGoals.recordMonthlyCompletionIfNeeded(
                 data: &data,
-                monthKey: VitalityGoals.getMonthKey()
+                monthKey: VitalityGoals.getMonthKey(),
+                intensity: MascotConstants.gameplay(mascotId).challengeIntensity
             )
             invalidateDerivedCaches()
             persist(immediate: true)
@@ -821,7 +847,10 @@ final class VitalityViewModel: ObservableObject {
             profile: profile,
             goalState: goalState,
             monthKey: monthKey,
-            intensity: intensity
+            intensity: intensity,
+            rerolls: monthlyChallengeRerolls,
+            bodyMetricsEntries: bodyMetricsEntries,
+            bodyProgressEnabled: profile.bodyProgressEnabled
         )
         if profile.bodyProgressEnabled {
             cachedCurrentBodyProgressChallenges = BodyProgress.evaluateChallenges(
@@ -853,9 +882,11 @@ final class VitalityViewModel: ObservableObject {
     private func invalidateDerivedCaches() {
         cachedEvaluatedMedals = nil
         cachedMonthlyChallengeHistory = nil
+        cachedAchievementPathProgress = nil
         medalCacheMonthKey = nil
         cachedCurrentMonthlyChallenges = nil
         cachedCurrentBodyProgressChallenges = nil
+        cachedGoalSnapshot = nil
         progressCacheMonthKey = nil
         invalidateProgressLocalizedCaches()
     }

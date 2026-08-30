@@ -5,6 +5,7 @@ struct ContentView: View {
     @EnvironmentObject private var preferences: UserPreferencesService
     @Environment(\.appIsDark) private var appIsDark
     @State private var selectedTab = 0
+    @State private var loadedTabs: Set<Int> = [0]
     @State private var showUpload = false
 
     private var appearanceKey: String {
@@ -39,20 +40,46 @@ struct ContentView: View {
 
     @ViewBuilder
     private var tabContent: some View {
-        switch selectedTab {
-        case 0:
-            ProgressScreen()
-        case 1:
-            MedalsScreen()
-        case 2:
-            SettingsScreen(embedded: true)
-        case 3:
-            VitalityGoalsScreen()
-        case 4:
-            HistoryScreen()
-        default:
-            ProgressScreen()
+        let mounted = loadedTabs.union([selectedTab])
+        ZStack {
+            if mounted.contains(0) {
+                persistedTab(0) { ProgressScreen() }
+            }
+            if mounted.contains(1) {
+                persistedTab(1) { MedalsScreen() }
+            }
+            if mounted.contains(2) {
+                persistedTab(2) { SettingsScreen(embedded: true) }
+            }
+            if mounted.contains(3) {
+                persistedTab(3) { VitalityGoalsScreen() }
+            }
+            if mounted.contains(4) {
+                persistedTab(4) { HistoryScreen() }
+            }
         }
+        .onChange(of: selectedTab) { _, tab in
+            loadedTabs.insert(tab)
+        }
+        .onAppear {
+            Task { @MainActor in
+                await Task.yield()
+                viewModel.warmDerivedCaches()
+            }
+        }
+    }
+
+    private func persistedTab<Content: View>(
+        _ tab: Int,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        let isActive = selectedTab == tab
+        return content()
+            .opacity(isActive ? 1 : 0)
+            .animation(nil, value: isActive)
+            .allowsHitTesting(isActive)
+            .accessibilityHidden(!isActive)
+            .zIndex(isActive ? 1 : 0)
     }
 }
 

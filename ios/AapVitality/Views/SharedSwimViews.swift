@@ -17,11 +17,10 @@ struct MonthlyChallengesCardView: View {
             freeLimit: gameplay.freeMonthlyRerolls
         )
 
-        Card {
-            VStack(alignment: .leading, spacing: 14) {
-                HStack(alignment: .top, spacing: 14) {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .top, spacing: 14) {
                     VStack(spacing: 8) {
-                        MonthlyMedalIconView(tier: state.tier, size: 64, muted: state.tier == nil)
+                        MonthlyMedalIconView(tier: state.tier, size: 40, muted: state.tier == nil)
                         if let tier = state.tier {
                             Text(SwimMonthlyChallengeFormatters.tierLabel(tier, t: preferences.translations))
                                 .themeFont(.caption2, weight: .semibold)
@@ -29,21 +28,21 @@ struct MonthlyChallengesCardView: View {
                                 .padding(.vertical, 4)
                                 .background(tierColor(tier).opacity(0.2), in: Capsule())
                         }
-                        HStack(spacing: 6) {
-                            ForEach(Array(tierSteps.enumerated()), id: \.offset) { index, tier in
-                                Circle()
-                                    .fill(index <= currentTierIndex ? tierColor(tier) : Color(.systemGray4))
-                                    .frame(width: 8, height: 8)
-                            }
-                        }
                     }
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(preferences.t("monthlyChallenges.title"))
-                            .themeFont(.headline, weight: .semibold)
-                        Text(SwimMonthlyChallengeFormatters.monthLabel(monthKey, locale: preferences.locale))
-                            .themeFont(.caption)
-                            .foregroundStyle(.secondary)
+                        HStack {
+                            Text(preferences.t("monthlyChallenges.title"))
+                                .themeFont(.subheadline, weight: .semibold)
+                            Spacer()
+                            HStack(spacing: 6) {
+                                ForEach(Array(tierSteps.enumerated()), id: \.offset) { index, tier in
+                                    Circle()
+                                        .fill(index <= currentTierIndex ? tierColor(tier) : Color(.systemGray4))
+                                        .frame(width: 8, height: 8)
+                                }
+                            }
+                        }
                         Text(preferences.t("monthlyChallenges.subtitle"))
                             .themeFont(.caption2)
                             .foregroundStyle(.secondary)
@@ -64,8 +63,6 @@ struct MonthlyChallengesCardView: View {
                         .themeFont(.caption2)
                         .foregroundStyle(.secondary)
                 }
-
-                Divider()
 
                 HStack(spacing: 8) {
                     ForEach(Array(tierSteps.enumerated()), id: \.offset) { index, tier in
@@ -99,7 +96,6 @@ struct MonthlyChallengesCardView: View {
                         .foregroundStyle(.red.opacity(0.85))
                 }
             }
-        }
     }
 
     @ViewBuilder
@@ -112,12 +108,16 @@ struct MonthlyChallengesCardView: View {
         let pct = challenge.target > 0
             ? min(100, Int(round(Double(challenge.current) / Double(challenge.target) * 100)))
             : 0
-        let showReroll = SwimMonthlyChallenges.canRerollMonthlyChallenge(
-            sessions: viewModel.sessions,
+        let showReroll = VitalityGoals.canRerollMonthlyChallenge(
+            records: viewModel.dailyRecords,
+            profile: viewModel.profile,
+            goalState: viewModel.goalState,
             monthKey: monthKey,
             tierIndex: index,
             rerolls: viewModel.monthlyChallengeRerolls,
             intensity: gameplay.challengeIntensity,
+            bodyMetricsEntries: viewModel.bodyMetricsEntries,
+            bodyProgressEnabled: viewModel.profile.bodyProgressEnabled,
             freeLimit: gameplay.freeMonthlyRerolls
         )
 
@@ -137,10 +137,17 @@ struct MonthlyChallengesCardView: View {
                     .controlSize(.mini)
                 }
                 if challenge.completed {
-                    Text(preferences.t("monthlyChallenges.done"))
-                        .themeFont(.caption2, weight: .bold)
-                        .foregroundStyle(.green)
-                        .textCase(.uppercase)
+                    Text(preferences.t("monthlyChallenges.doneReward", params: [
+                        "points": String(challenge.rewardPoints)
+                    ]))
+                    .themeFont(.caption2, weight: .bold)
+                    .foregroundStyle(.green)
+                } else {
+                    Text(preferences.t("monthlyChallenges.reward", params: [
+                        "points": String(challenge.rewardPoints)
+                    ]))
+                    .themeFont(.caption2, weight: .semibold)
+                    .foregroundStyle(Color("BrandBlue"))
                 }
             }
 

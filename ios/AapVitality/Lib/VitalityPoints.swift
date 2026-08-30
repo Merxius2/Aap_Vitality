@@ -180,7 +180,8 @@ enum TodayStepsStore {
         VitalityGoals.ensureGoals(data: &data, intensity: intensity)
         VitalityGoals.recordMonthlyCompletionIfNeeded(
             data: &data,
-            monthKey: VitalityGoals.getMonthKey()
+            monthKey: VitalityGoals.getMonthKey(),
+            intensity: intensity
         )
         _ = VitalityStreak.reconcile(goalState: &data.goalState, records: nextRecords)
         return true

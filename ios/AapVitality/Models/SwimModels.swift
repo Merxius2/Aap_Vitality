@@ -511,6 +511,7 @@ struct MonthlyChallenge: Equatable, Identifiable {
     var tierIndex: Int
     var current: Int
     var completed: Bool
+    var rewardPoints: Int = 0
 }
 
 struct MonthlyChallengeState: Equatable {
@@ -520,6 +521,10 @@ struct MonthlyChallengeState: Equatable {
     var tier: String?
     var earnedAt: String?
     var isPreview: Bool = false
+
+    var bonusPoints: Int {
+        challenges.filter(\.completed).reduce(0) { $0 + $1.rewardPoints }
+    }
 }
 
 enum SwimLevel: String {
@@ -746,6 +751,7 @@ struct VitalityGoalSnapshot: Equatable {
     var weeklyEarned: Int
     var yearlyTarget: Int
     var yearlyEarned: Int
+    var challengeBonusPoints: Int
     var earlyFinish: EarlyFinishSnapshot
 
     var monthlyPercent: Int {
@@ -762,6 +768,28 @@ struct VitalityGoalSnapshot: Equatable {
         guard yearlyTarget > 0 else { return 0 }
         return min(100, Int((Double(yearlyEarned) / Double(yearlyTarget) * 100).rounded()))
     }
+}
+
+struct WeeklyDayPoint: Equatable, Identifiable {
+    var id: String { date }
+    var date: String
+    var totalPoints: Int
+    var stepPoints: Int
+    var workoutPoints: Int
+    var sleepPoints: Int
+    var isToday: Bool
+    var isFuture: Bool
+}
+
+struct YearlyMonthPoint: Equatable, Identifiable {
+    var id: String { monthKey }
+    var monthKey: String
+    var totalPoints: Int
+    var stepPoints: Int
+    var workoutPoints: Int
+    var sleepPoints: Int
+    var isCurrentMonth: Bool
+    var isFuture: Bool
 }
 
 struct EarlyFinishSnapshot: Equatable {
