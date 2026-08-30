@@ -11,6 +11,7 @@ struct BodyProgressSnapshot: Equatable {
     var muscleChange8WeeksPercent: Double?
     var leanMassChange8WeeksKg: Double?
     var weighInsThisMonth: Int
+    var monthStartWeightKg: Double?
     var weeklyTrend: [BodyProgressWeeklyPoint]
 }
 
@@ -30,6 +31,8 @@ enum BodyProgress {
     static let bodyFatTrendTargetPercent = 0.5
     static let muscleTrendTargetPercent = 0.5
     static let leanMassTrendTargetKg = 0.5
+    static let chartMinimumSpanKg = 3.0
+    static let chartPaddingKg = 0.5
 
     static func bmi(weightKg: Double, heightCm: Double) -> Double {
         let meters = heightCm / 100
@@ -232,6 +235,34 @@ enum BodyProgress {
         return points.reversed()
     }
 
+    static func monthStartWeightKg(
+        entries: [BodyMetricsEntry],
+        monthKey: String
+    ) -> Double? {
+        let monthStartDate = "\(monthKey)-01"
+        if let onFirst = entries.first(where: { $0.date == monthStartDate }) {
+            return onFirst.weightKg
+        }
+        if let prior = entries.filter({ $0.date < monthStartDate }).max(by: { $0.date < $1.date }) {
+            return prior.weightKg
+        }
+        return entries.filter { $0.date.hasPrefix(monthKey) }.min(by: { $0.date < $1.date })?.weightKg
+    }
+
+    static func weightChartYDomain(weights: [Double]) -> ClosedRange<Double>? {
+        guard let minWeight = weights.min(), let maxWeight = weights.max() else { return nil }
+        var lower = minWeight
+        var upper = maxWeight
+        if upper - lower < chartMinimumSpanKg {
+            let mid = (lower + upper) / 2
+            lower = mid - chartMinimumSpanKg / 2
+            upper = mid + chartMinimumSpanKg / 2
+        }
+        lower -= chartPaddingKg
+        upper += chartPaddingKg
+        return lower...upper
+    }
+
     static func snapshot(
         entries: [BodyMetricsEntry],
         monthKey: String = VitalityGoals.getMonthKey(),
@@ -249,6 +280,7 @@ enum BodyProgress {
             muscleChange8WeeksPercent: muscleChangePercent(entries: entries, referenceDate: referenceDate),
             leanMassChange8WeeksKg: leanMassChangeKg(entries: entries, referenceDate: referenceDate),
             weighInsThisMonth: weighIns(in: monthKey, entries: entries),
+            monthStartWeightKg: monthStartWeightKg(entries: entries, monthKey: monthKey),
             weeklyTrend: weeklyTrendPoints(entries: entries, referenceDate: referenceDate)
         )
     }

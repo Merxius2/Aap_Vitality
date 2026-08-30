@@ -1,9 +1,19 @@
 import SwiftUI
+import BackgroundTasks
+import UIKit
 
 @main
 struct AapVitalityApp: App {
-    @StateObject private var viewModel = VitalityViewModel()
+    @StateObject private var viewModel: VitalityViewModel
     @StateObject private var preferences = UserPreferencesService()
+
+    init() {
+        BackgroundTodayStepsSync.register()
+        let viewModel = VitalityViewModel()
+        _viewModel = StateObject(wrappedValue: viewModel)
+        BackgroundTodayStepsSync.bind(viewModel)
+        BackgroundTodayStepsSync.schedule()
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -86,6 +96,7 @@ private struct AppRootView: View {
             }
         }
         .task(priority: .utility) {
+            viewModel.startTodayStepsSync()
             try? await Task.sleep(for: .milliseconds(300))
             await performLaunchVitalitySyncIfNeeded()
             await viewModel.refreshNotifications(
@@ -93,11 +104,16 @@ private struct AppRootView: View {
             )
         }
         .onChange(of: scenePhase) { _, phase in
-            guard phase == .active else { return }
-            Task {
-                await viewModel.refreshNotifications(
-                    dailyGoalNotificationsEnabled: preferences.dailyGoalNotificationsEnabled
-                )
+            if phase == .active {
+                viewModel.startTodayStepsSync()
+                Task {
+                    await viewModel.refreshNotifications(
+                        dailyGoalNotificationsEnabled: preferences.dailyGoalNotificationsEnabled
+                    )
+                }
+            } else {
+                viewModel.stopTodayStepsSync()
+                BackgroundTodayStepsSync.syncBeforeBackgrounding()
             }
         }
         .onChange(of: preferences.dailyGoalNotificationsEnabled) { _, enabled in
@@ -122,5 +138,88 @@ private struct AppRootView: View {
         try? await Task.sleep(for: .milliseconds(900))
         _ = await importedCount
         showLaunchSync = false
+    }
+}
+
+enum BackgroundTodayStepsSync {
+    static let taskIdentifier = "com.aapft.vitality.refresh-today-steps"
+    static let interval: TimeInterval = 30 * 60
+
+    nonisolated(unsafe) private static weak var viewModel: VitalityViewModel?
+
+    static func register() {
+        BGTaskScheduler.shared.register(
+            forTaskWithIdentifier: taskIdentifier,
+            using: nil
+        ) { task in
+            guard let refreshTask = task as? BGAppRefreshTask else {
+                task.setTaskCompleted(success: false)
+                return
+            }
+            handle(refreshTask)
+        }
+    }
+
+    static func bind(_ viewModel: VitalityViewModel) {
+        self.viewModel = viewModel
+    }
+
+    static func schedule() {
+        let request = BGAppRefreshTaskRequest(identifier: taskIdentifier)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: interval)
+        try? BGTaskScheduler.shared.submit(request)
+    }
+
+    static func handle(_ task: BGAppRefreshTask) {
+        schedule()
+        let work = Task {
+            let success = await performSync()
+            task.setTaskCompleted(success: success)
+        }
+        task.expirationHandler = {
+            work.cancel()
+            task.setTaskCompleted(success: false)
+        }
+    }
+
+    @discardableResult
+    static func performSync() async -> Bool {
+        guard HealthKitService.isAvailable else { return false }
+        guard await HealthKitService.isReadyForLaunchSync() else { return false }
+        do {
+            let steps = try await HealthKitService.fetchTodaySteps()
+            await apply(steps)
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    @MainActor
+    static func syncBeforeBackgrounding() {
+        schedule()
+        var taskId = UIBackgroundTaskIdentifier.invalid
+        taskId = UIApplication.shared.beginBackgroundTask(withName: "today-steps-sync") {
+            UIApplication.shared.endBackgroundTask(taskId)
+            taskId = .invalid
+        }
+        Task {
+            _ = await performSync()
+            if taskId != .invalid {
+                UIApplication.shared.endBackgroundTask(taskId)
+            }
+        }
+    }
+
+    @MainActor
+    private static func apply(_ steps: Int) {
+        if let viewModel {
+            viewModel.applyTodaySteps(steps)
+            return
+        }
+        var data = SwimStorageService.load()
+        if TodayStepsStore.apply(steps, to: &data) {
+            SwimStorageService.save(data)
+        }
     }
 }

@@ -108,12 +108,25 @@ struct BodyProgressTrendCard: View {
                 .textCase(.uppercase)
 
             Chart {
+                if let monthStart = snapshot.monthStartWeightKg {
+                    RuleMark(y: .value("MonthStart", monthStart))
+                        .foregroundStyle(Color.red.opacity(0.85))
+                        .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [5, 4]))
+                        .annotation(position: .top, alignment: .trailing) {
+                            Text(preferences.t("progress.body.monthStartLine", params: [
+                                "value": String(format: "%.1f", monthStart)
+                            ]))
+                            .themeFont(.caption2, weight: .semibold)
+                            .foregroundStyle(.red)
+                        }
+                }
                 ForEach(snapshot.weeklyTrend) { point in
                     LineMark(
                         x: .value("Week", point.label),
                         y: .value("Weight", point.averageWeightKg)
                     )
                     .foregroundStyle(Color("BrandBlue"))
+                    .interpolationMethod(.catmullRom)
                     PointMark(
                         x: .value("Week", point.label),
                         y: .value("Weight", point.averageWeightKg)
@@ -121,8 +134,20 @@ struct BodyProgressTrendCard: View {
                     .foregroundStyle(Color("BrandBlue"))
                 }
             }
+            .chartYScale(domain: weightChartDomain(snapshot: snapshot))
+            .chartYAxis {
+                AxisMarks(position: .leading) { value in
+                    AxisGridLine()
+                    AxisTick()
+                    AxisValueLabel {
+                        if let kg = value.as(Double.self) {
+                            Text(String(format: "%.1f", kg))
+                        }
+                    }
+                }
+            }
             .chartYAxisLabel(preferences.t("progress.body.weightAxis"))
-            .frame(height: 160)
+            .frame(height: 180)
 
             if let change = snapshot.weightChange8WeeksKg {
                 let directionKey = change <= 0 ? "progress.body.trendDown" : "progress.body.trendUp"
@@ -152,6 +177,14 @@ struct BodyProgressTrendCard: View {
         Text(preferences.t("progress.body.disclaimer"))
             .themeFont(.caption2)
             .foregroundStyle(.secondary)
+    }
+
+    private func weightChartDomain(snapshot: BodyProgressSnapshot) -> ClosedRange<Double> {
+        var weights = snapshot.weeklyTrend.map(\.averageWeightKg)
+        if let monthStart = snapshot.monthStartWeightKg {
+            weights.append(monthStart)
+        }
+        return BodyProgress.weightChartYDomain(weights: weights) ?? 0...100
     }
 }
 

@@ -189,6 +189,13 @@ enum HealthKitService {
         }
     }
 
+    static func fetchTodaySteps() async throws -> Int {
+        let now = Date()
+        let startOfDay = Calendar.current.startOfDay(for: now)
+        let byDate = try await fetchDailySteps(since: startOfDay)
+        return byDate[dateKeyFormatter.string(from: now)] ?? 0
+    }
+
     static func fetchDailySleep(since: Date) async throws -> [String: Int] {
         guard isAvailable else { throw HealthKitServiceError.unavailable }
         guard let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else { return [:] }

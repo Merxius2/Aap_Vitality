@@ -112,6 +112,7 @@
       "weightValue": "{value} kg",
       "trendTitle": "12-week weight trend",
       "weightAxis": "kg",
+      "monthStartLine": "Month start {value} kg",
       "trendDown": "Down {change} over 8 weeks",
       "trendUp": "Up {change} over 8 weeks",
       "muscleTrendUp": "Muscle +{change}% over 8 weeks",

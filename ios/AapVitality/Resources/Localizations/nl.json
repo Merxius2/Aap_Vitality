@@ -112,6 +112,7 @@
       "weightValue": "{value} kg",
       "trendTitle": "12-weken gewichtstrend",
       "weightAxis": "kg",
+      "monthStartLine": "Maandstart {value} kg",
       "trendDown": "{change} minder over 8 weken",
       "trendUp": "{change} meer over 8 weken",
       "muscleTrendUp": "Spier +{change}% over 8 weken",

@@ -29,6 +29,9 @@ struct ProgressScreen: View {
                 .padding()
                 .frame(maxWidth: .infinity)
             }
+            .refreshable {
+                await viewModel.refreshTodayVitality()
+            }
             .tabBarScrollInset()
             .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
             .toolbar(.hidden, for: .navigationBar)

@@ -12,8 +12,11 @@ final class VitalityViewModel: ObservableObject {
     @Published var lastHealthKitImportResult: HealthKitImportResult?
 
     private var saveTask: Task<Void, Never>?
+    private var todayStepsSyncTask: Task<Void, Never>?
+    private var isSyncingTodaySteps = false
     private var hasAttemptedHealthKitAutoSync = false
     private static let healthKitAutoSyncAtKey = "HEALTHKIT_AUTO_SYNC_AT"
+    static let todayStepsSyncInterval: Duration = .seconds(180)
     private var cachedEvaluatedMedals: [EvaluatedMedal]?
     private var cachedMonthlyChallengeHistory: [MonthlyChallengeState]?
     private var medalCacheMonthKey: String?
@@ -424,6 +427,171 @@ final class VitalityViewModel: ObservableObject {
 
     func syncHealthKitWorkoutsIfAuthorized() async {
         _ = await performLaunchVitalitySync()
+    }
+
+    func startTodayStepsSync() {
+        stopTodayStepsSync()
+        todayStepsSyncTask = Task { [weak self] in
+            await self?.syncTodaySteps()
+            while !Task.isCancelled {
+                do {
+                    try await Task.sleep(for: Self.todayStepsSyncInterval)
+                } catch {
+                    break
+                }
+                guard !Task.isCancelled else { break }
+                await self?.syncTodaySteps()
+            }
+        }
+    }
+
+    func stopTodayStepsSync() {
+        todayStepsSyncTask?.cancel()
+        todayStepsSyncTask = nil
+    }
+
+    func syncTodaySteps() async {
+        guard !isSyncingHealthKit, !isSyncingTodaySteps else { return }
+        guard HealthKitService.isAvailable else { return }
+        guard await HealthKitService.isReadyForLaunchSync() else { return }
+
+        isSyncingTodaySteps = true
+        defer { isSyncingTodaySteps = false }
+
+        do {
+            let steps = try await HealthKitService.fetchTodaySteps()
+            applyTodaySteps(steps)
+        } catch {
+            return
+        }
+    }
+
+    func applyTodaySteps(_ steps: Int) {
+        let recordsBefore = dailyRecords
+        let bodyMetricsBefore = bodyMetricsEntries
+        var next = data
+        guard TodayStepsStore.apply(steps, to: &next) else { return }
+        data = next
+        invalidateDerivedCaches()
+        persist(immediate: true)
+        queueNewMedals(
+            recordsBefore: recordsBefore,
+            recordsAfter: next.dailyRecords,
+            bodyMetricsBefore: bodyMetricsBefore,
+            bodyMetricsAfter: next.bodyMetricsEntries
+        )
+    }
+
+    func refreshTodayVitality() async {
+        guard HealthKitService.isAvailable else { return }
+        guard !isSyncingHealthKit else { return }
+
+        isSyncingTodaySteps = true
+        defer { isSyncingTodaySteps = false }
+
+        do {
+            try await HealthKitService.requestAuthorization()
+            try await importTodayVitalityData()
+        } catch {
+            return
+        }
+    }
+
+    private func importTodayVitalityData() async throws {
+        let startOfDay = Calendar.current.startOfDay(for: Date())
+        let today = VitalityGoals.todayDateKey()
+        let existingUUIDs = Set(
+            dailyRecords.flatMap(\.workouts).compactMap(\.healthKitWorkoutUUID)
+        )
+
+        async let stepsTask = HealthKitService.fetchTodaySteps()
+        async let sleepTask = HealthKitService.fetchDailySleep(since: startOfDay)
+        async let workoutsTask = HealthKitService.fetchNewVitalityWorkouts(
+            excluding: existingUUIDs,
+            since: startOfDay,
+            maxResults: 20,
+            profile: profile,
+            enrichHeartRate: true
+        )
+
+        let steps = try await stepsTask
+        let sleepByDate = try await sleepTask
+        let fetchResult = try await workoutsTask
+        let todayWorkouts = fetchResult.workouts.filter { $0.date == today && $0.durationSec >= 60 }
+
+        applyTodayVitality(
+            steps: steps,
+            sleepMinutes: sleepByDate[today] ?? 0,
+            newWorkouts: todayWorkouts
+        )
+    }
+
+    private func applyTodayVitality(
+        steps: Int,
+        sleepMinutes: Int,
+        newWorkouts: [HealthKitVitalityWorkout]
+    ) {
+        let today = VitalityGoals.todayDateKey()
+        let existing = dailyRecords.first { $0.date == today }
+        guard existing != nil || steps > 0 || sleepMinutes > 0 || !newWorkouts.isEmpty else { return }
+        var workouts = existing?.workouts ?? []
+        for workout in newWorkouts {
+            if workouts.contains(where: { $0.healthKitWorkoutUUID == workout.id }) { continue }
+            workouts.append(
+                VitalityWorkout(
+                    id: workout.id,
+                    date: workout.date,
+                    workoutType: workout.workoutType,
+                    durationSec: workout.durationSec,
+                    avgHeartRate: workout.avgHeartRate,
+                    zoneMinutes: workout.zoneMinutes,
+                    activeKcal: workout.activeKcal,
+                    healthKitWorkoutUUID: workout.id,
+                    pointsEarned: 0
+                )
+            )
+        }
+
+        let incoming = VitalityPoints.buildDailyRecord(
+            date: today,
+            steps: steps,
+            sleepMinutes: sleepMinutes,
+            workouts: workouts,
+            profile: profile,
+            mascotId: mascotId
+        )
+        let merged = VitalityPoints.mergeDailyRecords(
+            existing,
+            with: incoming,
+            profile: profile,
+            mascotId: mascotId
+        )
+        guard merged != existing else { return }
+
+        let recordsBefore = dailyRecords
+        let bodyMetricsBefore = bodyMetricsEntries
+        var recordsByDate = Dictionary(uniqueKeysWithValues: dailyRecords.map { ($0.date, $0) })
+        recordsByDate[today] = merged
+        let nextRecords = recordsByDate.values.sorted { $0.date < $1.date }
+
+        data.dailyRecords = nextRecords
+        _ = VitalityStreak.reconcile(goalState: &data.goalState, records: nextRecords)
+        VitalityGoals.ensureGoals(
+            data: &data,
+            intensity: MascotConstants.gameplay(mascotId).challengeIntensity
+        )
+        VitalityGoals.recordMonthlyCompletionIfNeeded(
+            data: &data,
+            monthKey: VitalityGoals.getMonthKey()
+        )
+        invalidateDerivedCaches()
+        persist(immediate: true)
+        queueNewMedals(
+            recordsBefore: recordsBefore,
+            recordsAfter: nextRecords,
+            bodyMetricsBefore: bodyMetricsBefore,
+            bodyMetricsAfter: data.bodyMetricsEntries
+        )
     }
 
     func refreshNotifications(dailyGoalNotificationsEnabled: Bool) async {

@@ -119,6 +119,31 @@ enum VitalityPoints {
         )
     }
 
+    /// Updates only `dateKey` when `steps` is higher than the stored count. Returns nil if nothing changed.
+    static func applyingSteps(
+        _ steps: Int,
+        on dateKey: String,
+        to records: [DailyVitalityRecord],
+        profile: VitalityProfile,
+        mascotId: String
+    ) -> [DailyVitalityRecord]? {
+        guard steps > 0 else { return nil }
+        let existing = records.first { $0.date == dateKey }
+        guard steps > (existing?.steps ?? 0) else { return nil }
+        let incoming = buildDailyRecord(
+            date: dateKey,
+            steps: steps,
+            sleepMinutes: existing?.sleepMinutes ?? 0,
+            workouts: existing?.workouts ?? [],
+            profile: profile,
+            mascotId: mascotId
+        )
+        let merged = mergeDailyRecords(existing, with: incoming, profile: profile, mascotId: mascotId)
+        var byDate = Dictionary(uniqueKeysWithValues: records.map { ($0.date, $0) })
+        byDate[dateKey] = merged
+        return byDate.values.sorted { $0.date < $1.date }
+    }
+
     static func totalPoints(in records: [DailyVitalityRecord], monthKey: String? = nil) -> Int {
         filtered(records, monthKey: monthKey).reduce(0) { $0 + $1.totalPoints }
     }
@@ -130,5 +155,34 @@ enum VitalityPoints {
     static func filtered(_ records: [DailyVitalityRecord], monthKey: String?) -> [DailyVitalityRecord] {
         guard let monthKey else { return records }
         return records.filter { $0.date.hasPrefix(monthKey) }
+    }
+}
+
+enum TodayStepsStore {
+    static func apply(_ steps: Int, to data: inout VitalityData) -> Bool {
+        let dateKey = VitalityGoals.todayDateKey()
+        let mascotId = MascotUnlock.resolveMascotId(
+            profile: data.profile,
+            dailyRecords: data.dailyRecords,
+            goalState: data.goalState,
+            monthlyChallengeRerolls: data.monthlyChallengeRerolls
+        )
+        guard let nextRecords = VitalityPoints.applyingSteps(
+            steps,
+            on: dateKey,
+            to: data.dailyRecords,
+            profile: data.profile,
+            mascotId: mascotId
+        ) else { return false }
+
+        data.dailyRecords = nextRecords
+        let intensity = MascotConstants.gameplay(mascotId).challengeIntensity
+        VitalityGoals.ensureGoals(data: &data, intensity: intensity)
+        VitalityGoals.recordMonthlyCompletionIfNeeded(
+            data: &data,
+            monthKey: VitalityGoals.getMonthKey()
+        )
+        _ = VitalityStreak.reconcile(goalState: &data.goalState, records: nextRecords)
+        return true
     }
 }

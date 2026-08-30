@@ -79,6 +79,41 @@ final class BodyProgressTests: XCTestCase {
         XCTAssertTrue(BodyProgress.hasPositiveTrend(entries: entries, referenceDate: date(from: "2026-08-29")))
     }
 
+    func testMonthStartWeightPrefersWeighInOnFirst() {
+        let entries = [
+            BodyMetricsEntry(id: "2026-07-31", date: "2026-07-31", weightKg: 83, heightCm: 180, bodyFatPercent: nil),
+            BodyMetricsEntry(id: "2026-08-01", date: "2026-08-01", weightKg: 82.4, heightCm: 180, bodyFatPercent: nil),
+            BodyMetricsEntry(id: "2026-08-15", date: "2026-08-15", weightKg: 81.9, heightCm: 180, bodyFatPercent: nil),
+        ]
+        XCTAssertEqual(BodyProgress.monthStartWeightKg(entries: entries, monthKey: "2026-08"), 82.4)
+    }
+
+    func testMonthStartWeightCarriesForwardFromPriorMonth() {
+        let entries = [
+            BodyMetricsEntry(id: "2026-07-28", date: "2026-07-28", weightKg: 83.1, heightCm: 180, bodyFatPercent: nil),
+            BodyMetricsEntry(id: "2026-08-10", date: "2026-08-10", weightKg: 82.0, heightCm: 180, bodyFatPercent: nil),
+        ]
+        XCTAssertEqual(BodyProgress.monthStartWeightKg(entries: entries, monthKey: "2026-08"), 83.1)
+    }
+
+    func testMonthStartWeightFallsBackToFirstWeighInThisMonth() {
+        let entries = [
+            BodyMetricsEntry(id: "2026-08-08", date: "2026-08-08", weightKg: 81.5, heightCm: 180, bodyFatPercent: nil),
+            BodyMetricsEntry(id: "2026-08-20", date: "2026-08-20", weightKg: 81.0, heightCm: 180, bodyFatPercent: nil),
+        ]
+        XCTAssertEqual(BodyProgress.monthStartWeightKg(entries: entries, monthKey: "2026-08"), 81.5)
+    }
+
+    func testWeightChartDomainZoomsInAndExcludesZero() {
+        let domain = BodyProgress.weightChartYDomain(weights: [80.2, 80.6, 79.9])
+        XCTAssertNotNil(domain)
+        XCTAssertGreaterThan(domain!.lowerBound, 70)
+        XCTAssertLessThan(domain!.upperBound, 90)
+        XCTAssertGreaterThanOrEqual(domain!.upperBound - domain!.lowerBound, BodyProgress.chartMinimumSpanKg)
+        XCTAssertLessThan(domain!.lowerBound, 79.9)
+        XCTAssertGreaterThan(domain!.upperBound, 80.6)
+    }
+
     func testBodyProgressChallengesTierProgression() {
         let entries = (1...4).map { day in
             BodyMetricsEntry(

@@ -30,6 +30,14 @@
 	<string>Aap Vitality only reads your activity data and does not write any data to Apple Health.</string>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>Aap Vitality sends daily goal reminders and monthly goal nudges near month end.</string>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.aapft.vitality.refresh-today-steps</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+	</array>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Oxanium-Regular.ttf</string>
