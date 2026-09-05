@@ -162,4 +162,162 @@ final class VitalityFeaturesTests: XCTestCase {
         XCTAssertEqual(status.met, status.earned >= status.target)
         XCTAssertEqual(status.remaining, max(0, status.target - status.earned))
     }
+
+    func testMonthlyGoalReminderUsesVitalityChallengesNotSwim() {
+        let now = date(from: "2026-08-27")
+        let monthKey = "2026-08"
+        let rerolls = [
+            monthKey: MonthRerollEntry(overrides: [
+                "0": "workout_count",
+                "1": "sleep_nights",
+                "2": "steps_20k_day"
+            ])
+        ]
+        var goalState = VitalityGoalState.empty
+        goalState.monthlyTargets[monthKey] = 1000
+        let t = TranslationService()
+        t.setLanguage("en")
+
+        let state = VitalityGoals.evaluatePointChallenges(
+            records: [],
+            profile: .default,
+            goalState: goalState,
+            monthKey: monthKey,
+            intensity: 1,
+            rerolls: rerolls,
+            todayKey: "2026-08-27"
+        )
+        XCTAssertEqual(Set(state.challenges.map(\.type)), Set(["workout_count", "sleep_nights", "steps_20k_day"]))
+        XCTAssertEqual(state.completedCount, 0)
+
+        let reminders = SwimNotifications.monthlyGoalReminders(
+            dailyRecords: [],
+            profile: .default,
+            goalState: goalState,
+            monthlyChallengeRerolls: rerolls,
+            intensity: 1,
+            t: t,
+            now: now
+        )
+
+        XCTAssertEqual(reminders.count, 1)
+        let expectedGoals = state.challenges.prefix(2).map {
+            SwimMonthlyChallengeFormatters.formatChallengeTarget($0.type, $0.target, t: t)
+        }.joined(separator: ", ")
+        XCTAssertEqual(
+            reminders[0].body,
+            t.t("notifications.monthlyGoalsBody", params: [
+                "count": "3",
+                "days": "\(SwimNotifications.daysRemainingInMonth(now))",
+                "goals": expectedGoals,
+            ])
+        )
+        XCTAssertFalse(expectedGoals.contains("sessions"))
+    }
+
+    func testMonthlyGoalReminderSkipsWhenVitalityChallengesAreDone() {
+        let now = date(from: "2026-08-27")
+        let monthKey = "2026-08"
+        let rerolls = [
+            monthKey: MonthRerollEntry(overrides: [
+                "0": "workout_count",
+                "1": "sleep_nights",
+                "2": "steps_20k_day"
+            ])
+        ]
+        var goalState = VitalityGoalState.empty
+        goalState.monthlyTargets[monthKey] = 1000
+
+        let records = (1...12).map { day -> DailyVitalityRecord in
+            let date = String(format: "2026-08-%02d", day)
+            let workout = VitalityWorkout(
+                id: "w-\(date)",
+                date: date,
+                workoutType: "running",
+                durationSec: 30 * 60,
+                pointsEarned: 20
+            )
+            return DailyVitalityRecord(
+                id: date,
+                date: date,
+                steps: day == 1 ? 20_000 : 8_000,
+                stepPoints: day == 1 ? 50 : 15,
+                workoutPoints: day <= 8 ? 20 : 0,
+                sleepMinutes: 480,
+                sleepPoints: 15,
+                totalPoints: 50,
+                workouts: day <= 8 ? [workout] : [],
+                stepTiersReached: day == 1 ? [5000, 10000, 20000] : [5000]
+            )
+        }
+
+        let state = VitalityGoals.evaluatePointChallenges(
+            records: records,
+            profile: .default,
+            goalState: goalState,
+            monthKey: monthKey,
+            intensity: 1,
+            rerolls: rerolls,
+            todayKey: "2026-08-27"
+        )
+        XCTAssertEqual(state.completedCount, 3, "Test setup should complete all vitality challenges")
+
+        let reminders = SwimNotifications.monthlyGoalReminders(
+            dailyRecords: records,
+            profile: .default,
+            goalState: goalState,
+            monthlyChallengeRerolls: rerolls,
+            intensity: 1,
+            t: TranslationService(),
+            now: now
+        )
+        XCTAssertTrue(reminders.isEmpty)
+    }
+
+    func testBackgroundRefreshAimsAtDailyReminderLeadTime() {
+        let morning = date(from: "2026-09-05", hour: 10, minute: 0)
+        let morningNext = BackgroundTodayStepsSync.nextEarliestBeginDate(
+            now: morning,
+            reminderHour: 18,
+            interval: 30 * 60,
+            leadTime: 15 * 60
+        )
+        XCTAssertEqual(morningNext, morning.addingTimeInterval(30 * 60))
+
+        let lateAfternoon = date(from: "2026-09-05", hour: 17, minute: 20)
+        let lead = Calendar.current.date(
+            bySettingHour: 17,
+            minute: 45,
+            second: 0,
+            of: lateAfternoon
+        )
+        XCTAssertEqual(
+            BackgroundTodayStepsSync.nextEarliestBeginDate(
+                now: lateAfternoon,
+                reminderHour: 18,
+                interval: 30 * 60,
+                leadTime: 15 * 60
+            ),
+            lead
+        )
+
+        let justBeforeReminder = date(from: "2026-09-05", hour: 17, minute: 50)
+        XCTAssertEqual(
+            BackgroundTodayStepsSync.nextEarliestBeginDate(
+                now: justBeforeReminder,
+                reminderHour: 18,
+                interval: 30 * 60,
+                leadTime: 15 * 60
+            ),
+            justBeforeReminder.addingTimeInterval(60)
+        )
+    }
+
+    private func date(from key: String, hour: Int = 0, minute: Int = 0) -> Date {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        let day = formatter.date(from: key) ?? Date()
+        return Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: day) ?? day
+    }
 }

@@ -96,20 +96,20 @@ private struct AppRootView: View {
             }
         }
         .task(priority: .utility) {
-            viewModel.startTodayStepsSync()
             try? await Task.sleep(for: .milliseconds(300))
             await performLaunchVitalitySyncIfNeeded()
-            await viewModel.refreshNotifications(
+            await viewModel.refreshNotificationsAfterTodaySync(
                 dailyGoalNotificationsEnabled: preferences.dailyGoalNotificationsEnabled
             )
+            viewModel.startTodayStepsSync()
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
-                viewModel.startTodayStepsSync()
                 Task {
-                    await viewModel.refreshNotifications(
+                    await viewModel.refreshNotificationsAfterTodaySync(
                         dailyGoalNotificationsEnabled: preferences.dailyGoalNotificationsEnabled
                     )
+                    viewModel.startTodayStepsSync()
                 }
             } else {
                 viewModel.stopTodayStepsSync()
@@ -144,6 +144,7 @@ private struct AppRootView: View {
 enum BackgroundTodayStepsSync {
     static let taskIdentifier = "com.aapft.vitality.refresh-today-steps"
     static let interval: TimeInterval = 30 * 60
+    static let reminderLeadTime: TimeInterval = 15 * 60
 
     nonisolated(unsafe) private static weak var viewModel: VitalityViewModel?
 
@@ -164,10 +165,39 @@ enum BackgroundTodayStepsSync {
         self.viewModel = viewModel
     }
 
-    static func schedule() {
+    static func schedule(now: Date = Date()) {
         let request = BGAppRefreshTaskRequest(identifier: taskIdentifier)
-        request.earliestBeginDate = Date(timeIntervalSinceNow: interval)
+        request.earliestBeginDate = nextEarliestBeginDate(now: now)
         try? BGTaskScheduler.shared.submit(request)
+    }
+
+    static func nextEarliestBeginDate(
+        now: Date = Date(),
+        reminderHour: Int = SwimNotifications.dailyGoalReminderHour,
+        interval: TimeInterval = interval,
+        leadTime: TimeInterval = reminderLeadTime
+    ) -> Date {
+        let calendar = Calendar.current
+        guard let reminder = calendar.date(
+            bySettingHour: reminderHour,
+            minute: 0,
+            second: 0,
+            of: now
+        ) else {
+            return now.addingTimeInterval(interval)
+        }
+        let lead = reminder.addingTimeInterval(-leadTime)
+        let periodic = now.addingTimeInterval(interval)
+
+        if now < lead {
+            return min(periodic, lead)
+        }
+        if now < reminder {
+            return now.addingTimeInterval(60)
+        }
+
+        let tomorrowLead = calendar.date(byAdding: .day, value: 1, to: lead) ?? periodic
+        return min(periodic, tomorrowLead)
     }
 
     static func handle(_ task: BGAppRefreshTask) {
@@ -186,9 +216,30 @@ enum BackgroundTodayStepsSync {
     static func performSync() async -> Bool {
         guard HealthKitService.isAvailable else { return false }
         guard await HealthKitService.isReadyForLaunchSync() else { return false }
+
+        var success = false
+        if let viewModel {
+            success = await viewModel.syncTodayVitalityIfAuthorized(enrichHeartRate: false)
+            if !success {
+                success = await syncAndApplySteps(using: viewModel)
+            }
+            await viewModel.refreshNotifications(
+                dailyGoalNotificationsEnabled: UserPreferencesService.areDailyGoalNotificationsEnabled
+            )
+            return success
+        }
+
+        return await syncAndApplySteps(using: nil)
+    }
+
+    private static func syncAndApplySteps(using viewModel: VitalityViewModel?) async -> Bool {
         do {
             let steps = try await HealthKitService.fetchTodaySteps()
-            await apply(steps)
+            if let viewModel {
+                await viewModel.applyTodaySteps(steps)
+            } else {
+                await apply(steps)
+            }
             return true
         } catch {
             return false
@@ -199,7 +250,7 @@ enum BackgroundTodayStepsSync {
     static func syncBeforeBackgrounding() {
         schedule()
         var taskId = UIBackgroundTaskIdentifier.invalid
-        taskId = UIApplication.shared.beginBackgroundTask(withName: "today-steps-sync") {
+        taskId = UIApplication.shared.beginBackgroundTask(withName: "today-vitality-sync") {
             UIApplication.shared.endBackgroundTask(taskId)
             taskId = .invalid
         }

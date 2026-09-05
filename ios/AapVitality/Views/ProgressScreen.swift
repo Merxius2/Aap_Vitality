@@ -306,7 +306,6 @@ struct ProgressScreen: View {
     private func pointsBreakdownRow(record: DailyVitalityRecord) -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                stepsBreakdownPill(steps: record.steps)
                 breakdownPill(
                     title: preferences.t("vitality.stepPoints"),
                     value: record.stepPoints,
@@ -326,21 +325,6 @@ struct ProgressScreen: View {
                 }
             }
         }
-    }
-
-    private func stepsBreakdownPill(steps: Int) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(preferences.t("vitality.highlight.steps"))
-                .themeFont(.caption2)
-                .foregroundStyle(.secondary)
-                .lineLimit(1)
-            Text(steps.formatted(.number.grouping(.automatic)))
-                .themeFont(.subheadline, weight: .bold)
-                .foregroundStyle(.green)
-        }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 8)
-        .background(Color.green.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 
     private func breakdownPill(title: String, value: Int, color: Color) -> some View {

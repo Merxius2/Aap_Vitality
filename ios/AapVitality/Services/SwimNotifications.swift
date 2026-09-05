@@ -17,20 +17,25 @@ enum SwimNotifications {
     }
 
     static func refreshAllReminders(
-        sessions: [SwimSession],
         dailyRecords: [DailyVitalityRecord],
         profile: VitalityProfile,
         goalState: VitalityGoalState,
         monthlyChallengeRerolls: [String: MonthRerollEntry],
         intensity: Double,
+        bodyMetricsEntries: [BodyMetricsEntry] = [],
+        bodyProgressEnabled: Bool = false,
         dailyGoalNotificationsEnabled: Bool,
         t: TranslationService,
         now: Date = Date()
     ) async {
         await refreshMonthlyGoalReminders(
-            sessions: sessions,
+            dailyRecords: dailyRecords,
             profile: profile,
+            goalState: goalState,
             monthlyChallengeRerolls: monthlyChallengeRerolls,
+            intensity: intensity,
+            bodyMetricsEntries: bodyMetricsEntries,
+            bodyProgressEnabled: bodyProgressEnabled,
             t: t,
             now: now
         )
@@ -46,9 +51,13 @@ enum SwimNotifications {
     }
 
     static func refreshMonthlyGoalReminders(
-        sessions: [SwimSession],
+        dailyRecords: [DailyVitalityRecord],
         profile: VitalityProfile,
+        goalState: VitalityGoalState,
         monthlyChallengeRerolls: [String: MonthRerollEntry],
+        intensity: Double,
+        bodyMetricsEntries: [BodyMetricsEntry] = [],
+        bodyProgressEnabled: Bool = false,
         t: TranslationService,
         now: Date = Date()
     ) async {
@@ -59,9 +68,13 @@ enum SwimNotifications {
                 || settings.authorizationStatus == .provisional else { return }
 
         let reminders = monthlyGoalReminders(
-            sessions: sessions,
+            dailyRecords: dailyRecords,
             profile: profile,
+            goalState: goalState,
             monthlyChallengeRerolls: monthlyChallengeRerolls,
+            intensity: intensity,
+            bodyMetricsEntries: bodyMetricsEntries,
+            bodyProgressEnabled: bodyProgressEnabled,
             t: t,
             now: now
         )
@@ -267,26 +280,29 @@ enum SwimNotifications {
     }
 
     static func monthlyGoalReminders(
-        sessions: [SwimSession],
+        dailyRecords: [DailyVitalityRecord],
         profile: VitalityProfile,
+        goalState: VitalityGoalState,
         monthlyChallengeRerolls: [String: MonthRerollEntry],
+        intensity: Double,
+        bodyMetricsEntries: [BodyMetricsEntry] = [],
+        bodyProgressEnabled: Bool = false,
         t: TranslationService,
         now: Date = Date()
     ) -> [ReminderPayload] {
         guard isNearMonthEnd(now) else { return [] }
 
-        let monthKey = SwimMonthlyChallenges.getMonthKey(now)
-        let mascotId = MascotUnlock.resolveMascotId(
+        let monthKey = VitalityGoals.getMonthKey(now)
+        let state = VitalityGoals.evaluatePointChallenges(
+            records: dailyRecords,
             profile: profile,
-            sessions: sessions,
-            monthlyChallengeRerolls: monthlyChallengeRerolls
-        )
-        let intensity = MascotConstants.gameplay(mascotId).challengeIntensity
-        let state = SwimMonthlyChallenges.evaluateMonthlyChallenges(
-            sessions: sessions,
+            goalState: goalState,
             monthKey: monthKey,
+            intensity: intensity,
             rerolls: monthlyChallengeRerolls,
-            intensity: intensity
+            bodyMetricsEntries: bodyMetricsEntries,
+            bodyProgressEnabled: bodyProgressEnabled,
+            todayKey: VitalityGoals.todayDateKey(now)
         )
         let open = state.challenges.filter { !$0.completed }
         guard !open.isEmpty, state.completedCount < 3 else { return [] }

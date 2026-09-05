@@ -417,9 +417,7 @@ final class VitalityViewModel: ObservableObject {
         }
 
         await refreshNotifications(
-            dailyGoalNotificationsEnabled: UserDefaults.standard.string(
-                forKey: UserPreferencesService.dailyGoalNotificationsKey
-            ) != "false"
+            dailyGoalNotificationsEnabled: UserPreferencesService.areDailyGoalNotificationsEnabled
         )
     }
 
@@ -515,13 +513,40 @@ final class VitalityViewModel: ObservableObject {
 
         do {
             try await HealthKitService.requestAuthorization()
-            try await importTodayVitalityData()
+            try await importTodayVitalityData(enrichHeartRate: true)
         } catch {
             return
         }
     }
 
-    private func importTodayVitalityData() async throws {
+    @discardableResult
+    func syncTodayVitalityIfAuthorized(enrichHeartRate: Bool = false) async -> Bool {
+        guard HealthKitService.isAvailable else { return false }
+        guard await HealthKitService.isReadyForLaunchSync() else { return false }
+
+        for _ in 0..<30 {
+            if !isSyncingHealthKit && !isSyncingTodaySteps { break }
+            try? await Task.sleep(for: .milliseconds(100))
+        }
+        guard !isSyncingHealthKit, !isSyncingTodaySteps else { return false }
+
+        isSyncingTodaySteps = true
+        defer { isSyncingTodaySteps = false }
+
+        do {
+            try await importTodayVitalityData(enrichHeartRate: enrichHeartRate)
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    func refreshNotificationsAfterTodaySync(dailyGoalNotificationsEnabled: Bool) async {
+        _ = await syncTodayVitalityIfAuthorized(enrichHeartRate: false)
+        await refreshNotifications(dailyGoalNotificationsEnabled: dailyGoalNotificationsEnabled)
+    }
+
+    private func importTodayVitalityData(enrichHeartRate: Bool) async throws {
         let startOfDay = Calendar.current.startOfDay(for: Date())
         let today = VitalityGoals.todayDateKey()
         let existingUUIDs = Set(
@@ -535,7 +560,7 @@ final class VitalityViewModel: ObservableObject {
             since: startOfDay,
             maxResults: 20,
             profile: profile,
-            enrichHeartRate: true
+            enrichHeartRate: enrichHeartRate
         )
 
         let steps = try await stepsTask
@@ -622,12 +647,13 @@ final class VitalityViewModel: ObservableObject {
     func refreshNotifications(dailyGoalNotificationsEnabled: Bool) async {
         let intensity = MascotConstants.gameplay(mascotId).challengeIntensity
         await SwimNotifications.refreshAllReminders(
-            sessions: sessions,
             dailyRecords: dailyRecords,
             profile: profile,
             goalState: data.goalState,
             monthlyChallengeRerolls: monthlyChallengeRerolls,
             intensity: intensity,
+            bodyMetricsEntries: bodyMetricsEntries,
+            bodyProgressEnabled: profile.bodyProgressEnabled,
             dailyGoalNotificationsEnabled: dailyGoalNotificationsEnabled,
             t: makeTranslations()
         )
