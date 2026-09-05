@@ -311,6 +311,123 @@ final class VitalityFeaturesTests: XCTestCase {
             ),
             justBeforeReminder.addingTimeInterval(60)
         )
+
+        let evening = date(from: "2026-09-05", hour: 23, minute: 0)
+        let endOfDay = Calendar.current.date(
+            bySettingHour: 23,
+            minute: 30,
+            second: 0,
+            of: evening
+        )
+        XCTAssertEqual(
+            BackgroundTodayStepsSync.nextEarliestBeginDate(
+                now: evening,
+                reminderHour: 18,
+                interval: 30 * 60,
+                leadTime: 15 * 60,
+                lastFullDaySyncDateKey: nil
+            ),
+            endOfDay
+        )
+
+        let afterEndOfDay = date(from: "2026-09-05", hour: 23, minute: 40)
+        XCTAssertEqual(
+            BackgroundTodayStepsSync.nextEarliestBeginDate(
+                now: afterEndOfDay,
+                reminderHour: 18,
+                interval: 30 * 60,
+                leadTime: 15 * 60,
+                lastFullDaySyncDateKey: nil
+            ),
+            afterEndOfDay.addingTimeInterval(60)
+        )
+
+        XCTAssertEqual(
+            BackgroundTodayStepsSync.nextEarliestBeginDate(
+                now: afterEndOfDay,
+                reminderHour: 18,
+                interval: 30 * 60,
+                leadTime: 15 * 60,
+                lastFullDaySyncDateKey: "2026-09-05"
+            ),
+            afterEndOfDay.addingTimeInterval(30 * 60)
+        )
+    }
+
+    func testBackgroundSyncKindUsesHalfHourStepsAndHourlyWorkouts() {
+        let now = date(from: "2026-09-05", hour: 10, minute: 0)
+        XCTAssertEqual(
+            BackgroundTodayStepsSync.syncKind(
+                now: now,
+                lastWorkoutSyncAt: nil,
+                lastFullDaySyncDateKey: nil
+            ),
+            .stepsAndWorkouts
+        )
+        XCTAssertEqual(
+            BackgroundTodayStepsSync.syncKind(
+                now: now,
+                lastWorkoutSyncAt: now.addingTimeInterval(-10 * 60),
+                lastFullDaySyncDateKey: nil
+            ),
+            .steps
+        )
+        XCTAssertEqual(
+            BackgroundTodayStepsSync.syncKind(
+                now: now,
+                lastWorkoutSyncAt: now.addingTimeInterval(-60 * 60),
+                lastFullDaySyncDateKey: nil
+            ),
+            .stepsAndWorkouts
+        )
+
+        let late = date(from: "2026-09-05", hour: 23, minute: 40)
+        XCTAssertEqual(
+            BackgroundTodayStepsSync.syncKind(
+                now: late,
+                lastWorkoutSyncAt: late.addingTimeInterval(-10 * 60),
+                lastFullDaySyncDateKey: nil
+            ),
+            .fullDay
+        )
+        XCTAssertEqual(
+            BackgroundTodayStepsSync.syncKind(
+                now: late,
+                lastWorkoutSyncAt: late.addingTimeInterval(-10 * 60),
+                lastFullDaySyncDateKey: "2026-09-05"
+            ),
+            .steps
+        )
+    }
+
+    func testPointsEarnedNotificationPayload() {
+        let t = TranslationService()
+        t.setLanguage("en")
+        XCTAssertNil(
+            SwimNotifications.pointsEarnedPayload(
+                previousPoints: 10,
+                currentPoints: 10,
+                lastNotifiedPoints: 10,
+                t: t
+            )
+        )
+
+        let payload = SwimNotifications.pointsEarnedPayload(
+            previousPoints: 10,
+            currentPoints: 25,
+            lastNotifiedPoints: 10,
+            t: t
+        )
+        XCTAssertEqual(payload?.title, t.t("notifications.pointsEarnedTitle"))
+        XCTAssertEqual(
+            payload?.body,
+            t.t("notifications.pointsEarnedBody", params: [
+                "gained": "15",
+                "total": "25",
+            ])
+        )
+        XCTAssertEqual(SwimNotifications.lastNotifiedPoints(for: "2026-09-05", stored: "2026-09-05:25"), 25)
+        XCTAssertEqual(SwimNotifications.lastNotifiedPoints(for: "2026-09-05", stored: "2026-09-04:25"), 0)
     }
 
     private func date(from key: String, hour: Int = 0, minute: Int = 0) -> Date {

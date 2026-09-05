@@ -790,6 +790,8 @@
     "notificationsTitle": "Meldingen",
     "dailyGoalNotifications": "Dagdoel-herinneringen",
     "dailyGoalNotificationsDesc": "Vier wanneer je je dagdoel haalt, of krijg 's avonds een herinnering als je dat nog niet deed.",
+    "pointsEarnedNotifications": "Punten verdiend",
+    "pointsEarnedNotificationsDesc": "Krijg een melding wanneer een sync vitality-punten toevoegt.",
     "ambients": {
       "neonLagoon": "Neon puls",
       "sunsetLap": "Zonsondergang gloed",
@@ -852,6 +854,8 @@
     "dailyGoalReachedBody": "Je verdiende vandaag {points} punten — je dagdoel was {target}.",
     "dailyGoalReminderTitle": "Dagdoel nog open",
     "dailyGoalReminderBody": "{current} / {target} punten vandaag — nog {remaining} te gaan voor je dagdoel.",
+    "pointsEarnedTitle": "Punten verdiend",
+    "pointsEarnedBody": "Je hebt {gained} punten verdiend. {total} punten vandaag.",
     "uploadSyncTitle": "Tijd om te bewegen?",
     "uploadSyncBody": "Je laatste activiteit was {days} dagen geleden. Synchroniseer Apple Gezondheid om op koers te blijven."
   },

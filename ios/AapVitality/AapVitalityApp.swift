@@ -142,9 +142,20 @@ private struct AppRootView: View {
 }
 
 enum BackgroundTodayStepsSync {
+    enum Kind: Equatable {
+        case steps
+        case stepsAndWorkouts
+        case fullDay
+    }
+
     static let taskIdentifier = "com.aapft.vitality.refresh-today-steps"
     static let interval: TimeInterval = 30 * 60
+    static let workoutInterval: TimeInterval = 60 * 60
     static let reminderLeadTime: TimeInterval = 15 * 60
+    static let endOfDayHour = 23
+    static let endOfDayMinute = 30
+    static let lastWorkoutSyncAtKey = "BG_LAST_WORKOUT_SYNC_AT"
+    static let lastFullDaySyncDateKey = "BG_LAST_FULL_DAY_SYNC_DATE"
 
     nonisolated(unsafe) private static weak var viewModel: VitalityViewModel?
 
@@ -175,39 +186,104 @@ enum BackgroundTodayStepsSync {
         now: Date = Date(),
         reminderHour: Int = SwimNotifications.dailyGoalReminderHour,
         interval: TimeInterval = interval,
-        leadTime: TimeInterval = reminderLeadTime
+        leadTime: TimeInterval = reminderLeadTime,
+        endOfDayHour: Int = endOfDayHour,
+        endOfDayMinute: Int = endOfDayMinute,
+        lastFullDaySyncDateKey: String? = recordedLastFullDaySyncDateKey()
     ) -> Date {
         let calendar = Calendar.current
+        let periodic = now.addingTimeInterval(interval)
         guard let reminder = calendar.date(
             bySettingHour: reminderHour,
             minute: 0,
             second: 0,
             of: now
+        ), let endOfDay = calendar.date(
+            bySettingHour: endOfDayHour,
+            minute: endOfDayMinute,
+            second: 0,
+            of: now
         ) else {
-            return now.addingTimeInterval(interval)
+            return periodic
         }
-        let lead = reminder.addingTimeInterval(-leadTime)
-        let periodic = now.addingTimeInterval(interval)
 
-        if now < lead {
-            return min(periodic, lead)
-        }
-        if now < reminder {
+        let reminderLead = reminder.addingTimeInterval(-leadTime)
+        if now >= reminderLead && now < reminder {
             return now.addingTimeInterval(60)
         }
+        if now >= endOfDay {
+            if lastFullDaySyncDateKey != VitalityGoals.todayDateKey(now) {
+                return now.addingTimeInterval(60)
+            }
+            let tomorrowEnd = calendar.date(byAdding: .day, value: 1, to: endOfDay) ?? periodic
+            return min(periodic, tomorrowEnd)
+        }
 
-        let tomorrowLead = calendar.date(byAdding: .day, value: 1, to: lead) ?? periodic
-        return min(periodic, tomorrowLead)
+        var candidates = [periodic]
+        if now < reminderLead {
+            candidates.append(reminderLead)
+        }
+        candidates.append(endOfDay)
+        return candidates.min() ?? periodic
+    }
+
+    static func syncKind(
+        now: Date = Date(),
+        lastWorkoutSyncAt: Date? = recordedLastWorkoutSyncAt(),
+        lastFullDaySyncDateKey: String? = recordedLastFullDaySyncDateKey(),
+        endOfDayHour: Int = endOfDayHour,
+        endOfDayMinute: Int = endOfDayMinute,
+        workoutInterval: TimeInterval = workoutInterval
+    ) -> Kind {
+        let todayKey = VitalityGoals.todayDateKey(now)
+        if isInEndOfDayWindow(now: now, hour: endOfDayHour, minute: endOfDayMinute),
+           lastFullDaySyncDateKey != todayKey {
+            return .fullDay
+        }
+        if shouldIncludeWorkouts(now: now, lastWorkoutSyncAt: lastWorkoutSyncAt, interval: workoutInterval) {
+            return .stepsAndWorkouts
+        }
+        return .steps
+    }
+
+    static func isInEndOfDayWindow(
+        now: Date,
+        hour: Int = endOfDayHour,
+        minute: Int = endOfDayMinute
+    ) -> Bool {
+        let calendar = Calendar.current
+        guard let endOfDay = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: now) else {
+            return false
+        }
+        return now >= endOfDay
+    }
+
+    static func shouldIncludeWorkouts(
+        now: Date,
+        lastWorkoutSyncAt: Date?,
+        interval: TimeInterval = workoutInterval
+    ) -> Bool {
+        guard let lastWorkoutSyncAt else { return true }
+        return now.timeIntervalSince(lastWorkoutSyncAt) >= interval
+    }
+
+    static func recordedLastWorkoutSyncAt() -> Date? {
+        UserDefaults.standard.object(forKey: lastWorkoutSyncAtKey) as? Date
+    }
+
+    static func recordedLastFullDaySyncDateKey() -> String? {
+        UserDefaults.standard.string(forKey: lastFullDaySyncDateKey)
     }
 
     static func handle(_ task: BGAppRefreshTask) {
-        schedule()
         let work = Task {
             let success = await performSync()
+            schedule()
             task.setTaskCompleted(success: success)
         }
         task.expirationHandler = {
             work.cancel()
+            schedule()
             task.setTaskCompleted(success: false)
         }
     }
@@ -217,11 +293,18 @@ enum BackgroundTodayStepsSync {
         guard HealthKitService.isAvailable else { return false }
         guard await HealthKitService.isReadyForLaunchSync() else { return false }
 
+        let now = Date()
+        let kind = syncKind(now: now)
+        var completedKind = kind
         var success = false
         if let viewModel {
-            success = await viewModel.syncTodayVitalityIfAuthorized(enrichHeartRate: false)
+            success = await viewModel.syncTodayIfAuthorized(scope: kind, enrichHeartRate: false)
             if !success {
                 success = await syncAndApplySteps(using: viewModel)
+                if success { completedKind = .steps }
+            }
+            if success {
+                markSuccessfulSync(completedKind, at: now)
             }
             await viewModel.refreshNotifications(
                 dailyGoalNotificationsEnabled: UserPreferencesService.areDailyGoalNotificationsEnabled
@@ -229,7 +312,20 @@ enum BackgroundTodayStepsSync {
             return success
         }
 
-        return await syncAndApplySteps(using: nil)
+        success = await syncAndApplySteps(using: nil)
+        if success {
+            markSuccessfulSync(.steps, at: now)
+        }
+        return success
+    }
+
+    static func markSuccessfulSync(_ kind: Kind, at now: Date = Date()) {
+        if kind == .stepsAndWorkouts || kind == .fullDay {
+            UserDefaults.standard.set(now, forKey: lastWorkoutSyncAtKey)
+        }
+        if kind == .fullDay {
+            UserDefaults.standard.set(VitalityGoals.todayDateKey(now), forKey: lastFullDaySyncDateKey)
+        }
     }
 
     private static func syncAndApplySteps(using viewModel: VitalityViewModel?) async -> Bool {
@@ -269,8 +365,23 @@ enum BackgroundTodayStepsSync {
             return
         }
         var data = SwimStorageService.load()
-        if TodayStepsStore.apply(steps, to: &data) {
-            SwimStorageService.save(data)
+        let pointsBefore = VitalityGoals.todayPoints(records: data.dailyRecords)
+        guard TodayStepsStore.apply(steps, to: &data) else { return }
+        SwimStorageService.save(data)
+        let pointsAfter = VitalityGoals.todayPoints(records: data.dailyRecords)
+        Task {
+            let translations = TranslationService()
+            if let languageData = UserDefaults.standard.data(forKey: UserPreferencesService.languageKey),
+               let json = try? JSONSerialization.jsonObject(with: languageData) as? [String: Any],
+               let language = json["language"] as? String {
+                translations.setLanguage(language)
+            }
+            await SwimNotifications.notifyPointsEarnedIfNeeded(
+                previousPoints: pointsBefore,
+                currentPoints: pointsAfter,
+                enabled: UserPreferencesService.arePointsEarnedNotificationsEnabled,
+                t: translations
+            )
         }
     }
 }

@@ -790,6 +790,8 @@
     "notificationsTitle": "Notifications",
     "dailyGoalNotifications": "Daily goal reminders",
     "dailyGoalNotificationsDesc": "Celebrate when you hit today's point goal, or get an evening reminder if you haven't yet.",
+    "pointsEarnedNotifications": "Points earned",
+    "pointsEarnedNotificationsDesc": "Get a notification when a sync adds vitality points.",
     "ambients": {
       "neonLagoon": "Neon Pulse",
       "sunsetLap": "Sunset Glow",
@@ -852,6 +854,8 @@
     "dailyGoalReachedBody": "You earned {points} points today — your daily target was {target}.",
     "dailyGoalReminderTitle": "Daily goal still open",
     "dailyGoalReminderBody": "{current} / {target} points today — {remaining} left to hit your daily goal.",
+    "pointsEarnedTitle": "Points earned",
+    "pointsEarnedBody": "You just earned {gained} points. {total} points today.",
     "uploadSyncTitle": "Time to move?",
     "uploadSyncBody": "Your last activity was {days} days ago. Sync Apple Health to stay on track."
   },

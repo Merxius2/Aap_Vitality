@@ -8,18 +8,28 @@ final class UserPreferencesService: ObservableObject {
     static let darkModeKey = "AUDIT_DARK_MODE_PREFERENCE"
     static let darkModeAutoKey = "AUDIT_DARK_MODE_AUTO"
     nonisolated static let dailyGoalNotificationsKey = "AUDIT_DAILY_GOAL_NOTIFICATIONS"
+    nonisolated static let pointsEarnedNotificationsKey = "AUDIT_POINTS_EARNED_NOTIFICATIONS"
 
     @Published var language: String = TranslationService.defaultLanguage
     @Published var themeCode: String = AppThemes.defaultCode
     @Published var isDarkMode: Bool = false
     @Published var isAutoDarkMode: Bool = true
     @Published var dailyGoalNotificationsEnabled: Bool = true
+    @Published var pointsEarnedNotificationsEnabled: Bool = true
 
     let translations = TranslationService()
 
     nonisolated static var areDailyGoalNotificationsEnabled: Bool {
-        guard UserDefaults.standard.object(forKey: dailyGoalNotificationsKey) != nil else { return true }
-        return UserDefaults.standard.string(forKey: dailyGoalNotificationsKey) == "true"
+        storedToggle(forKey: dailyGoalNotificationsKey, defaultValue: true)
+    }
+
+    nonisolated static var arePointsEarnedNotificationsEnabled: Bool {
+        storedToggle(forKey: pointsEarnedNotificationsKey, defaultValue: true)
+    }
+
+    nonisolated private static func storedToggle(forKey key: String, defaultValue: Bool) -> Bool {
+        guard UserDefaults.standard.object(forKey: key) != nil else { return defaultValue }
+        return UserDefaults.standard.string(forKey: key) == "true"
     }
 
     var colorScheme: ColorScheme? {
@@ -78,6 +88,7 @@ final class UserPreferencesService: ObservableObject {
             isDarkMode = UserDefaults.standard.string(forKey: Self.darkModeKey) == "true"
         }
         dailyGoalNotificationsEnabled = Self.areDailyGoalNotificationsEnabled
+        pointsEarnedNotificationsEnabled = Self.arePointsEarnedNotificationsEnabled
     }
 
     func setLanguage(_ code: String) {
@@ -96,6 +107,16 @@ final class UserPreferencesService: ObservableObject {
     func setDailyGoalNotifications(_ enabled: Bool) {
         dailyGoalNotificationsEnabled = enabled
         UserDefaults.standard.set(enabled ? "true" : "false", forKey: Self.dailyGoalNotificationsKey)
+    }
+
+    func setPointsEarnedNotifications(_ enabled: Bool) {
+        pointsEarnedNotificationsEnabled = enabled
+        UserDefaults.standard.set(enabled ? "true" : "false", forKey: Self.pointsEarnedNotificationsKey)
+        if !enabled {
+            Task {
+                await SwimNotifications.cancelPointsEarnedNotifications()
+            }
+        }
     }
 
     func setDarkMode(_ enabled: Bool, auto: Bool) {

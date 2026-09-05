@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import UserNotifications
 
 enum SwimNotifications {
@@ -6,8 +7,10 @@ enum SwimNotifications {
     static let dailyGoalReminderHour = 18
     static let dailyGoalPrefix = "daily-goal-"
     static let monthlyGoalPrefix = "monthly-goals-"
+    static let pointsEarnedPrefix = "points-earned-"
     static let lastDailyGoalCelebrationKey = "NOTIF_LAST_DAILY_GOAL_CELEBRATION"
     static let lastDailyGoalReminderSentKey = "NOTIF_LAST_DAILY_GOAL_REMINDER"
+    static let lastPointsEarnedNotificationKey = "NOTIF_LAST_POINTS_EARNED"
 
     static func requestAuthorizationIfNeeded() async {
         let center = UNUserNotificationCenter.current()
@@ -258,6 +261,88 @@ enum SwimNotifications {
         )
         try? await center.add(request)
         UserDefaults.standard.set(todayKey, forKey: lastDailyGoalReminderSentKey)
+    }
+
+    static func pointsEarnedPayload(
+        previousPoints: Int,
+        currentPoints: Int,
+        lastNotifiedPoints: Int,
+        t: TranslationService
+    ) -> ReminderPayload? {
+        let baseline = max(previousPoints, lastNotifiedPoints)
+        let gained = currentPoints - baseline
+        guard gained > 0 else { return nil }
+        return ReminderPayload(
+            id: "\(pointsEarnedPrefix)\(currentPoints)",
+            title: t.t("notifications.pointsEarnedTitle"),
+            body: t.t("notifications.pointsEarnedBody", params: [
+                "gained": "\(gained)",
+                "total": "\(currentPoints)",
+            ])
+        )
+    }
+
+    static func notifyPointsEarnedIfNeeded(
+        previousPoints: Int,
+        currentPoints: Int,
+        enabled: Bool,
+        t: TranslationService,
+        now: Date = Date(),
+        skipIfAppActive: Bool = true
+    ) async {
+        guard enabled, currentPoints > previousPoints else { return }
+        if skipIfAppActive {
+            let isActive = await MainActor.run { UIApplication.shared.applicationState == .active }
+            if isActive { return }
+        }
+
+        let todayKey = VitalityGoals.todayDateKey(now)
+        let lastNotified = lastNotifiedPoints(for: todayKey)
+        guard let payload = pointsEarnedPayload(
+            previousPoints: previousPoints,
+            currentPoints: currentPoints,
+            lastNotifiedPoints: lastNotified,
+            t: t
+        ) else { return }
+
+        await requestAuthorizationIfNeeded()
+        let center = UNUserNotificationCenter.current()
+        let settings = await center.notificationSettings()
+        guard settings.authorizationStatus == .authorized
+                || settings.authorizationStatus == .provisional else { return }
+
+        let content = UNMutableNotificationContent()
+        content.title = payload.title
+        content.body = payload.body
+        content.sound = .default
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(
+            identifier: "\(pointsEarnedPrefix)\(todayKey)-\(currentPoints)",
+            content: content,
+            trigger: trigger
+        )
+        try? await center.add(request)
+        UserDefaults.standard.set("\(todayKey):\(currentPoints)", forKey: lastPointsEarnedNotificationKey)
+    }
+
+    static func cancelPointsEarnedNotifications() async {
+        let center = UNUserNotificationCenter.current()
+        let pending = await center.pendingNotificationRequests()
+        let ids = pending.filter { $0.identifier.hasPrefix(pointsEarnedPrefix) }.map(\.identifier)
+        if !ids.isEmpty {
+            center.removePendingNotificationRequests(withIdentifiers: ids)
+        }
+    }
+
+    static func lastNotifiedPoints(
+        for dateKey: String,
+        stored: String? = UserDefaults.standard.string(forKey: lastPointsEarnedNotificationKey)
+    ) -> Int {
+        guard let stored else { return 0 }
+        let parts = stored.split(separator: ":", omittingEmptySubsequences: false)
+        guard parts.count == 2, String(parts[0]) == dateKey else { return 0 }
+        return Int(parts[1]) ?? 0
     }
 
     static func daysRemainingInMonth(_ date: Date = Date()) -> Int {

@@ -199,12 +199,24 @@ struct SettingsScreen: View {
 
     private var notificationsSection: some View {
         Section(preferences.t("settings.notificationsTitle")) {
-            Text(preferences.t("settings.dailyGoalNotificationsDesc"))
-                .themeFont(.caption)
-                .foregroundStyle(.secondary)
-                .themedListRowBackground()
-            Toggle(preferences.t("settings.dailyGoalNotifications"), isOn: dailyGoalNotificationsBinding)
-                .themedListRowBackground()
+            Toggle(isOn: dailyGoalNotificationsBinding) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(preferences.t("settings.dailyGoalNotifications"))
+                    Text(preferences.t("settings.dailyGoalNotificationsDesc"))
+                        .themeFont(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .themedListRowBackground()
+            Toggle(isOn: pointsEarnedNotificationsBinding) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(preferences.t("settings.pointsEarnedNotifications"))
+                    Text(preferences.t("settings.pointsEarnedNotificationsDesc"))
+                        .themeFont(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .themedListRowBackground()
         }
     }
 
@@ -270,6 +282,13 @@ struct SettingsScreen: View {
         Binding(
             get: { preferences.dailyGoalNotificationsEnabled },
             set: { preferences.setDailyGoalNotifications($0) }
+        )
+    }
+
+    private var pointsEarnedNotificationsBinding: Binding<Bool> {
+        Binding(
+            get: { preferences.pointsEarnedNotificationsEnabled },
+            set: { preferences.setPointsEarnedNotifications($0) }
         )
     }
 

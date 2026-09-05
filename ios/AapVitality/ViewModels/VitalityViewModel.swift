@@ -473,24 +473,46 @@ final class VitalityViewModel: ObservableObject {
     }
 
     func syncTodaySteps() async {
-        guard !isSyncingHealthKit, !isSyncingTodaySteps else { return }
-        guard HealthKitService.isAvailable else { return }
-        guard await HealthKitService.isReadyForLaunchSync() else { return }
+        _ = await syncTodayIfAuthorized(scope: .steps)
+    }
+
+    @discardableResult
+    func syncTodayIfAuthorized(
+        scope: BackgroundTodayStepsSync.Kind,
+        enrichHeartRate: Bool = false
+    ) async -> Bool {
+        guard HealthKitService.isAvailable else { return false }
+        guard await HealthKitService.isReadyForLaunchSync() else { return false }
+
+        for _ in 0..<30 {
+            if !isSyncingHealthKit && !isSyncingTodaySteps { break }
+            try? await Task.sleep(for: .milliseconds(100))
+        }
+        guard !isSyncingHealthKit, !isSyncingTodaySteps else { return false }
 
         isSyncingTodaySteps = true
         defer { isSyncingTodaySteps = false }
 
         do {
-            let steps = try await HealthKitService.fetchTodaySteps()
-            applyTodaySteps(steps)
+            switch scope {
+            case .steps:
+                let steps = try await HealthKitService.fetchTodaySteps()
+                applyTodaySteps(steps)
+            case .stepsAndWorkouts:
+                try await importTodayVitalityData(includeSleep: false, enrichHeartRate: enrichHeartRate)
+            case .fullDay:
+                try await importTodayVitalityData(includeSleep: true, enrichHeartRate: enrichHeartRate)
+            }
+            return true
         } catch {
-            return
+            return false
         }
     }
 
     func applyTodaySteps(_ steps: Int) {
         let recordsBefore = dailyRecords
         let bodyMetricsBefore = bodyMetricsEntries
+        let pointsBefore = todayPoints()
         var next = data
         guard TodayStepsStore.apply(steps, to: &next) else { return }
         data = next
@@ -502,6 +524,7 @@ final class VitalityViewModel: ObservableObject {
             bodyMetricsBefore: bodyMetricsBefore,
             bodyMetricsAfter: next.bodyMetricsEntries
         )
+        notifyIfTodayPointsIncreased(from: pointsBefore)
     }
 
     func refreshTodayVitality() async {
@@ -521,24 +544,7 @@ final class VitalityViewModel: ObservableObject {
 
     @discardableResult
     func syncTodayVitalityIfAuthorized(enrichHeartRate: Bool = false) async -> Bool {
-        guard HealthKitService.isAvailable else { return false }
-        guard await HealthKitService.isReadyForLaunchSync() else { return false }
-
-        for _ in 0..<30 {
-            if !isSyncingHealthKit && !isSyncingTodaySteps { break }
-            try? await Task.sleep(for: .milliseconds(100))
-        }
-        guard !isSyncingHealthKit, !isSyncingTodaySteps else { return false }
-
-        isSyncingTodaySteps = true
-        defer { isSyncingTodaySteps = false }
-
-        do {
-            try await importTodayVitalityData(enrichHeartRate: enrichHeartRate)
-            return true
-        } catch {
-            return false
-        }
+        await syncTodayIfAuthorized(scope: .fullDay, enrichHeartRate: enrichHeartRate)
     }
 
     func refreshNotificationsAfterTodaySync(dailyGoalNotificationsEnabled: Bool) async {
@@ -546,31 +552,50 @@ final class VitalityViewModel: ObservableObject {
         await refreshNotifications(dailyGoalNotificationsEnabled: dailyGoalNotificationsEnabled)
     }
 
-    private func importTodayVitalityData(enrichHeartRate: Bool) async throws {
+    private func importTodayVitalityData(includeSleep: Bool = true, enrichHeartRate: Bool) async throws {
         let startOfDay = Calendar.current.startOfDay(for: Date())
         let today = VitalityGoals.todayDateKey()
+        let existing = dailyRecords.first { $0.date == today }
+        let existingSleep = existing?.sleepMinutes ?? 0
         let existingUUIDs = Set(
             dailyRecords.flatMap(\.workouts).compactMap(\.healthKitWorkoutUUID)
         )
 
-        async let stepsTask = HealthKitService.fetchTodaySteps()
-        async let sleepTask = HealthKitService.fetchDailySleep(since: startOfDay)
-        async let workoutsTask = HealthKitService.fetchNewVitalityWorkouts(
-            excluding: existingUUIDs,
-            since: startOfDay,
-            maxResults: 20,
-            profile: profile,
-            enrichHeartRate: enrichHeartRate
-        )
-
-        let steps = try await stepsTask
-        let sleepByDate = try await sleepTask
-        let fetchResult = try await workoutsTask
+        let steps: Int
+        let sleepMinutes: Int
+        let fetchResult: (workouts: [HealthKitVitalityWorkout], queriedCount: Int)
+        if includeSleep {
+            async let stepsTask = HealthKitService.fetchTodaySteps()
+            async let sleepTask = HealthKitService.fetchDailySleep(since: startOfDay)
+            async let workoutsTask = HealthKitService.fetchNewVitalityWorkouts(
+                excluding: existingUUIDs,
+                since: startOfDay,
+                maxResults: 20,
+                profile: profile,
+                enrichHeartRate: enrichHeartRate
+            )
+            steps = try await stepsTask
+            let sleepByDate = try await sleepTask
+            sleepMinutes = sleepByDate[today] ?? existingSleep
+            fetchResult = try await workoutsTask
+        } else {
+            async let stepsTask = HealthKitService.fetchTodaySteps()
+            async let workoutsTask = HealthKitService.fetchNewVitalityWorkouts(
+                excluding: existingUUIDs,
+                since: startOfDay,
+                maxResults: 20,
+                profile: profile,
+                enrichHeartRate: enrichHeartRate
+            )
+            steps = try await stepsTask
+            sleepMinutes = existingSleep
+            fetchResult = try await workoutsTask
+        }
         let todayWorkouts = fetchResult.workouts.filter { $0.date == today && $0.durationSec >= 60 }
 
         applyTodayVitality(
             steps: steps,
-            sleepMinutes: sleepByDate[today] ?? 0,
+            sleepMinutes: sleepMinutes,
             newWorkouts: todayWorkouts
         )
     }
@@ -582,6 +607,7 @@ final class VitalityViewModel: ObservableObject {
     ) {
         let today = VitalityGoals.todayDateKey()
         let existing = dailyRecords.first { $0.date == today }
+        let pointsBefore = todayPoints()
         guard existing != nil || steps > 0 || sleepMinutes > 0 || !newWorkouts.isEmpty else { return }
         var workouts = existing?.workouts ?? []
         for workout in newWorkouts {
@@ -642,6 +668,24 @@ final class VitalityViewModel: ObservableObject {
             bodyMetricsBefore: bodyMetricsBefore,
             bodyMetricsAfter: data.bodyMetricsEntries
         )
+        notifyIfTodayPointsIncreased(from: pointsBefore)
+    }
+
+    private func todayPoints() -> Int {
+        VitalityGoals.todayPoints(records: dailyRecords)
+    }
+
+    private func notifyIfTodayPointsIncreased(from previous: Int) {
+        let current = todayPoints()
+        guard current > previous else { return }
+        Task {
+            await SwimNotifications.notifyPointsEarnedIfNeeded(
+                previousPoints: previous,
+                currentPoints: current,
+                enabled: UserPreferencesService.arePointsEarnedNotificationsEnabled,
+                t: makeTranslations()
+            )
+        }
     }
 
     func refreshNotifications(dailyGoalNotificationsEnabled: Bool) async {
@@ -688,6 +732,7 @@ final class VitalityViewModel: ObservableObject {
         )
         let recordsBefore = dailyRecords
         let bodyMetricsBefore = bodyMetricsEntries
+        let pointsBefore = todayPoints()
 
         async let stepsTask = HealthKitService.fetchDailySteps(since: since)
         async let sleepTask = HealthKitService.fetchDailySleep(since: since)
@@ -822,6 +867,7 @@ final class VitalityViewModel: ObservableObject {
                 bodyMetricsBefore: bodyMetricsBefore,
                 bodyMetricsAfter: data.bodyMetricsEntries
             )
+            notifyIfTodayPointsIncreased(from: pointsBefore)
         }
 
         let hasMoreAvailable = fetchResult.workouts.count >= maxImports
