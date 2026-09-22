@@ -28,3 +28,6 @@ npm-debug.log*
 
 # vercel
 .vercel
+
+# separate project (own repo at github.com/.../news-trader-advisor)
+news-trader-advisor/
