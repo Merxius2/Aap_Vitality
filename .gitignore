@@ -28,6 +28,3 @@ npm-debug.log*
 
 # vercel
 .vercel
-
-# local clone of news-trader-advisor branch (see docs/news-trader-advisor.md)
-news-trader-advisor/
