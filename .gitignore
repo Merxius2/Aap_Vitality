@@ -29,5 +29,5 @@ npm-debug.log*
 # vercel
 .vercel
 
-# separate project (own repo at github.com/.../news-trader-advisor)
+# local clone of news-trader-advisor branch (see docs/news-trader-advisor.md)
 news-trader-advisor/
